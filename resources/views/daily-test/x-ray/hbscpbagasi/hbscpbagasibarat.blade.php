@@ -22,7 +22,7 @@
         <div class="mt-8">
             <h3 class="text-lg font-semibold mb-2">Check List HHMD</h3>
             <div class="bg-gray-100 p-4 rounded">
-                <img src="{{ asset('images/CHECK_LIST_HHMD.jpg') }}" alt="Check List HHMD" class="w-full h-auto rounded shadow-md">
+                <img src="{{ asset('images/CHECK_LIST_HHMD.png') }}" alt="Check List HHMD" class="w-full h-auto rounded shadow-md">
             </div>
         </div>
     </div>

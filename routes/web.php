@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DailyTestController;
+use App\Http\Controllers\HHMDFormController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -70,4 +71,6 @@ Route::middleware(['checkrole:superadmin,supervisor,officer'])->group(function (
             Route::get('/kedatangan', [DailyTestController::class, 'hhmdKedatangan'])->name('kedatangan');
         });
     });
+    Route::post('/submit-form', [HHMDFormController::class, 'submitForm'])->name('submit-form');
 });
+
