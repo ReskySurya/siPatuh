@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: 0;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: 0;  /* IE and Edge */
+    scrollbar-width: 0;  /* Firefox */
+  }
+}

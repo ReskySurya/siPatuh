@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('email')->unique()->nullable();
             $table->string('password');
             $table->string('role')->default('officer');
+            $table->binary('image_signature')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

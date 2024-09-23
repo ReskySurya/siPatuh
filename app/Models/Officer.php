@@ -17,6 +17,7 @@ class Officer extends Authenticatable
         'nip',
         'email',
         'password',
+        'image_signature',
     ];
 
     protected $hidden = [

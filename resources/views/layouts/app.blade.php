@@ -11,13 +11,13 @@
     @stack('styles')
 </head>
 <body class="bg-gray-100">
-    <div class="flex h-screen">
+    <div class="flex h-screen overflow-hidden">
         @include('layouts.sidebar')
-        <div class="flex flex-col flex-1">
+        <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Navbar -->
-            <nav class="bg-[#66B82E] text-white p-6">
+            <nav class="bg-[#66B82E] text-white p-4">
                 <div class="container mx-auto">
-                    <form class="flex items-center">
+                    <form class="flex items-center"></form>
                         <input type="text" placeholder="Search..." class="px-4 py-2 w-64 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-white text-gray-800">
                         <button type="submit" class="bg-white text-[#66B82E] px-6 py-2 rounded-r-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-white">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -29,7 +29,7 @@
             </nav>
 
             <!-- Main content area -->
-            <main class="flex-1 p-10 overflow-y-auto">
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200 p-6">
                 @yield('content')
             </main>
         </div>
