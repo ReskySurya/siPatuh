@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\hhmdsaved;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\View;
-use Barryvdh\DomPDF\Facade\Pdf;
 class HHMDFormController extends Controller
 {
 
@@ -23,9 +23,7 @@ class HHMDFormController extends Controller
             'certificateInfo' => 'required|string',
             'terpenuhi' => 'boolean',
             'tidakterpenuhi' => 'boolean',
-            'test1' => 'nullable|boolean',
             'test2' => 'nullable|boolean',
-            'test3' => 'nullable|boolean',
             'testCondition1' => 'boolean',
             'testCondition2' => 'boolean',
             'result' => 'required|in:pass,fail',
@@ -56,11 +54,12 @@ class HHMDFormController extends Controller
         $hhmdsave = new hhmdsaved($validatedData);
         if (Auth::guard('web')->check()) {
             $hhmdsave->submitted_by = Auth::guard('web')->id();
+            $hhmdsave->officerName = Auth::user()->name;
         } elseif (Auth::guard('officer')->check()) {
             $hhmdsave->submitted_by = Auth::guard('officer')->id();
             $hhmdsave->officerName = Auth::guard('officer')->user()->name;
         } else {
-            return redirect()->back()->with('error', 'You must be logged in to submit this form.');
+            return redirect()->back()->with('error', 'Anda harus login untuk mengirimkan formulir ini.');
         }
 
         try {
@@ -115,10 +114,4 @@ class HHMDFormController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function generatePDF($id)
-{
-    $form = hhmdsaved::findOrFail($id);
-    $pdf = PDF::loadView('pdf.hhmd', compact('form'));
-    return $pdf->download('hhmd_form_' . $id . '.pdf');
-}
 }

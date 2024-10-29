@@ -60,23 +60,11 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="border-x-2 border-t-2 border-black grid grid-cols-3 gap-4 text-center pt-10">
-                            <div>
-                                <h2 class="font-bold mb-2">TEST 1</h2>
-                                <div class="w-20 h-20 mx-auto border-2 border-black flex items-center justify-center">
-                                    <input type="checkbox" {{ $form->test1 ? 'checked' : '' }} disabled>
-                                </div>
-                            </div>
+                        <div class="border-x-2 border-t-2 border-black text-center items-center pt-10">
                             <div>
                                 <h2 class="font-bold mb-2">TEST 2</h2>
                                 <div class="w-20 h-20 mx-auto border-2 border-black flex items-center justify-center">
                                     <input type="checkbox" {{ $form->test2 ? 'checked' : '' }} disabled>
-                                </div>
-                            </div>
-                            <div>
-                                <h2 class="font-bold mb-2">TEST 3</h2>
-                                <div class="w-20 h-20 mx-auto border-2 border-black flex items-center justify-center">
-                                    <input type="checkbox" {{ $form->test3 ? 'checked' : '' }} disabled>
                                 </div>
                             </div>
                         </div>

@@ -3,94 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulir HHMD</title>
-    <style>
-        body { font-family: Arial, sans-serif; font-size: 12px; }
-        .container { width: 210mm; margin: 0 auto; }
-        .header { text-align: center; margin-bottom: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        th, td { border: 1px solid black; padding: 5px; }
-        .checkbox { width: 15px; height: 15px; border: 1px solid black; display: inline-block; }
-        .checked { background-color: black; }
-        .signature-box { border: 1px solid black; height: 50px; margin-top: 10px; }
-    </style>
+    <title>PDF</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>CHECK LIST PENGUJIAN HARIAN PENDETEKSI LOGAM GENGGAM (HAND HELD METAL DETECTOR/HHMD)</h1>
-        </div>
-
-        <table>
-            <tr>
-                <th>Nama Operator Penerbangan:</th>
-                <td>{{ $form->operatorName }}</td>
-            </tr>
-            <tr>
-                <th>Tanggal & Waktu Pengujian:</th>
-                <td>{{ $form->testDateTime }}</td>
-            </tr>
-            <tr>
-                <th>Lokasi Penempatan:</th>
-                <td>{{ $form->location }}</td>
-            </tr>
-            <tr>
-                <th>Merk/Tipe/Nomor Seri:</th>
-                <td>{{ $form->deviceInfo }}</td>
-            </tr>
-            <tr>
-                <th>Nomor dan Tanggal Sertifikat:</th>
-                <td>{{ $form->certificateInfo }}</td>
-            </tr>
-        </table>
-
-        <div>
-            <span class="checkbox {{ $form->terpenuhi ? 'checked' : '' }}"></span> Terpenuhi
-            <span class="checkbox {{ $form->tidakterpenuhi ? 'checked' : '' }}"></span> Tidak Terpenuhi
-        </div>
-
-        <table>
-            <tr>
-                <th>TEST 1</th>
-                <th>TEST 2</th>
-                <th>TEST 3</th>
-            </tr>
-            <tr>
-                <td><div class="checkbox {{ $form->test1 ? 'checked' : '' }}"></div></td>
-                <td><div class="checkbox {{ $form->test2 ? 'checked' : '' }}"></div></td>
-                <td><div class="checkbox {{ $form->test3 ? 'checked' : '' }}"></div></td>
-            </tr>
-        </table>
-
-        <div>
-            <div class="checkbox {{ $form->testCondition1 ? 'checked' : '' }}"></div> Letak alat uji OTP dan HHMD pada saat pengujian harus > 1m dari benda logam lain disekelilingnya.
-        </div>
-        <div>
-            <div class="checkbox {{ $form->testCondition2 ? 'checked' : '' }}"></div> Jarak antara HHMD dan OTP > 3-5 cm.
-        </div>
-
-        <h3>Hasil:</h3>
-        <div>
-            <span class="checkbox {{ $form->result == 'pass' ? 'checked' : '' }}"></span> PASS
-            <span class="checkbox {{ $form->result == 'fail' ? 'checked' : '' }}"></span> FAIL
-        </div>
-
-        <h3>CATATAN:</h3>
-        <p>{{ $form->notes }}</p>
-
-        <h3>Personel Pengamanan Penerbangan</h3>
-        <div>
-            <p>1. Airport Security Officer: {{ $form->officerName }}</p>
-            <div class="signature-box">
-                @if($form->officer_signature)
-                    <img src="{{ $form->officer_signature }}" alt="Tanda tangan Officer" style="max-width: 100%; max-height: 100%;">
-                @endif
+<body class="mt-5">
+    <div class="bg-white p-4" style="width: 210mm; min-height: 297mm;">
+        <div id="format" class="mx-auto">
+            <div class="border-t-2 border-x-2 border-black bg-white shadow-md p-4">
+                <div class="flex items-center justify-between">
+                    <img src="{{ asset('images/airport-security-logo.png') }}" alt="Logo" class="w-20 h-20">
+                    <h1 class="text-xl font-bold text-center flex-grow px-2">
+                        CHECK LIST PENGUJIAN HARIAN<br>
+                        PENDETEKSI LOGAM GENGGAM<br>
+                        (HAND HELD METAL DETECTOR/HHMD)
+                    </h1>
+                    <img src="https://via.placeholder.com/80x80" alt="Additional Logo" class="w-20 h-20">
+                </div>
             </div>
-            <p>2. Airport Security Supervisor</p>
-            <div class="signature-box">
-                @if($form->supervisor_signature)
-                    <img src="{{ $form->supervisor_signature }}" alt="Tanda tangan Supervisor" style="max-width: 100%; max-height: 100%;">
-                @endif
+
+            <div class="border-2 border-black bg-white shadow">
+                <table class="w-full text-sm">
+                    <tbody>
+                        <tr class="border-b border-black">
+                            <th class="w-1/3 text-left p-2">Nama Operator Penerbangan:</th>
+                            <td class="w-2/3 p-2">{{ $form->operatorName }}</td>
+                        </tr>
+                        <tr class="border-b border-black">
+                            <th class="w-1/3 text-left p-2">Tanggal & Waktu Pengujian:</th>
+                            <td class="w-2/3 p-2">{{ $form->testDateTime }}</td>
+                        </tr>
+                        <tr class="border-b border-black">
+                            <th class="w-1/3 text-left p-2">Lokasi Penempatan:</th>
+                            <td class="w-2/3 p-2">{{ $form->location }}</td>
+                        </tr>
+                        <tr class="border-b border-black">
+                            <th class="w-1/3 text-left p-2">Merk/Tipe/Nomor Seri:</th>
+                            <td class="w-2/3 p-2">{{ $form->deviceInfo }}</td>
+                        </tr>
+                        <tr class="border-b border-black">
+                            <th class="w-1/3 text-left p-2">Nomor dan Tanggal Sertifikat:</th>
+                            <td class="w-2/3 p-2">{{ $form->certificateInfo }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="px-4">
+                    <div class="p-2">
+                        <div class="mb-0">
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" {{ $form->terpenuhi ? 'checked' : '' }} disabled>
+                                <span class="ml-2 text-sm">Terpenuhi</span>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" {{ $form->tidakterpenuhi ? 'checked' : '' }} disabled>
+                                <span class="ml-2 text-sm">Tidak Terpenuhi</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="border-x-2 border-t-2 border-black text-center items-center pt-10">
+                        <div>
+                            <h2 class="font-bold mb-2">TEST 2</h2>
+                            <div class="w-20 h-20 mx-auto border-2 border-black flex items-center justify-center">
+                                <input type="checkbox" {{ $form->test2 ? 'checked' : '' }} disabled>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-x-2 border-black pt-10 pb-10">
+                        <div class="flex items-center mb-0 pl-4">
+                            <input type="checkbox" {{ $form->testCondition1 ? 'checked' : '' }} disabled>
+                            <label class="ml-2 text-sm">Letak alat uji OTP dan HHMD pada saat pengujian harus > 1m dari benda logam lain disekelilingnya.</label>
+                        </div>
+                        <div class="flex items-center mb-0 pl-4">
+                            <input type="checkbox" {{ $form->testCondition2 ? 'checked' : '' }} disabled>
+                            <label class="ml-2 text-sm">Jarak antara HHMD dan OTP > 3-5 cm.</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t-2 border-black p-4">
+                    <div class="flex items-start mb-2">
+                        <label class="text-gray-700 font-bold mr-4">Hasil:</label>
+                        <div class="flex flex-col">
+                            <div class="flex items-center mb-0">
+                                <input type="radio" {{ $form->result == 'pass' ? 'checked' : '' }} disabled>
+                                <label class="text-sm ml-2">PASS</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" {{ $form->result == 'fail' ? 'checked' : '' }} disabled>
+                                <label class="text-sm ml-2">FAIL</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-bold mb-2">CATATAN:</label>
+                        <p>{{ $form->notes }}</p>
+                    </div>
+                </div>
+
+                <div class="border-t-2 border-black p-4">
+                    <h3 class="text-sm font-bold mb-2">Personel Pengamanan Penerbangan</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-rows-2 gap-2 items-center">
+                            <div class="text-center self-end">
+                                <h4 class="font-bold">{{ $form->officerName }}</h4>
+                                <label class="text-gray-700 font-normal">1. Airport Security Officer</label>
+                            </div>
+                            <div class="text-center self-end">
+                                <label class="text-gray-700 font-normal">2. Airport Security Supervisor</label>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex flex-col items-center">
+                                @if($form->officer_signature)
+                                    <img src="{{ $form->officer_signature }}" alt="Tanda tangan Officer" style="width: 150px; height: auto;">
+                                @else
+                                    <p>Tanda tangan Officer tidak tersedia</p>
+                                @endif
+                            </div>
+                            <div class="flex flex-col items-center">
+                                @if($form->supervisor_signature)
+                                    <img src="{{ $form->supervisor_signature }}" alt="Tanda tangan Supervisor" id="supervisorSignatureImage" style="width: 150px; height: auto;">
+                                @else
+                                    <p>Tanda tangan Supervisor tidak tersedia</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

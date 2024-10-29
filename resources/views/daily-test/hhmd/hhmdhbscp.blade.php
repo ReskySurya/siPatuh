@@ -46,15 +46,13 @@
     }
 
     function updateResult() {
-        var test1 = document.getElementById('test1').checked;
         var test2 = document.getElementById('test2').checked;
-        var test3 = document.getElementById('test3').checked;
 
         var resultPass = document.getElementById('resultPass');
         var resultFail = document.getElementById('resultFail');
         var resultHidden = document.getElementById('result');
 
-        if (test1 && test2 && test3) {
+        if (test2) {
             resultPass.checked = true;
             resultFail.checked = false;
             resultHidden.value = 'pass';
@@ -69,9 +67,7 @@
     document.addEventListener('DOMContentLoaded', updateResult);
 
     // Tambahkan event listener untuk setiap checkbox test
-    document.getElementById('test1').addEventListener('change', updateResult);
     document.getElementById('test2').addEventListener('change', updateResult);
-    document.getElementById('test3').addEventListener('change', updateResult);
 
     // Tambahkan event listener untuk form submission
     document.getElementById('hhmdForm').addEventListener('submit', function(event) {

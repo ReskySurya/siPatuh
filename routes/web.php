@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MasterDataController;
 use App\Http\Controllers\SignatureController;
+use App\Http\Controllers\PdfController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,6 +52,9 @@ Route::middleware(['checkrole:superadmin,supervisor'])->group(function () {
     Route::put('/masterdata/user/{id}', [MasterDataController::class, 'editUser'])->name('masterdata.updateUser');
     Route::delete('/masterdata/user/{id}', [MasterDataController::class, 'deleteUser'])->name('masterdata.deleteUser');
     Route::get('/masterdata/user/{id}', [MasterDataController::class, 'getUser'])->name('masterdata.getUser');
+    Route::get('/hhmdform', [DashboardController::class, 'hhmdIndex'])->name('hhmdform');
+    Route::get('/wtmd', [DashboardController::class, 'wtmdIndex'])->name('wtmd.index');
+    Route::get('/xray', [DashboardController::class, 'xrayIndex'])->name('xray.index');
 });
 
 // Rute Daily Task yang dapat diakses oleh semua pengguna yang sudah login
@@ -94,7 +98,12 @@ Route::middleware(['checkrole:superadmin,supervisor,officer'])->group(function (
 });
 
 Route::get('/review/hhmd/{id}', [HHMDFormController::class, 'review'])->name('review.hhmd.reviewhhmd');
-Route::get('/pdf/{id}', [HHMDFormController::class, 'generatePDF'])->name('pdf.hhmd');
+Route::get('/pdf/{id}', [PdfController::class, 'generatePDF'])->name('pdf.hhmd');
+Route::post('/generate-merged-pdf', [PdfController::class, 'generateMergedPDF'])
+    ->name('generate.merged.pdf')
+    ->middleware('web');
 Route::patch('/hhmd/update-status/{id}', [HHMDFormController::class, 'updateStatus'])->name('hhmd.updateStatus');
 
 Route::post('/hhmd/{id}/save-supervisor-signature', [HHMDFormController::class, 'saveSupervisorSignature'])->name('hhmd.saveSupervisorSignature');
+
+Route::get('/filter-hhmd-forms', [DashboardController::class, 'dateRange'])->name('filter.hhmd.forms');

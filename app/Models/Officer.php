@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
 
 class Officer extends Authenticatable
 {
-    use HasFactory, HasApiTokens, Notifiable;
+    use AuthenticatableTrait, HasFactory, HasApiTokens, Notifiable;
+
+    protected $guard = 'officer';
 
     protected $fillable = [
         'name',

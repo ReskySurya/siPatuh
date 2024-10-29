@@ -75,26 +75,16 @@
                             </label>
                         </div>
                     </div>
-                    <div class="border-x-2 border-t-2 border-black grid grid-cols-3 gap-4 text-center pt-10">
+
+                    <div class="border-x-2 border-t-2 border-black text-center items-center pt-10">
                         <div>
                             <h2 class="font-bold mb-2">TEST 1</h2>
-                            <div class="w-20 h-20 mx-auto border-2 border-black flex items-center justify-center">
-                                <input type="checkbox" id="test1" name="test1" class="form-checkbox h-5 w-5" onchange="updateResult()" value="1">
-                            </div>
-                        </div>
-                        <div>
-                            <h2 class="font-bold mb-2">TEST 2</h2>
                             <div class="w-20 h-20 mx-auto border-2 border-black flex items-center justify-center">
                                 <input type="checkbox" id="test2" name="test2" class="form-checkbox h-5 w-5" onchange="updateResult()" value="1">
                             </div>
                         </div>
-                        <div>
-                            <h2 class="font-bold mb-2">TEST 3</h2>
-                            <div class="w-20 h-20 mx-auto border-2 border-black flex items-center justify-center">
-                                <input type="checkbox" id="test3" name="test3" class="form-checkbox h-5 w-5" onchange="updateResult()" value="1">
-                            </div>
-                        </div>
                     </div>
+                    
 
                     <div class="border-x-2 border-black pt-10 pb-10">
                         <div class="flex items-center mb-0 pl-4">
