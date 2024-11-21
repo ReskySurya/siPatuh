@@ -106,3 +106,9 @@ Route::patch('/hhmd/update-status/{id}', [HHMDFormController::class, 'updateStat
 Route::post('/hhmd/{id}/save-supervisor-signature', [HHMDFormController::class, 'saveSupervisorSignature'])->name('hhmd.saveSupervisorSignature');
 
 Route::post('/filter-hhmd-forms', [DashboardController::class, 'filterByDate'])->name('filter.hhmd.forms');
+
+Route::middleware(['auth:officer'])->group(function () {
+    Route::get('/officer/hhmd/create', [HHMDFormController::class, 'create'])->name('officer.hhmd.create');
+    Route::get('/officer/hhmd/{id}/edit', [HHMDFormController::class, 'edit'])->name('officer.hhmd.edit');
+    Route::put('/officer/hhmd/{id}', [HHMDFormController::class, 'update'])->name('officer.hhmd.update');
+});

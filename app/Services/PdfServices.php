@@ -46,10 +46,11 @@ class PdfServices
 
     private function getFormsByDateRange(array $dateRange): object
     {
-        return hhmdsaved::whereBetween('testDateTime', [
-            $dateRange['start_date'],
-            $dateRange['end_date']
-        ])->get();
+        return hhmdsaved::where('status', 'approved')
+            ->whereBetween('testDateTime', [
+                $dateRange['start_date'],
+                $dateRange['end_date']
+            ])->get();
     }
 
     private function generateTemporaryPdfs(object $forms): array
@@ -58,8 +59,8 @@ class PdfServices
         foreach ($forms as $form) {
             $tempPath = $this->tempDir . '/' . uniqid() . '.pdf';
             Pdf::view('pdf.hhmd', compact('form'))
-               ->format(Format::A4)
-               ->save($tempPath);
+                ->format(Format::A4)
+                ->save($tempPath);
             $tempFiles[] = $tempPath;
         }
         return $tempFiles;

@@ -1,27 +1,47 @@
-<div x-data="{ sidebarOpen: true }" class="relative h-screen">
+<div x-data="{
+    sidebarOpen: window.innerWidth > 768,
+    isMobile: window.innerWidth <= 768
+}"
+x-init="
+    window.addEventListener('resize', () => {
+        isMobile = window.innerWidth <= 768;
+        sidebarOpen = window.innerWidth > 768;
+    });
+"
+class="relative h-screen">
+    <!-- Overlay untuk mobile -->
+    <div x-show="sidebarOpen && isMobile"
+         @click="sidebarOpen = false"
+         class="fixed inset-0 bg-black opacity-50 z-40 lg:hidden"></div>
+
     <!-- Sidebar -->
     <nav id="sidebar"
-    class="bg-[#4A97CD] text-white h-full transition-all duration-300 ease-in-out flex flex-col"
-    :class="{ 'w-80': sidebarOpen, 'w-20': !sidebarOpen }">
-       <!-- Toggle button -->
-       <button @click="sidebarOpen = !sidebarOpen"
-               class="absolute top-4 -right-3 bg-[#4A97CD] text-white p-1 rounded-full shadow-md hover:bg-[#3A87BD] focus:outline-none">
-           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-               class="w-6 h-6 transition-transform duration-300 ease-in-out">
-               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-           </svg>
-       </button>
+    class="fixed top-0 left-0 h-full bg-[#4A97CD] text-white transition-all duration-300 ease-in-out z-50"
+    :class="{
+        'w-80 translate-x-0': sidebarOpen && isMobile,
+        'w-80': sidebarOpen && !isMobile,
+        'w-20': !sidebarOpen && !isMobile,
+        '-translate-x-full': !sidebarOpen && isMobile
+    }">
+        <!-- Toggle button -->
+        <button @click="sidebarOpen = !sidebarOpen"
+                class="absolute top-4 -right-3 bg-[#4A97CD] text-white p-1 rounded-full shadow-md hover:bg-[#3A87BD] focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                class="w-6 h-6 transition-transform duration-300 ease-in-out">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
 
-        <!-- Scrollable content area -->
+        <!-- Konten scrollable -->
         <div class="flex-grow overflow-y-auto no-scrollbar">
             <div class="p-4 space-y-4">
-                <!-- Logo and title -->
-                <div class="flex items-center space-x-3" x-show="sidebarOpen">
+                <!-- Logo dan judul -->
+                <div class="flex items-center space-x-3" x-show ="sidebarOpen">
                     <img src="{{ asset('images/airport-security-logo.png') }}" alt="Airport Security Logo" class="w-16 h-16">
                     <div class="text-2xl font-bold">Airport Security</div>
                 </div>
 
-                <!-- Navigation items -->
+                <!-- Navigasi -->
                 <ul class="space-y-2">
                     <li>
                         @if(Auth::guard('officer')->check())
@@ -55,7 +75,7 @@
                     <li x-data="{ open: false }">
                         <button @click="open = !open" class="flex items-center justify-between w-full py-2 px-4 rounded hover:bg-[#3A87BD]">
                             <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill ="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                                 </svg>
                                 <span x-show="sidebarOpen" class="ml-3">Daily Test</span>
@@ -65,7 +85,6 @@
                             </svg>
                         </button>
                         <ul x-show="open" class="pl-4 mt-2 space-y-2">
-                            <!-- Xray Button -->
                             <li x-data="{ openXray: false }">
                                 <button @click="openXray = !openXray" class="flex items-center justify-between w-full py-2 px-4 rounded hover:bg-[#3A87BD]">
                                     <span>X-ray</span>
@@ -81,7 +100,6 @@
                                 </ul>
                             </li>
 
-                            <!-- WTMD Button -->
                             <li x-data="{ openWTMD: false }">
                                 <button @click="openWTMD = !openWTMD" class="flex items-center justify-between w-full py-2 px-4 rounded hover:bg-[#3A87BD]">
                                     <span>WTMD</span>
@@ -96,7 +114,6 @@
                                 </ul>
                             </li>
 
-                            <!-- HHMD Button -->
                             <li x-data="{ openHHMD: false }">
                                 <button @click="openHHMD = !openHHMD" class="flex items-center justify-between w-full py-2 px-4 rounded hover:bg-[#3A87BD]">
                                     <span>HHMD</span>
@@ -105,7 +122,7 @@
                                     </svg>
                                 </button>
                                 <ul x-show="openHHMD" class="pl-4 space-y-2 mt-2">
-                                    <li><a href="{{ route('daily-test.hhmd.hbscp') }}" class="block py-2 px-4 rounded hover:bg-[#3A87BD]">HHMD HBSCP</a></li>
+                                    <li><a href ="{{ route('daily-test.hhmd.hbscp') }}" class="block py-2 px-4 rounded hover:bg-[#3A87BD]">HHMD HBSCP</a></li>
                                     <li><a href="{{ route('daily-test.hhmd.pos-timur') }}" class="block py-2 px-4 rounded hover:bg-[#3A87BD]">HHMD Pos Timur</a></li>
                                     <li><a href="{{ route('daily-test.hhmd.pos-barat') }}" class="block py-2 px-4 rounded hover:bg-[#3A87BD]">HHMD Pos Barat</a></li>
                                     <li><a href="{{ route('daily-test.hhmd.pscp-utara') }}" class="block py-2 px-4 rounded hover:bg-[#3A87BD]">HHMD PSCP Utara</a></li>
@@ -134,7 +151,7 @@
                     <li>
                         <a href="#" class="block py-2 px-4 rounded hover:bg-[#3A87BD]">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0  00-2 2v12a2 2 0 002 2z" />
                             </svg>
                             <span x-show="sidebarOpen" class="ml-3">Check List Kendaraan</span>
                         </a>
@@ -166,7 +183,7 @@
                 </ul>
             </div>
         </div>
-        <!-- Logout button (fixed at bottom) -->
+        <!-- Tombol Logout (ditempatkan di bawah) -->
         <div class="p-4 mt-auto bg-[#4A97CD] bottom-0">
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
@@ -180,3 +197,20 @@
         </div>
     </nav>
 </div>
+
+<script>
+    // Tambahkan script untuk mengatur sidebar di mobile
+    function handleSidebarOnResize() {
+        const sidebar = document.getElementById('sidebar');
+        const isMobile = window.innerWidth <= 768;
+
+        if (isMobile) {
+            sidebar.classList.add('fixed');
+        } else {
+            sidebar.classList.remove('fixed');
+        }
+    }
+
+    window.addEventListener('resize', handleSidebarOnResize);
+    handleSidebarOnResize(); // Panggil saat pertama kali dimuat
+</script>

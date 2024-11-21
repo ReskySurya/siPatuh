@@ -30,25 +30,14 @@ class DashboardController extends Controller
 
     public function hhmdIndex()
     {
-        $pendingHhmdForms = hhmdsaved::where('status', 'pending_supervisor')->get();
-        $allHhmdForms = hhmdsaved::all();
+        $pendingHhmdForms = hhmdsaved::where('status', 'pending_supervisor')
+            ->orderBy('testDateTime', 'desc')
+            ->paginate(5);
+        $allHhmdForms = hhmdsaved::orderBy('testDateTime', 'desc')->paginate(5);
         $passorfailForms = hhmdsaved::whereIn('status', ['approved', 'rejected'])->get();
         return view('hhmdform', compact('pendingHhmdForms', 'allHhmdForms', 'passorfailForms'));
     }
 
-    // public function wtmdIndex()
-    // {
-    //     $pendingWtmdForms = wtmdsaved::where('status', 'pending_supervisor')->get();
-    //     $allWtmdForms = wtmdsaved::all();
-    //     return view('wtmd.index', compact('pendingWtmdForms', 'allWtmdForms'));
-    // }
-
-    // public function xrayIndex()
-    // {
-    //     $pendingXrayForms = xraysaved::where('status', 'pending_supervisor')->get();
-    //     $allXrayForms = xraysaved::all();
-    //     return view('xray.index', compact('pendingXrayForms', 'allXrayForms'));
-    // }
 
     public function filterByDate(Request $request)
     {

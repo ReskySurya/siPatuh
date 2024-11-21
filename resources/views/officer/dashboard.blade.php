@@ -16,21 +16,60 @@
         <h2 class="text-xl font-semibold mb-2">Welcome, Officer {{ Auth::guard('officer')->user()->name }}</h2>
         <p class="mb-4 text-gray-600">NIP: {{ Auth::guard('officer')->user()->nip }}</p>
 
-        <h3 class="text-lg font-semibold mb-2">Quick Actions</h3>
+        <!-- Form yang Ditolak/Dikembalikan -->
+        <div class="mt-8">
+            <h3 class="text-lg font-semibold mb-4 text-red-600">Form yang Perlu Diperbaiki</h3>
+            @php
+                $rejectedForms = \App\Models\hhmdsaved::where('submitted_by', Auth::guard('officer')->id())
+                    ->where('status', 'rejected')
+                    ->orderBy('reviewed_at', 'desc')
+                    ->get();
+            @endphp
+
+            @if($rejectedForms->count() > 0)
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white border border-gray-300">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="px-6 py-3 border-b">Tanggal Test</th>
+                                <th class="px-6 py-3 border-b">Lokasi</th>
+                                <th class="px-6 py-3 border-b">Catatan Supervisor</th>
+                                <th class="px-6 py-3 border-b">Ditinjau Pada</th>
+                                <th class="px-6 py-3 border-b">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($rejectedForms as $form)
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 border-b">{{ $form->testDateTime->format('d/m/Y H:i') }}</td>
+                                <td class="px-6 py-4 border-b">{{ $form->location }}</td>
+                                <td class="px-6 py-4 border-b text-red-600">
+                                    {{ $form->rejection_note }}
+                                </td>
+                                <td class="px-6 py-4 border-b">
+                                    {{ $form->reviewed_at ? $form->reviewed_at->format('d/m/Y H:i') : '-' }}
+                                </td>
+                                <td class="px-6 py-4 border-b">
+                                    <a href="{{ route('officer.hhmd.edit', $form->id) }}"
+                                       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                        Edit Form
+                                    </a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <p class="text-gray-600">Tidak ada form yang perlu diperbaiki.</p>
+            @endif
+        </div>
+
+        <h3 class="text-lg font-semibold mb-2 mt-8">Quick Actions</h3>
         <ul class="list-disc pl-5 mb-4 space-y-2">
-            <li><a href="#" class="text-blue-500 hover:text-blue-700">Submit Report</a></li>
-            <li><a href="#" class="text-blue-500 hover:text-blue-700">View Assignments</a></li>
+            <li><a href="{{ route('officer.hhmd.create') }}" class="text-blue-500 hover:text-blue-700">Submit Form HHMD Baru</a></li>
             <li><a href="#" class="text-blue-500 hover:text-blue-700">Update Profile</a></li>
         </ul>
-
-        <!-- You can add more sections here as needed -->
-        <div class="mt-8">
-            <h3 class="text-lg font-semibold mb-2">Recent Activities</h3>
-            <div class="bg-gray-100 p-4 rounded">
-                <p class="text-gray-600">No recent activities to display.</p>
-                <!-- You can replace this with actual recent activities data -->
-            </div>
-        </div>
     </div>
 </div>
 @endsection

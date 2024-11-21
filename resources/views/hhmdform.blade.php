@@ -1,17 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
+<div class="container mx-auto px-4 py-2 sm:py-8">
     <div class="bg-white shadow-md rounded-lg">
         <!-- Header Section -->
-        <div class="border-b border-gray-200 p-6">
-            <div class="flex justify-between items-center mb-6">
-                <h1 class="text-2xl font-bold text-gray-800">{{ __('Formulir HHMD') }}</h1>
+        <div class="border-b border-gray-200 p-4 sm:p-6">
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6 space-y-4 sm:space-y-0">
+                <h1 class="text-xl sm:text-2xl font-bold text-gray-800 w-full sm:w-auto text-center sm:text-left">
+                    {{ __('Formulir HHMD') }}
+                </h1>
 
-                <!-- Filter Button -->
-                <div class="relative" x-data="{ isOpen: false }">
+                <!-- Filter Button (Responsive) -->
+                <div class="relative w-full sm:w-auto" x-data="{ isOpen: false }">
                     <button id="filterButton"
-                        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-150 flex items-center space-x-2">
+                        class="w-full sm:w-auto bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-150 flex items-center justify-center space-x-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -20,9 +22,9 @@
                         <span>Filter</span>
                     </button>
 
-                    <!-- Filter Dropdown -->
+                    <!-- Filter Dropdown (Responsive) -->
                     <div id="filterDropdown"
-                        class="absolute right-0 mt-2 w-72 bg-white rounded-lg shadow-xl hidden transform transition-all duration-150 ease-in-out z-10">
+                        class="absolute right-0 mt-2 w-full sm:w-72 bg-white rounded-lg shadow-xl hidden transform transition-all duration-150 ease-in-out z-10">
                         <div class="p-4">
                             <h3 class="text-lg font-semibold text-gray-700 mb-3">Filter Berdasarkan Tanggal</h3>
                             <form id="dateFilterForm" class="space-y-4" action="{{ route('filter.hhmd.forms') }}"
@@ -52,15 +54,15 @@
                 </div>
             </div>
 
-            <!-- Tabs Navigation -->
-            <div class="flex space-x-1">
+            <!-- Tabs Navigation (Responsive) -->
+            <div class="flex flex-wrap space-x-1 justify-center sm:justify-start">
                 <button onclick="switchTab('pending')"
-                    class="tab-button px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-150 bg-blue-600 text-white"
+                    class="tab-button px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-lg transition-colors duration-150 bg-blue-600 text-white mb-2 sm:mb-0"
                     id="tab-pending">
                     Belum Diperiksa
                 </button>
                 <button onclick="switchTab('all')"
-                    class="tab-button px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-150 text-gray-600 hover:text-gray-800 hover:bg-gray-100"
+                    class="tab-button px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-lg transition-colors duration-150 text-gray-600 hover:text-gray-800 hover:bg-gray-100 mb-2 sm:mb-0"
                     id="tab-all">
                     Semua Formulir
                 </button>
@@ -304,8 +306,8 @@
                 @endif
             </div>
 
-            <!-- Back to Dashboard -->
-            <div class="mt-6">
+            <!-- Back to Dashboard (Responsive) -->
+            <div class="mt-6 flex justify-center sm:justify-start">
                 <a href="{{ route('dashboard') }}"
                     class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-150">
                     <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -323,7 +325,11 @@
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Tab switching functionality
+    function setupResponsiveElements() {
+        const filterButton = document.getElementById('filterButton');
+        const filterDropdown = document.getElementById('filterDropdown');
+
+        // Responsive tab switching
         const tabs = document.querySelectorAll('.tab-button');
         const tabContents = document.querySelectorAll('.tab-content');
 
@@ -348,57 +354,85 @@
             });
         });
 
-        // Set initial active tab
-        document.getElementById('tab-pending').click();
+        // Responsive filter dropdown
+        if (filterButton && filterDropdown) {
+            filterButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                filterDropdown.classList.toggle('hidden');
+            });
 
-        // Dropdown filter toggle
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!filterDropdown.contains(e.target) && !filterButton.contains(e.target)) {
+                    filterDropdown.classList.add('hidden');
+                }
+            });
+        }
+
+        // Date filter form handling
+        const dateFilterForm = document.getElementById('dateFilterForm');
+        if (dateFilterForm) {
+            dateFilterForm.addEventListener('submit', (e) => {
+                const startDate = document.getElementById('start_date').value;
+                const endDate = document.getElementById('end_date').value;
+
+                if (!startDate || !endDate) {
+                    e.preventDefault();
+                    alert('Harap isi tanggal mulai dan akhir.');
+                    return;
+                }
+
+                // Optional: Add loading state or validation
+                filterButton.disabled = true;
+                filterButton.innerHTML = 'Memproses...';
+            });
+        }
+
+        // Initial tab setup
+        const initialTab = document.getElementById('tab-pending');
+        if (initialTab) {
+            initialTab.click();
+        }
+
+        // Responsive table handling
+        const tables = document.querySelectorAll('table');
+        tables.forEach(table => {
+            const wrapper = document.createElement('div');
+            wrapper.classList.add('overflow-x-auto');
+            table.parentNode.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+        });
+    }
+
+    // Handle resize and orientation change
+    function handleResponsiveAdjustments() {
+        const viewportWidth = window.innerWidth;
         const filterButton = document.getElementById('filterButton');
         const filterDropdown = document.getElementById('filterDropdown');
 
-        filterButton.addEventListener('click', () => {
-            const isVisible = filterDropdown.classList.contains('hidden');
-            filterDropdown.classList.toggle('hidden', !isVisible);
-        });
-
-        // Close the filter dropdown if clicked outside
-        document.addEventListener('click', (e) => {
-            if (!filterButton.contains(e.target) && !filterDropdown.contains(e.target)) {
-                filterDropdown.classList.add('hidden');
+        // Adjust elements based on screen size
+        if (viewportWidth < 640) {
+            // Mobile-specific adjustments
+            if (filterDropdown) {
+                filterDropdown.classList.add('w-full');
+                filterDropdown.classList.remove('w-72');
             }
-        });
-
-        // Date filter form submission
-        const dateFilterForm = document.getElementById('dateFilterForm');
-        dateFilterForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const startDate = document.getElementById('start_date').value;
-            const endDate = document.getElementById('end_date').value;
-
-            if (!startDate || !endDate) {
-                alert('Harap isi tanggal mulai dan akhir.');
-                return;
+        } else {
+            // Desktop/Tablet adjustments
+            if (filterDropdown) {
+                filterDropdown.classList.remove('w-full');
+                filterDropdown.classList.add('w-72');
             }
+        }
+    }
 
-            dateFilterForm.submit();
+    // Initial setup
+    setupResponsiveElements();
+    handleResponsiveAdjustments();
 
-            // Example: sending data via AJAX
-            fetch(dateFilterForm.action, {
-                method: 'POST',
-                body: new FormData(dateFilterForm),
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data); // Handle the response
-                alert('Filter diterapkan. Silakan perbarui data di tabel.');
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan saat menerapkan filter.');
-            });
-        });
-    });
+    // Add event listeners for responsive adjustments
+    window.addEventListener('resize', handleResponsiveAdjustments);
+    window.addEventListener('orientationchange', handleResponsiveAdjustments);
+});
 </script>
 @endsection
