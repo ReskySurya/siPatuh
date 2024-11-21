@@ -16,21 +16,25 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        if (!Auth::check()) {
-            return redirect('login');
-        }
+        // Periksa autentikasi untuk setiap guard
+        $guards = ['web', 'officer'];
 
-        $user = Auth::user();
+        foreach ($guards as $guard) {
+            if (Auth::guard($guard)->check()) {
+                $user = Auth::guard($guard)->user();
 
-        if (Auth::guard('officer')->check()) {
-            if (in_array('officer', $roles)) {
-                return $next($request);
+                // Untuk officer, periksa role secara langsung
+                if ($guard === 'officer' && in_array('officer', $roles)) {
+                    return $next($request);
+                }
+
+                // Untuk web, periksa role
+                if ($guard === 'web' && in_array($user->role, $roles)) {
+                    return $next($request);
+                }
             }
-        } elseif (in_array($user->role, $roles)) {
-            return $next($request);
         }
 
         return redirect('/')->with('error', 'You do not have permission to access this page.');
-
     }
 }

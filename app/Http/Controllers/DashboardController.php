@@ -7,6 +7,8 @@ use App\Models\hhmdsaved;
 use App\Models\wtmdsaved;
 use App\Models\xraysaved;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -48,24 +50,40 @@ class DashboardController extends Controller
     //     return view('xray.index', compact('pendingXrayForms', 'allXrayForms'));
     // }
 
-    public function dateRange(Request $request)
-{
-    $query = hhmdsaved::query();
-
-    if ($request->has('start_date') && $request->has('end_date')) {
-        $query->whereBetween('testDateTime', [$request->start_date, $request->end_date]);
-    }
-
-    $allHhmdForms = $query->get();
-    $passorfailForms = $query->where('status', '!=', 'pending_supervisor')->get();
-
-    if ($request->ajax()) {
-        return response()->json([
-            'allHhmdForms' => $allHhmdForms,
-            'passorfailForms' => $passorfailForms
+    public function filterByDate(Request $request)
+    {
+        // Validasi input tanggal
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
         ]);
-    }
 
-    return view('hhmdform', compact('allHhmdForms', 'passorfailForms'));
-}
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        try {
+            $filteredForms = hhmdsaved::whereBetween('testDateTime', [
+                Carbon::parse($startDate)->startOfDay(),
+                Carbon::parse($endDate)->endOfDay(),
+            ])->get();
+
+            // Tambahkan penanganan jika tidak ada data
+            if ($filteredForms->isEmpty()) {
+                return back()->with('status', 'Tidak ada data yang ditemukan dalam rentang tanggal tersebut.');
+            }
+
+            // Kembalikan ke view dengan data yang sudah difilter
+            return view('hhmdform', [
+                'allHhmdForms' => $filteredForms,
+                'pendingHhmdForms' => $filteredForms->where('status', 'pending_supervisor'),
+                'startDate' => $startDate,
+                'endDate' => $endDate,
+            ]);
+        } catch (\Exception $e) {
+            // Log error untuk debugging
+            Log::error('Filter HHMD Error: ' . $e->getMessage());
+
+            return back()->withErrors(['error' => 'Terjadi kesalahan saat memfilter data: ' . $e->getMessage()]);
+        }
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\hhmdsaved;
 use App\Services\PdfServices;
+use App\Http\Requests\MergePdfRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Response;
@@ -23,32 +24,24 @@ class PdfController extends Controller
             $form = hhmdsaved::findOrFail($id);
             return $this->pdfService->generateSinglePdf($form);
         } catch (\Exception $e) {
-            Log::error('PDF Generation Error: ' . $e->getMessage());
-            return $this->errorResponse('Gagal menghasilkan PDF', $e);
+            return $this->handleException($e, 'Gagal menghasilkan PDF');
         }
     }
 
-    public function generateMergedPDF(Request $request)
+
+    public function generateMergedPDF(MergePdfRequest $request)
     {
         try {
-            $validated = $this->validateDateRange($request);
+            $validated = $request->validated();
 
             $mergedContent = $this->pdfService->generateMergedPdf($validated);
 
             return $this->downloadResponse($mergedContent, $validated);
         } catch (\Exception $e) {
-            Log::error('Merged PDF Generation Error: ' . $e->getMessage());
-            return back()->with('error', 'Gagal menghasilkan PDF gabungan: ' . $e->getMessage());
+            return $this->handleException($e, 'Gagal menghasilkan PDF gabungan');
         }
     }
 
-    private function validateDateRange(Request $request): array
-    {
-        return $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date'
-        ]);
-    }
 
     private function downloadResponse(string $content, array $dateRange): Response
     {
@@ -64,10 +57,9 @@ class PdfController extends Controller
         ]);
     }
 
-    private function errorResponse(string $message, \Exception $e)
+    private function handleException(\Exception $e, string $message)
     {
-        return response()->json([
-            'error' => $message . ': ' . $e->getMessage()
-        ], 500);
+        Log::error($message . ': ' . $e->getMessage());
+        return response()->json(['error' => $message], 500);
     }
 }

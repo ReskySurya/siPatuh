@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\hhmdsaved;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\View;
@@ -113,5 +112,6 @@ class HHMDFormController extends Controller
 
         return response()->json(['success' => true]);
     }
+
 
 }

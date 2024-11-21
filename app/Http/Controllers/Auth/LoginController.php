@@ -24,14 +24,26 @@ class LoginController extends Controller
             'password' => $request->input('password'),
         ];
 
-        if (Auth::guard('officer')->attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended('/officer/dashboard');
-        }
+        // Coba login untuk setiap guard secara spesifik
+        $guards = ['web', 'officer'];
 
-        if (Auth::guard('web')->attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended('/dashboard');
+        foreach ($guards as $guard) {
+            if (Auth::guard($guard)->attempt($credentials)) {
+                // Logout dari guard lain
+                foreach (array_diff($guards, [$guard]) as $otherGuard) {
+                    Auth::guard($otherGuard)->logout();
+                }
+
+                $request->session()->regenerate();
+
+                // Redirect berdasarkan guard
+                switch ($guard) {
+                    case 'officer':
+                        return redirect()->intended('/officer/dashboard');
+                    case 'web':
+                        return redirect()->intended('/dashboard');
+                }
+            }
         }
 
         return back()->withErrors([
@@ -39,18 +51,16 @@ class LoginController extends Controller
         ]);
     }
 
-     /**
-     * Handle user logout.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function logout(Request $request)
     {
-        Auth::logout();
+        // Logout dari semua guard
+        $guards = ['web', 'officer'];
+
+        foreach ($guards as $guard) {
+            Auth::guard($guard)->logout();
+        }
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         return redirect('/');

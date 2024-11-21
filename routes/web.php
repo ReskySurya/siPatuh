@@ -100,10 +100,9 @@ Route::middleware(['checkrole:superadmin,supervisor,officer'])->group(function (
 Route::get('/review/hhmd/{id}', [HHMDFormController::class, 'review'])->name('review.hhmd.reviewhhmd');
 Route::get('/pdf/{id}', [PdfController::class, 'generatePDF'])->name('pdf.hhmd');
 Route::post('/generate-merged-pdf', [PdfController::class, 'generateMergedPDF'])
-    ->name('generate.merged.pdf')
-    ->middleware('web');
+    ->name('generate.merged.pdf');
 Route::patch('/hhmd/update-status/{id}', [HHMDFormController::class, 'updateStatus'])->name('hhmd.updateStatus');
 
 Route::post('/hhmd/{id}/save-supervisor-signature', [HHMDFormController::class, 'saveSupervisorSignature'])->name('hhmd.saveSupervisorSignature');
 
-Route::get('/filter-hhmd-forms', [DashboardController::class, 'dateRange'])->name('filter.hhmd.forms');
+Route::post('/filter-hhmd-forms', [DashboardController::class, 'filterByDate'])->name('filter.hhmd.forms');

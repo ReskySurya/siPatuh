@@ -6,7 +6,8 @@
                 <h1 class="text-xl font-bold text-center flex-grow px-2">
                     CHECK LIST PENGUJIAN HARIAN<br>
                     PENDETEKSI LOGAM GENGGAM<br>
-                    (HAND HELD METAL DETECTOR/HHMD)
+                    (HAND HELD METAL DETECTOR/HHMD)<br>
+                    PADA KONDISI NORMAL (HIJAU)
                 </h1>
                 <img src="https://via.placeholder.com/80x80" alt="Additional Logo" class="w-20 h-20">
             </div>

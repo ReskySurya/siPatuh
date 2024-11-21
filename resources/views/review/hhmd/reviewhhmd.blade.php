@@ -13,7 +13,9 @@
                         <h1 class="text-xl font-bold text-center flex-grow px-2">
                             CHECK LIST PENGUJIAN HARIAN<br>
                             PENDETEKSI LOGAM GENGGAM<br>
-                            (HAND HELD METAL DETECTOR/HHMD)
+                            (HAND HELD METAL DETECTOR/HHMD)<br>
+                            PADA KONDISI NORMAL (HIJAU)
+
                         </h1>
                         <img src="https://via.placeholder.com/80x80" alt="Additional Logo" class="w-20 h-20">
                     </div>
@@ -28,7 +30,7 @@
                             </tr>
                             <tr class="border-b border-black">
                                 <th class="w-1/3 text-left p-2">Tanggal & Waktu Pengujian:</th>
-                                <td class="w-2/3 p-2">{{ $form->testDateTime }}</td>
+                                <td class="w-2/3 p-2">{{ date('d-m-Y H:i', strtotime($form->testDateTime)) }}</td>
                             </tr>
                             <tr class="border-b border-black">
                                 <th class="w-1/3 text-left p-2">Lokasi Penempatan:</th>
@@ -159,6 +161,20 @@
                     <option value="rejected">Tolak</option>
                 </select>
             </div>
+
+            <div id="rejectionNoteContainer" class="mb-4 hidden">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="rejection_note">
+                    Catatan Penolakan
+                </label>
+                <textarea
+                    name="rejection_note"
+                    id="rejection_note"
+                    rows="4"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    placeholder="Masukkan alasan penolakan..."
+                ></textarea>
+            </div>
+
             <div class="flex items-center justify-between">
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
                     Perbarui Status
@@ -172,6 +188,23 @@
 </div>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const statusSelect = document.getElementById('status');
+        const rejectionNoteContainer = document.getElementById('rejectionNoteContainer');
+        const rejectionNoteTextarea = document.getElementById('rejection_note');
+
+        statusSelect.addEventListener('change', function() {
+            if (this.value === 'rejected') {
+                rejectionNoteContainer.classList.remove('hidden');
+                // Tambahkan validasi bahwa catatan harus diisi
+                rejectionNoteTextarea.setAttribute('required', 'required');
+            } else {
+                rejectionNoteContainer.classList.add('hidden');
+                rejectionNoteTextarea.removeAttribute('required');
+            }
+        });
+    });
+
     document.addEventListener('DOMContentLoaded', function() {
         const canvas = document.getElementById('signatureCanvas');
         const ctx = canvas.getContext('2d');
