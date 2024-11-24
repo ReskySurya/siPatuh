@@ -64,7 +64,7 @@
                         </div>
                         <div class="border-x-2 border-t-2 border-black text-center items-center pt-10">
                             <div>
-                                <h2 class="font-bold mb-2">TEST 2</h2>
+                                <h2 class="font-bold mb-2">TEST 1</h2>
                                 <div class="w-20 h-20 mx-auto border-2 border-black flex items-center justify-center">
                                     <input type="checkbox" {{ $form->test2 ? 'checked' : '' }} disabled>
                                 </div>
@@ -112,6 +112,13 @@
                                     <label class="text-gray-700 font-normal">1. Airport Security Officer</label>
                                 </div>
                                 <div class="text-center self-end">
+                                    <h4 class="font-bold">
+                                        @if($supervisor)
+                                            {{ $supervisor->name }}
+                                        @else
+                                            Nama Supervisor tidak tersedia
+                                        @endif
+                                    </h4>
                                     <label class="text-gray-700 font-normal">2. Airport Security Supervisor</label>
                                 </div>
                             </div>

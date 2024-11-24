@@ -21,7 +21,7 @@ class PdfController extends Controller
     public function generatePDF($id)
     {
         try {
-            $form = hhmdsaved::findOrFail($id);
+            $form = hhmdsaved::with('supervisor')->findOrFail($id);
             return $this->pdfService->generateSinglePdf($form);
         } catch (\Exception $e) {
             return $this->handleException($e, 'Gagal menghasilkan PDF');

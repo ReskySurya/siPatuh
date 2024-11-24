@@ -75,26 +75,14 @@ Route::middleware(['checkrole:superadmin,supervisor,officer'])->group(function (
             Route::get('/pscp-selatan', [DailyTestController::class, 'wtmdPscpSelatan'])->name('pscp-selatan');
         });
 
-        // HHMD routes
-        Route::prefix('hhmd')->name('hhmd.')->group(function () {
-            Route::get('/hbscp', [DailyTestController::class, 'hhmdHbscp'])->name('hbscp');
-            Route::get('/pos-timur', [DailyTestController::class, 'hhmdPosTimur'])->name('pos-timur');
-            Route::get('/pos-barat', [DailyTestController::class, 'hhmdPosBarat'])->name('pos-barat');
-            Route::get('/pscp-utara', [DailyTestController::class, 'hhmdPscpUtara'])->name('pscp-utara');
-            Route::get('/pscp-selatan', [DailyTestController::class, 'hhmdPscpSelatan'])->name('pscp-selatan');
-            Route::get('/kedatangan', [DailyTestController::class, 'hhmdKedatangan'])->name('kedatangan');
-        });
+        // HHMD route
+        Route::get('/hhmd', [DailyTestController::class, 'hhmdLayout'])->name('hhmd');
     });
 
     Route::get('/officer-signature-image', [SignatureController::class, 'showOfficer'])->name('officer.signature.image');
     Route::get('/user-signature-image', [SignatureController::class, 'showUser'])->name('user.signature.image');
     // HHMD form submission routes
-    Route::post('/submit-hhmd-kedatangan', [HHMDFormController::class, 'store'])->name('submit.hhmd.kedatangan');
-    Route::post('/submit-hhmd-hbscp', [HHMDFormController::class, 'store'])->name('submit.hhmd.hbscp');
-    Route::post('/submit-hhmd-posbarat', [HHMDFormController::class, 'store'])->name('submit.hhmd.posbarat');
-    Route::post('/submit-hhmd-postimur', [HHMDFormController::class, 'store'])->name('submit.hhmd.postimur');
-    Route::post('/submit-hhmd-pscpselatan', [HHMDFormController::class, 'store'])->name('submit.hhmd.pscpselatan');
-    Route::post('/submit-hhmd-pscputara', [HHMDFormController::class, 'store'])->name('submit.hhmd.pscputara');
+    Route::post('/submit-hhmd', [HHMDFormController::class, 'store'])->name('submit.hhmd');
 });
 
 Route::get('/review/hhmd/{id}', [HHMDFormController::class, 'review'])->name('review.hhmd.reviewhhmd');
@@ -112,3 +100,42 @@ Route::middleware(['auth:officer'])->group(function () {
     Route::get('/officer/hhmd/{id}/edit', [HHMDFormController::class, 'edit'])->name('officer.hhmd.edit');
     Route::put('/officer/hhmd/{id}', [HHMDFormController::class, 'update'])->name('officer.hhmd.update');
 });
+
+Route::prefix('hhmdform')->group(function () {
+    Route::get('/hbscp', function () {
+        return view('partials.hbscp');
+    })->name('hbscp.index');
+    Route::get('/poskedatangan', function() {
+        return view('partials.kedatangan');
+    })->name('kedatangan.index');
+    Route::get('/postimur', function(){
+        return view('partials.postimur');
+    })->name('postimur.index');
+    Route::get('/posbarat', function(){
+        return view('partials.posbarat');
+    })->name('posbarat.index');
+    Route::get('/pscpselatan', function(){
+        return view('partials.pscpselatan');
+    })->name('pscpselatan.index');
+    Route::get('/pscputara', function(){
+        return view('partials.pscputara');
+    })->name('pscputara.index');
+});
+
+Route::get('/hhmdform/kedatangan', [DashboardController::class, 'kedatangan_formCard'])->name('kedatangan.index');
+Route::post('/hhmdform/kedatangan/filter', [DashboardController::class, 'filterKedatangan_FormCardByDate'])->name('filter.kedatangan.forms');
+
+Route::get('/hhmdform/hbscp', [DashboardController::class, 'hbscp_formCard'])->name('hbscp.index');
+Route::post('/hhmdform/hbscp/filter', [DashboardController::class, 'filterhbscp_FormCardByDate'])->name('filter.hbscp.forms');
+
+Route::get('/hhmdform/postimur', [DashboardController::class, 'postimur_formCard'])->name('postimur.index');
+Route::post('/hhmdform/postimur/filter', [DashboardController::class, 'filterpostimur_FormCardByDate'])->name('filter.postimur.forms');
+
+Route::get('/hhmdform/posbarat', [DashboardController::class, 'posbarat_formCard'])->name('posbarat.index');
+Route::post('/hhmdform/posbarat/filter', [DashboardController::class, 'filterposbarat_FormCardByDate'])->name('filter.posbarat.forms');
+
+Route::get('/hhmdform/pscputara', [DashboardController::class, 'pscputara_formCard'])->name('pscputara.index');
+Route::post('/hhmdform/pscputara/filter', [DashboardController::class, 'filterpscputara_FormCardByDate'])->name('filter.pscputara.forms');
+
+Route::get('/hhmdform/pscpselatan', [DashboardController::class, 'pscpselatan_formCard'])->name('pscpselatan.index');
+Route::post('/hhmdform/pscpselatan/filter', [DashboardController::class, 'filterpscpselatan_FormCardByDate'])->name('filter.pscpselatan.forms');

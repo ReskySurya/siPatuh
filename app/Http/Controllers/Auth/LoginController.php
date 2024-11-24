@@ -24,26 +24,30 @@ class LoginController extends Controller
             'password' => $request->input('password'),
         ];
 
-        // Coba login untuk setiap guard secara spesifik
-        $guards = ['web', 'officer'];
+        // Coba login untuk setiap guard
+        if (Auth::guard('web')->attempt($credentials)) {
+            $user = Auth::guard('web')->user();
 
-        foreach ($guards as $guard) {
-            if (Auth::guard($guard)->attempt($credentials)) {
-                // Logout dari guard lain
-                foreach (array_diff($guards, [$guard]) as $otherGuard) {
-                    Auth::guard($otherGuard)->logout();
-                }
-
-                $request->session()->regenerate();
-
-                // Redirect berdasarkan guard
-                switch ($guard) {
-                    case 'officer':
-                        return redirect()->intended('/officer/dashboard');
-                    case 'web':
-                        return redirect()->intended('/dashboard');
-                }
+            // Cek role user
+            switch ($user->role) {
+                case 'superadmin':
+                    $request->session()->regenerate();
+                    return redirect()->intended('/dashboard');
+                case 'supervisor':
+                    $request->session()->regenerate();
+                    return redirect()->intended('/dashboard');
+                default:
+                    Auth::guard('web')->logout();
+                    return back()->withErrors([
+                        'login' => 'Anda tidak memiliki akses yang sesuai.',
+                    ]);
             }
+        }
+
+        // Coba login untuk officer
+        if (Auth::guard('officer')->attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended('/officer/dashboard');
         }
 
         return back()->withErrors([
@@ -53,11 +57,12 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        // Logout dari semua guard
-        $guards = ['web', 'officer'];
-
-        foreach ($guards as $guard) {
-            Auth::guard($guard)->logout();
+        // Logout hanya dari guard yang aktif
+        if (Auth::guard('web')->check()) {
+            Auth::guard('web')->logout();
+        }
+        if (Auth::guard('officer')->check()) {
+            Auth::guard('officer')->logout();
         }
 
         $request->session()->invalidate();

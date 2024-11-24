@@ -30,6 +30,9 @@
                         </svg>
                     </div>
                     <h2 class="text-xl font-bold text-gray-800 mb-2">Formulir HHMD</h2>
+                    @if(Auth::user()->role == 'supervisor')
+                        <p class="text-sm text-gray-600 mb-2">Form yang perlu Anda review</p>
+                    @endif
                     <span class="text-blue-500 hover:text-blue-700 font-medium">Lihat Formulir →</span>
                 </div>
             </div>

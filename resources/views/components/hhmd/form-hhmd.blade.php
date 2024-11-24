@@ -13,7 +13,7 @@
             </div>
         </div>
 
-        <form id="hhmdForm" action="{{ route('submit.hhmd.pscputara') }}" method="POST" enctype="multipart/form-data" onsubmit="onFormSubmit(event)" class="mt-0">
+        <form id="hhmdForm" action="{{ route('submit.hhmd') }}" method="POST" enctype="multipart/form-data" onsubmit="onFormSubmit(event)" class="mt-0">
             @csrf
             <div class="border-2 border-black bg-white shadow">
                 <table class="w-full text-sm">
@@ -39,7 +39,15 @@
                                 <label for="location" class="text-gray-700 font-bold">Lokasi Penempatan:</label>
                             </th>
                             <td class="w-2/3 p-2">
-                                <input type="text" id="location" name="location" class="w-full border rounded px-2 py-1">
+                                <select id="location" name="location" class="w-full border rounded px-2 py-1">
+                                    <option value="">Pilih Lokasi</option>
+                                    <option value="HBSCP">HBSCP</option>
+                                    <option value="Pos Timur">Pos Timur</option>
+                                    <option value="Pos Barat">Pos Barat</option>
+                                    <option value="PSCP Utara">PSCP Utara</option>
+                                    <option value="PSCP Selatan">PSCP Selatan</option>
+                                    <option value="Pos Kedatangan">Pos Kedatangan</option>
+                                </select>
                             </td>
                         </tr>
                         <tr class="border-b border-black">
@@ -76,7 +84,6 @@
                             </label>
                         </div>
                     </div>
-
                     <div class="border-x-2 border-t-2 border-black text-center items-center pt-10">
                         <div>
                             <h2 class="font-bold mb-2">TEST 1</h2>
@@ -85,8 +92,6 @@
                             </div>
                         </div>
                     </div>
-
-
                     <div class="border-x-2 border-black pt-10 pb-10">
                         <div class="flex items-center mb-0 pl-4">
                             <input type="checkbox" id="testCondition1" name="testCondition1" class="form-checkbox" value="1" checked>
@@ -134,6 +139,7 @@
                                         {{ Auth::user()->name }}
                                     @endif
                                 </h4>
+                                <input type="hidden" name="officerName" value="{{ Auth::guard('officer')->check() ? Auth::guard('officer')->user()->name : Auth::user()->name }}">
                                 <label for="securityOfficerSignature" class="text-gray-700 font-normal">1. Airport Security Officer</label>
                             </div>
                             <div class="text-center self-end">
@@ -157,11 +163,22 @@
 
             <input type="hidden" name="status" value="pending_supervisor">
 
-            <div class="mt-4 flex items-center justify-between">
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">
-                    Submit to Approver
-                </button>
-                <a href="#" class="text-blue-500 hover:text-blue-700">Browser PDF</a>
+            <div class="mt-4">
+                <div class="mb-4">
+                    <label for="supervisor_id" class="block text-gray-700 font-bold mb-2">Pilih Supervisor:</label>
+                    <select name="supervisor_id" id="supervisor_id" class="w-full border rounded px-2 py-1" required>
+                        <option value="">Pilih Supervisor</option>
+                        @foreach(\App\Models\User::where('role', 'supervisor')->get() as $supervisor)
+                            <option value="{{ $supervisor->id }}">{{ $supervisor->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">
+                        Submit to Approver
+                    </button>
+                </div>
             </div>
         </form>
     </div>

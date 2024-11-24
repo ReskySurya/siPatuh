@@ -7,6 +7,8 @@ use App\Models\hhmdsaved;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\View;
+use App\Models\User;
+
 class HHMDFormController extends Controller
 {
 
@@ -30,6 +32,7 @@ class HHMDFormController extends Controller
             'status' => 'required|in:pending_supervisor,approved,rejected',
             'officer_signature' => 'nullable|string',
             'supervisor_signature' => 'nullable|string',
+            'supervisor_id' => 'required|exists:users,id,role,supervisor',
         ]);
 
         // Ubah nilai checkbox menjadi boolean
@@ -61,9 +64,11 @@ class HHMDFormController extends Controller
             return redirect()->back()->with('error', 'Anda harus login untuk mengirimkan formulir ini.');
         }
 
+        $hhmdsave->supervisor_id = $validatedData['supervisor_id'];
+
         try {
             $hhmdsave->save();
-            return redirect()->route('officer.dashboard')->with('success', 'HHMD data berhasil disimpan.');
+            return redirect()->route('officer.dashboard')->with('success', 'HHMD data berhasil disimpan dan menunggu persetujuan supervisor.');
         } catch (\Exception $e) {
             Log::error('Error saving HHMD data: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.');
@@ -74,7 +79,9 @@ class HHMDFormController extends Controller
     public function review($id)
     {
         $form = hhmdsaved::findOrFail($id);
-        return view('review.hhmd.reviewhhmd', compact('form'));
+        $supervisor = User::find($form->supervisor_id);
+
+        return view('review.hhmd.reviewhhmd', compact('form', 'supervisor'));
     }
 
     public function updateStatus(Request $request, $id)
@@ -85,7 +92,7 @@ class HHMDFormController extends Controller
         $request->validate([
             'status' => 'required|in:pending_supervisor,approved,rejected',
             'rejection_note' => 'required_if:status,rejected|nullable|string',
-            'supervisor_signature_data' => 'required_if:status,approved|nullable|string',
+            'supervisor_signature_data' => 'nullable|string',
         ]);
 
         // Update status dan data review
@@ -98,10 +105,13 @@ class HHMDFormController extends Controller
             $form->rejection_note = $request->rejection_note;
         }
 
-        // Jika disetujui, simpan tanda tangan supervisor
-        if ($request->status === 'approved' && $request->has('supervisor_signature_data')) {
-            $form->supervisor_signature = $request->supervisor_signature_data;
+        // Jika disetujui
+        if ($request->status === 'approved') {
             $form->supervisorName = Auth::user()->name;
+            // Simpan tanda tangan supervisor jika ada
+            if ($request->has('supervisor_signature_data')) {
+                $form->supervisor_signature = $request->supervisor_signature_data;
+            }
         }
 
         try {
@@ -109,7 +119,7 @@ class HHMDFormController extends Controller
 
             $message = $request->status === 'rejected'
                 ? 'Form ditolak dan catatan telah disimpan.'
-                : 'Status berhasil diperbarui!';
+                : 'Form berhasil disetujui!';
 
             return redirect()->route('dashboard')->with('success', $message);
         } catch (\Exception $e) {
@@ -148,7 +158,7 @@ class HHMDFormController extends Controller
                            ->with('error', 'Anda tidak memiliki akses ke form ini');
         }
 
-        return view('officer.hhmd.edit', compact('form'));
+        return view('officer.edit', compact('form'));
     }
 
     public function update(Request $request, $id)
@@ -161,7 +171,7 @@ class HHMDFormController extends Controller
                            ->with('error', 'Anda tidak memiliki akses ke form ini');
         }
 
-        // Gunakan validasi yang sama seperti store
+        // Validasi tanpa status
         $validatedData = $request->validate([
             'operatorName' => 'required|string',
             'testDateTime' => 'required|date',
@@ -175,12 +185,19 @@ class HHMDFormController extends Controller
             'testCondition2' => 'boolean',
             'result' => 'required|in:pass,fail',
             'notes' => 'nullable|string',
-            'status' => 'required|in:pending_supervisor,approved,rejected',
-            'officer_signature' => 'nullable|string',
-            'supervisor_signature' => 'nullable|string',
         ]);
 
         try {
+            // Ubah nilai checkbox menjadi boolean
+            $validatedData['terpenuhi'] = $request->has('terpenuhi');
+            $validatedData['tidakterpenuhi'] = $request->has('tidakterpenuhi');
+            $validatedData['test2'] = $request->has('test2');
+            $validatedData['testCondition1'] = $request->has('testCondition1');
+            $validatedData['testCondition2'] = $request->has('testCondition2');
+
+            // Set status ke pending_supervisor
+            $validatedData['status'] = 'pending_supervisor';
+
             $form->update($validatedData);
             $form->status = 'pending_supervisor'; // Reset status ke pending
             $form->save();

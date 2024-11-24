@@ -240,7 +240,7 @@
                 </div>
                 <div class="mb-4">
                     <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password:</label>
-                    <input type="password" id="password" name="password" required
+                    <input type="password" id="password" name="password" required minlength="8"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
                 <div class="mb-4">
@@ -251,12 +251,12 @@
                         <option value="supervisor">SuperVisor</option>
                     </select>
                 </div>
-                <div class="mb-4">
+                {{-- <div class="mb-4">
                     <label for="image_signature" class="block text-gray-700 text-sm font-bold mb-2">Tanda
                         Tangan:</label>
                     <input type="file" id="image_signature" name="image_signature" accept="image/*"
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
+                </div> --}}
                 <button type="submit"
                     class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Simpan</button>
             </form>
@@ -291,7 +291,7 @@
             </div>
             <div class="mb-4">
                 <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password:</label>
-                <input type="password" id="password" name="password" required
+                <input type="password" id="password" name="password" required minlength="8"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
             <div class="mb-4">
@@ -301,12 +301,12 @@
                     <option value="officer">Officer</option>
                 </select>
             </div>
-            <div class="mb-4">
+            {{-- <div class="mb-4">
                 <label for="image_signature" class="block text-gray-700 text-sm font-bold mb-2">Tanda
                     Tangan:</label>
                 <input type="file" id="image_signature" name="image_signature" accept="image/*"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            </div>
+            </div> --}}
             <button type="submit"
                 class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Simpan</button>
         </form>
@@ -346,12 +346,12 @@
                     <option value="officer">Officer</option>
                 </select>
             </div>
-            <div class="mb-4">
+            {{-- <div class="mb-4">
                 <label for="edit_image_signature" class="block text-gray-700 text-sm font-bold mb-2">Tanda
                     Tangan:</label>
                 <input type="file" id="edit_image_signature" name="image_signature" accept="image/*"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            </div>
+            </div> --}}
             <button type="submit" id="submitEditOfficer"
                 class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Simpan
                 Perubahan</button>
@@ -387,12 +387,12 @@
                     <option value="supervisor">SuperVisor</option>
                 </select>
             </div>
-            <div class="mb-4">
+            {{-- <div class="mb-4">
                 <label for="edit_user_image_signature" class="block text-gray-700 text-sm font-bold mb-2">Tanda
                     Tangan:</label>
                 <input type="file" id="edit_user_image_signature" name="image_signature" accept="image/*"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            </div>
+            </div> --}}
             <button type="submit" id="submitEditUser"
                 class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Simpan
                 Perubahan</button>

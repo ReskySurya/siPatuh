@@ -8,7 +8,7 @@ class MergePdfRequest extends FormRequest
 {
     public function authorize()
     {
-        return true; // atau sesuaikan dengan logic authorization Anda
+        return true; // Pastikan untuk mengatur ini sesuai kebutuhan otorisasi Anda
     }
 
     public function rules()

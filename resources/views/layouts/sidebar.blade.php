@@ -114,21 +114,10 @@ class="relative h-screen">
                                 </ul>
                             </li>
 
-                            <li x-data="{ openHHMD: false }">
-                                <button @click="openHHMD = !openHHMD" class="flex items-center justify-between w-full py-2 px-4 rounded hover:bg-[#3A87BD]">
+                            <li>
+                                <a href="{{ route('daily-test.hhmd') }}" class="flex items-center py-2 px-4 rounded hover:bg-[#3A87BD]">
                                     <span>HHMD</span>
-                                    <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': openHHMD }" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                                <ul x-show="openHHMD" class="pl-4 space-y-2 mt-2">
-                                    <li><a href ="{{ route('daily-test.hhmd.hbscp') }}" class="block py-2 px-4 rounded hover:bg-[#3A87BD]">HHMD HBSCP</a></li>
-                                    <li><a href="{{ route('daily-test.hhmd.pos-timur') }}" class="block py-2 px-4 rounded hover:bg-[#3A87BD]">HHMD Pos Timur</a></li>
-                                    <li><a href="{{ route('daily-test.hhmd.pos-barat') }}" class="block py-2 px-4 rounded hover:bg-[#3A87BD]">HHMD Pos Barat</a></li>
-                                    <li><a href="{{ route('daily-test.hhmd.pscp-utara') }}" class="block py-2 px-4 rounded hover:bg-[#3A87BD]">HHMD PSCP Utara</a></li>
-                                    <li><a href="{{ route('daily-test.hhmd.pscp-selatan') }}" class="block py-2 px-4 rounded hover:bg-[#3A87BD]">HHMD PSCP Selatan</a></li>
-                                    <li><a href="{{ route('daily-test.hhmd.kedatangan') }}" class="block py-2 px-4 rounded hover:bg-[#3A87BD]">HHMD Kedatangan</a></li>
-                                </ul>
+                                </a>
                             </li>
                         </ul>
                     </li>

@@ -7,7 +7,7 @@
 
 <div class="bg-gray-100 px-64">
     <div>
-        <x-form-hhmd form-type="postimur"/>
+        <x-form-hhmd/>
     </div>
 
     @if ($errors->any())

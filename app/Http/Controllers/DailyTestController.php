@@ -41,33 +41,9 @@ class DailyTestController extends Controller
         return view('daily-test.wtmd.wtmdpscpselatan');
     }
 
-    public function hhmdHbscp()
+    public function hhmdLayout()
     {
-        return view('daily-test.hhmd.hhmdhbscp');
+        return view('daily-test.hhmd');
     }
 
-    public function hhmdPosTimur()
-    {
-        return view('daily-test.hhmd.hhmdpostimur');
-    }
-
-    public function hhmdPosBarat()
-    {
-        return view('daily-test.hhmd.hhmdposbarat');
-    }
-
-    public function hhmdPscpUtara()
-    {
-        return view('daily-test.hhmd.hhmdpscputara');
-    }
-
-    public function hhmdPscpSelatan()
-    {
-        return view('daily-test.hhmd.hhmdpscpselatan');
-    }
-
-    public function hhmdKedatangan()
-    {
-        return view('daily-test.hhmd.hhmdkedatangan');
-    }
 }

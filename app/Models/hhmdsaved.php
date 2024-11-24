@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class HHMDSaved extends Model
+class hhmdsaved extends Model
 {
     use HasFactory;
 
@@ -32,7 +32,8 @@ class HHMDSaved extends Model
         'supervisor_signature',
         'rejection_note',
         'reviewed_at',
-        'reviewed_by'
+        'reviewed_by',
+        'supervisor_id'
     ];
 
     protected $casts = [
@@ -68,5 +69,10 @@ class HHMDSaved extends Model
     public function isApproved()
     {
         return $this->status === 'approved';
+    }
+
+    public function supervisor()
+    {
+        return $this->belongsTo(User::class, 'supervisor_id');
     }
 }

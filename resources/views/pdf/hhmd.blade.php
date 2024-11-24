@@ -82,7 +82,7 @@
                             <th class="w-1/3 text-left p-2">Nama Operator Penerbangan:</th>
                             <td class="w-2/3 p-2">{{ $form->operatorName }}</td>
                         </tr>
-                        <tr class="border-b border-black">  
+                        <tr class="border-b border-black">
                             <th class="w-1/3 text-left p-2">Tanggal & Waktu Pengujian:</th>
                             <td class="w-2/3 p-2">{{ date('d-m-Y H:i', strtotime($form->testDateTime)) }}</td>
                         </tr>
@@ -166,6 +166,13 @@
                                 <label class="text-gray-700 font-normal">1. Airport Security Officer</label>
                             </div>
                             <div class="text-center self-end">
+                                <h4 class="font-bold">
+                                    @if($form->supervisor)
+                                        {{ $form->supervisor->name }}
+                                    @else
+                                        Nama Supervisor tidak tersedia
+                                    @endif
+                                </h4>
                                 <label class="text-gray-700 font-normal">2. Airport Security Supervisor</label>
                             </div>
                         </div>
