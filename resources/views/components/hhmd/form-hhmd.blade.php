@@ -1,45 +1,45 @@
-<div class="bg-white p-4" style="width: 210mm; min-height: 297mm;">
-    <div id="format" class="mx-auto">
+<div class="bg-white p-4 w-full max-w-full">
+    <div id="format" class="mx-auto w-full">
         <div class="border-t-2 border-x-2 border-black bg-white shadow-md p-4">
-            <div class="flex items-center justify-between">
-                <img src="{{ asset('images/airport-security-logo.png') }}" alt="Logo" class="w-20 h-20">
-                <h1 class="text-xl font-bold text-center flex-grow px-2">
+            <div class="flex flex-col sm:flex-row items-center justify-between">
+                <img src="{{ asset('images/airport-security-logo.png') }}" alt="Logo" class="w-20 h-20 mb-2 sm:mb-0">
+                <h1 class="text-sm sm:text-xl font-bold text-center flex-grow px-2">
                     CHECK LIST PENGUJIAN HARIAN<br>
                     PENDETEKSI LOGAM GENGGAM<br>
                     (HAND HELD METAL DETECTOR/HHMD)<br>
                     PADA KONDISI NORMAL (HIJAU)
                 </h1>
-                <img src="https://via.placeholder.com/80x80" alt="Additional Logo" class="w-20 h-20">
+                <img src="https://via.placeholder.com/80x80" alt="Additional Logo" class="w-20 h-20 mt-2 sm:mt-0">
             </div>
         </div>
 
         <form id="hhmdForm" action="{{ route('submit.hhmd') }}" method="POST" enctype="multipart/form-data" onsubmit="onFormSubmit(event)" class="mt-0">
             @csrf
             <div class="border-2 border-black bg-white shadow">
-                <table class="w-full text-sm">
+                <table class="w-full text-xs sm:text-sm">
                     <tbody>
                         <tr class="border-b border-black">
-                            <th class="w-1/3 text-left p-2">
+                            <th class="w-1/3 text-left p-1 sm:p-2">
                                 <label for="operatorName" class="text-gray-700 font-bold">Nama Operator Penerbangan:</label>
                             </th>
                             <td class="w-2/3 p-2">
-                                <input type="text" id="operatorName" name="operatorName" class="w-full border rounded px-2 py-1" value="Bandar Udara Adisutjipto Yogyakarta" readonly>
+                                <input type="text" id="operatorName" name="operatorName" class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base" value="Bandar Udara Adisutjipto Yogyakarta" readonly>
                             </td>
                         </tr>
                         <tr class="border-b border-black">
-                            <th class="w-1/3 text-left p-2">
+                            <th class="w-1/3 text-left p-1 sm:p-2">
                                 <label for="testDateTime" class="text-gray-700 font-bold">Tanggal & Waktu Pengujian:</label>
                             </th>
                             <td class="w-2/3 p-2">
-                                <input type="datetime-local" id="testDateTime" name="testDateTime" class="w-full border rounded px-2 py-1" readonly>
+                                <input type="datetime-local" id="testDateTime" name="testDateTime" class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base" readonly>
                             </td>
                         </tr>
                         <tr class="border-b border-black">
-                            <th class="w-1/3 text-left p-2">
+                            <th class="w-1/3 text-left p-1 sm:p-2">
                                 <label for="location" class="text-gray-700 font-bold">Lokasi Penempatan:</label>
                             </th>
                             <td class="w-2/3 p-2">
-                                <select id="location" name="location" class="w-full border rounded px-2 py-1">
+                                <select id="location" name="location" class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base">
                                     <option value="">Pilih Lokasi</option>
                                     <option value="HBSCP">HBSCP</option>
                                     <option value="Pos Timur">Pos Timur</option>
@@ -51,19 +51,19 @@
                             </td>
                         </tr>
                         <tr class="border-b border-black">
-                            <th class="w-1/3 text-left p-2">
+                            <th class="w-1/3 text-left p-1 sm:p-2">
                                 <label for="deviceInfo" class="text-gray-700 font-bold">Merk/Tipe/Nomor Seri:</label>
                             </th>
                             <td class="w-2/3 p-2">
-                                <input type="text" id="deviceInfo" name="deviceInfo" class="w-full border rounded px-2 py-1">
+                                <input type="text" id="deviceInfo" name="deviceInfo" class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base">
                             </td>
                         </tr>
                         <tr class="border-b border-black">
-                            <th class="w-1/3 text-left p-2">
+                            <th class="w-1/3 text-left p-1 sm:p-2">
                                 <label for="certificateInfo" class="text-gray-700 font-bold">Nomor dan Tanggal Sertifikat:</label>
                             </th>
                             <td class="w-2/3 p-2">
-                                <input type="text" id="certificateInfo" name="certificateInfo" class="w-full border rounded px-2 py-1">
+                                <input type="text" id="certificateInfo" name="certificateInfo" class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base">
                             </td>
                         </tr>
                     </tbody>
@@ -120,16 +120,16 @@
                     </div>
                     <div>
                         <label for="notes" class="block text-gray-700 font-bold mb-2">CATATAN:</label>
-                        <textarea id="notes" name="notes" class="w-full border rounded px-2 py-1" rows="2"></textarea>
+                        <textarea id="notes" name="notes" class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base" rows="2"></textarea>
                     </div>
                 </div>
 
                 <input type="hidden" id="result" name="result" value="">
 
-                <div class="border-t-2 border-black p-4">
-                    <h3 class="text-sm font-bold mb-2">Personel Pengamanan Penerbangan</h3>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="grid grid-rows-2 gap-2 items-center">
+                <div class="border-t-2 border-black p-2 sm:p-4">
+                    <h3 class="text-xs sm:text-sm font-bold mb-2">Personel Pengamanan Penerbangan</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
+                        <div class="grid grid-rows-2 gap-1 sm:gap-2 items-center text-center">
                             <!-- Kolom Kiri (Label 1) -->
                             <div class="text-center self-end">
                                 <h4 class="font-bold">
@@ -148,11 +148,11 @@
                         </div>
                         <div>
                             <!-- Kolom Kanan (Canvas dan Tombol Clear) -->
-                            <div class="flex flex-col items-start">
-                                <canvas class="border border-black rounded-md" id="signatureCanvas" width="200" height="100"></canvas>
-                                <div class="mt-2 flex items-start">
-                                    <button type="button" id="clearSignature" class="bg-slate-200 border border-black text-black px-4 py-2 rounded w-20">Clear</button>
-                                    <button type="button" id="saveOfficerSignature" class="bg-slate-200 border border-black text-black px-4 py-2 rounded ml-2 w-20">Save</button>
+                            <div>
+                                <canvas class="border border-black rounded-md w-full" id="signatureCanvas" width="300" height="150"></canvas>
+                                <div class="mt-2 flex justify-start space-x-2">
+                                    <button type="button" id="clearSignature" class="bg-slate-200 border border-black text-black px-2 py-1 sm:px-4 sm:py-2 rounded text-xs sm:text-base">Clear</button>
+                                    <button type="button" id="saveOfficerSignature" class="bg-slate-200 border border-black text-black px-2 py-1 sm:px-4 sm:py-2 rounded text-xs sm:text-base">Save</button>
                                 </div>
                                 <input type="hidden" name="officer_signature_data" id="officerSignatureData">
                             </div>
@@ -163,10 +163,10 @@
 
             <input type="hidden" name="status" value="pending_supervisor">
 
-            <div class="mt-4">
-                <div class="mb-4">
-                    <label for="supervisor_id" class="block text-gray-700 font-bold mb-2">Pilih Supervisor:</label>
-                    <select name="supervisor_id" id="supervisor_id" class="w-full border rounded px-2 py-1" required>
+            <div class="mt-2 sm:mt-4 px-2 sm:px-0">
+                <div class="mb-2 sm:mb-4">
+                    <label for="supervisor_id" class="block text-gray-700 font-bold text-xs sm:text-base mb-1 sm:mb-2">Pilih Supervisor:</label>
+                    <select name="supervisor_id" id="supervisor_id" class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base" required>
                         <option value="">Pilih Supervisor</option>
                         @foreach(\App\Models\User::where('role', 'supervisor')->get() as $supervisor)
                             <option value="{{ $supervisor->id }}">{{ $supervisor->name }}</option>
@@ -175,7 +175,7 @@
                 </div>
 
                 <div class="flex items-center justify-between">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-2 py-1 sm:px-4 sm:py-2 rounded text-xs sm:text-base" type="submit">
                         Submit to Approver
                     </button>
                 </div>

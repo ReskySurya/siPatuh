@@ -5,7 +5,7 @@
 @endif
 
 
-<div class="bg-gray-100 px-64">
+<div class="bg-white-100 px-4 sm:px-8 md:px-16 lg:px-32 xl:px-64">
     <div>
         <x-form-hhmd/>
     </div>
@@ -20,6 +20,8 @@
     </div>
     @endif
 </div>
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Get the current date and time
@@ -78,37 +80,51 @@
         const canvas = document.getElementById('signatureCanvas');
         const ctx = canvas.getContext('2d');
         let isDrawing = false;
-        let lastX = 0; // Menyimpan posisi X terakhir
-        let lastY = 0; // Menyimpan posisi Y terakhir
+        let lastX = 0;
+        let lastY = 0;
 
-        canvas.addEventListener('mousedown', startDrawing);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('mouseup', stopDrawing);
-        canvas.addEventListener('mouseout', stopDrawing);
+        // Fungsi untuk mendapatkan koordinat sentuhan atau mouse
+        function getCoordinates(e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
 
-        document.getElementById('clearSignature').addEventListener('click', clearCanvas);
-        document.getElementById('saveOfficerSignature').addEventListener('click', saveOfficerSignature);
+            let x, y;
+            if (e.touches) {
+                x = (e.touches[0].clientX - rect.left) * scaleX;
+                y = (e.touches[0].clientY - rect.top) * scaleY;
+            } else {
+                x = (e.offsetX || e.layerX) * scaleX;
+                y = (e.offsetY || e.layerY) * scaleY;
+            }
+            return [x, y];
+        }
 
         function startDrawing(e) {
+            e.preventDefault(); // Mencegah scrolling atau zoom saat menggambar
             isDrawing = true;
-            [lastX, lastY] = [e.offsetX, e.offsetY]; // Menggunakan offsetX dan offsetY
-            draw(e);
+            [lastX, lastY] = getCoordinates(e);
         }
 
         function draw(e) {
             if (!isDrawing) return;
+            e.preventDefault(); // Mencegah scrolling atau zoom saat menggambar
+
             ctx.lineWidth = 2;
             ctx.lineCap = 'round';
             ctx.strokeStyle = '#000';
 
+            const [x, y] = getCoordinates(e);
+
             ctx.beginPath();
-            ctx.moveTo(lastX, lastY); // Menggunakan posisi terakhir
-            ctx.lineTo(e.offsetX, e.offsetY); // Menggunakan offsetX dan offsetY
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(x, y);
             ctx.stroke();
-            [lastX, lastY] = [e.offsetX, e.offsetY]; // Memperbarui posisi terakhir
+
+            [lastX, lastY] = [x, y];
         }
 
-        function stopDrawing() {
+        function stopDrawing(e) {
             isDrawing = false;
             ctx.beginPath();
         }
@@ -118,11 +134,24 @@
         }
 
         function saveOfficerSignature() {
-        const officerSignatureData = canvas.toDataURL('image/png');
-        document.getElementById('officerSignatureData').value = officerSignatureData;
-        alert('Tanda tangan Officer disimpan!');
+            const officerSignatureData = canvas.toDataURL('image/png');
+            document.getElementById('officerSignatureData').value = officerSignatureData;
+            alert('Tanda tangan Officer disimpan!');
         }
 
+        // Event listeners untuk mouse
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+
+        // Event listeners untuk sentuhan mobile
+        canvas.addEventListener('touchstart', startDrawing, { passive: false });
+        canvas.addEventListener('touchmove', draw, { passive: false });
+        canvas.addEventListener('touchend', stopDrawing);
+
+        document.getElementById('clearSignature').addEventListener('click', clearCanvas);
+        document.getElementById('saveOfficerSignature').addEventListener('click', saveOfficerSignature);
     });
 
 </script>

@@ -31,16 +31,13 @@ class MasterDataController extends Controller
         $user->email = $validatedData['email'];
         $user->password = bcrypt($validatedData['password']);
         $user->role = $validatedData['role'];
-
         if ($request->hasFile('image_signature')) {
             $image = $request->file('image_signature');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('signatures'), $imageName);
             $user->image_signature = 'signatures/' . $imageName;
         }
-
         $user->save();
-
         return redirect()->route('masterdata.index')->with('success', 'User baru berhasil ditambahkan');
     }
 

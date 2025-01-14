@@ -18,12 +18,10 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $loginField = filter_var($request->input('login'), FILTER_VALIDATE_EMAIL) ? 'email' : 'nip';
-
         $credentials = [
             $loginField => $request->input('login'),
             'password' => $request->input('password'),
         ];
-
         // Coba login untuk setiap guard
         if (Auth::guard('web')->attempt($credentials)) {
             $user = Auth::guard('web')->user();
@@ -43,13 +41,11 @@ class LoginController extends Controller
                     ]);
             }
         }
-
         // Coba login untuk officer
         if (Auth::guard('officer')->attempt($credentials)) {
             $request->session()->regenerate();
             return redirect()->intended('/officer/dashboard');
         }
-
         return back()->withErrors([
             'login' => 'Kredensial yang diberikan tidak cocok dengan catatan kami.',
         ]);
