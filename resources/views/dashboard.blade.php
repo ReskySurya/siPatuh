@@ -38,7 +38,7 @@
             </div>
 
             <!-- WTMD Form Card -->
-            <div onclick="window.location.href='{{ route('wtmd.index') }}'"
+            <div onclick="window.location.href='{{ route('wtmdform') }}'"
                  class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer border border-gray-100 relative">
                 @if($pendingWtmdForms->count() > 0)
                     <div class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shadow-md">
@@ -57,7 +57,7 @@
             </div>
 
             <!-- Xray Form Card -->
-            <div onclick="window.location.href='{{ route('xray.index') }}'"
+            <div onclick="window.location.href='{{ route('xrayform') }}'"
                  class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer border border-gray-100 relative">
                 @if($pendingXrayForms->count() > 0)
                     <div class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shadow-md">

@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="bg-white shadow-md w-fit rounded px-8 pt-6 pb-8 mb-4">
-        <h1 class="text-2xl font-bold mb-4">Edit Formulir HHMD</h1>
+<div class="container mx-auto px-1 py-8">
+    <div class="bg-white shadow-md w-fit rounded pt-6 pb-8 mb-4">
+        <h1 class="text-2xl font-bold pl-6">Edit Formulir HHMD</h1>
 
         @if (session('status'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
@@ -25,9 +25,9 @@
             @csrf
             @method('PUT')
 
-            <div class="bg-white p-4" style="width: 210mm; min-height: 297mm;">
+            <div class="bg-white p-4"
                 <div id="format" class="mx-auto">
-                    <div class="border-t-2 border-x-2 border-black bg-white shadow-md p-4">
+                    <div class="border-t-2 border-x-2 border-black bg-white shadow-md">
                         <div class="flex items-center justify-between">
                             <img src="{{ asset('images/airport-security-logo.png') }}" alt="Logo" class="w-20 h-20">
                             <h1 class="text-xl font-bold text-center flex-grow px-2">

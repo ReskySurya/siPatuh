@@ -1,68 +1,90 @@
 @extends('layouts.app')
 @section('content')
 
-<div class="container mx-auto px-4 py-2 sm:py-8">
+<div class="container mx-auto p-0 py-2 sm:py-8">
     <div class="bg-white shadow-md rounded-lg">
         <!-- Header Section -->
-        <div class="border-b border-gray-200 p-4 sm:p-6">
-            <div class="flex flex-col sm:flex-row justify-between items-center mb-4 sm:mb-6 space-y-4 sm:space-y-0">
-                <h1 class="text-xl sm:text-2xl font-bold text-gray-800 w-full sm:w-auto text-center sm:text-left">
-                    {{ __('Formulir HHMD') }}
+        <div class="border-b border-gray-200 p-2 sm:p-4 md:p-6">
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-3 sm:mb-4 md:mb-6 space-y-2 sm:space-y-0">
+                <h1 class="text-base sm:text-xl md:text-2xl font-bold text-gray-800 w-full sm:w-auto text-center sm:text-left">
+                    {{ __('Formulir HHMD POS HBSCP') }}
                 </h1>
 
-                <!-- Filter Button (Responsive) -->
-                <div class="relative w-full sm:w-auto" x-data="{ isOpen: false }">
+                <!-- Button group dengan penyesuaian ukuran -->
+                <div class="flex flex-col space-y-2 w-full sm:w-auto sm:flex-row sm:space-y-0 sm:space-x-2">
+                    @if(Auth::check() && Auth::user()->role === 'superadmin')
+                    <div class="relative w-full sm:w-auto" x-data="{ showDatePicker: false }">
+                        <button @click="showDatePicker = !showDatePicker"
+                            class="w-full sm:w-auto bg-green-600 text-white px-2 py-1.5 text-xs rounded-lg hover:bg-green-700 transition-colors duration-150 flex items-center justify-center space-x-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 sm:h-4 sm:w-4" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            <span>PDF</span>
+                        </button>
+
+                        <!-- Date Picker Dropdown dengan ukuran yang lebih kecil -->
+                        <div x-show="showDatePicker" @click.away="showDatePicker = false"
+                            class="absolute right-0 mt-1 w-full sm:w-72 bg-white rounded-lg shadow-xl z-10 p-2">
+                            <form action="{{ route('generate.merged.pdf') }}" method="POST" class="space-y-2">
+                                @csrf
+                                <div>
+                                    <label for="pdf_start_date" class="block text-xs font-medium text-gray-700 mb-1">
+                                        Tanggal Mulai
+                                    </label>
+                                    <input type="date" id="pdf_start_date" name="start_date" required
+                                        class="w-full px-2 py-1 border border-gray-300 rounded-md text-xs">
+                                </div>
+                                <div>
+                                    <label for="pdf_end_date" class="block text-xs font-medium text-gray-700 mb-1">
+                                        Tanggal Akhir
+                                    </label>
+                                    <input type="date" id="pdf_end_date" name="end_date" required
+                                        class="w-full px-2 py-1 border border-gray-300 rounded-md text-xs">
+                                </div>
+                                @if ($errors->any())
+                                <div class="text-red-500 text-xs sm:text-sm">
+                                    {{ $errors->first() }}
+                                </div>
+                                @endif
+                                <div class="flex justify-end space-x-2">
+                                    <button type="button" @click="showDatePicker = false"
+                                        class="px-2 py-1 sm:px-3 sm:py-2 text-xs sm:text-sm text-gray-600 hover:text-gray-800">
+                                        Batal
+                                    </button>
+                                    <button type="submit"
+                                        class="px-2 py-1 sm:px-3 sm:py-2 text-xs sm:text-sm bg-green-600 text-white rounded-md hover:bg-green-700">
+                                        Unduh
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    @endif
+
+                    <!-- Filter Button dengan ukuran yang lebih kecil -->
                     <button id="filterButton"
-                        class="w-full sm:w-auto bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-150 flex items-center justify-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
+                        class="w-full sm:w-auto bg-blue-600 text-white px-2 py-1.5 text-xs rounded-lg hover:bg-blue-700 transition-colors duration-150 flex items-center justify-center space-x-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 sm:h-4 sm:w-4" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
                         </svg>
                         <span>Filter</span>
                     </button>
-
-                    <!-- Filter Dropdown (Responsive) -->
-                    <div id="filterDropdown"
-                        class="absolute right-0 mt-2 w-full sm:w-72 bg-white rounded-lg shadow-xl hidden transform transition-all duration-150 ease-in-out z-10">
-                        <div class="p-4">
-                            <h3 class="text-lg font-semibold text-gray-700 mb-3">Filter Berdasarkan Tanggal</h3>
-                            <form id="dateFilterForm" class="space-y-4" action="{{ route('filter.posbarat.forms') }}"
-                                method="POST">
-                                @csrf
-                                <div>
-                                    <label for="start_date" class="block text-sm font-medium text-gray-700 mb-1">Tanggal
-                                        Mulai:</label>
-                                    <input type="date" id="start_date" name="start_date"
-                                        value="{{ old('start_date', $startDate ?? '') }}"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                </div>
-                                <div>
-                                    <label for="end_date" class="block text-sm font-medium text-gray-700 mb-1">Tanggal
-                                        Akhir:</label>
-                                    <input type="date" id="end_date" name="end_date"
-                                        value="{{ old('end_date', $endDate ?? '') }}"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                                </div>
-                                <button type="submit"
-                                    class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-150">
-                                    Terapkan Filter
-                                </button>
-                            </form>
-                        </div>
-                    </div>
                 </div>
             </div>
 
-            <!-- Tabs Navigation (Responsive) -->
-            <div class="flex flex-wrap space-x-1 justify-center sm:justify-start">
+            <!-- Tabs Navigation dengan ukuran yang lebih kecil -->
+            <div class="flex flex-wrap gap-1 justify-center sm:justify-start">
                 <button onclick="switchTab('pending')"
-                    class="tab-button px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-lg transition-colors duration-150 bg-blue-600 text-white mb-2 sm:mb-0"
+                    class="tab-button px-2 py-1 text-xs font-medium rounded-lg transition-colors duration-150 bg-blue-600 text-white"
                     id="tab-pending">
                     Belum Diperiksa
                 </button>
                 <button onclick="switchTab('all')"
-                    class="tab-button px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-lg transition-colors duration-150 text-gray-600 hover:text-gray-800 hover:bg-gray-100 mb-2 sm:mb-0"
+                    class="tab-button px-2 py-1 text-xs font-medium rounded-lg transition-colors duration-150 text-gray-600 hover:text-gray-800 hover:bg-gray-100"
                     id="tab-all">
                     Semua Formulir
                 </button>
@@ -78,98 +100,74 @@
             @endif
 
             <!-- Pending Forms Tab -->
-            <div id="pending-content" class="tab-content">
-                <h2 class="text-xl font-bold text-black">Formulir HHMD Pos Barat - Belum Diperiksa</h2>
-                <h4 class="text-sm font-light text-black mb-4">Daftar formulir HHMD Pos Barat yang belum selesai diperiksa</h4>
+            <div id="pending-content" class="tab-content hidden px-2 sm:px-6 lg:px-8">
+                <h2 class="text-base sm:text-xl font-bold text-black">Formulir Belum Diperiksa</h2>
+                <h4 class="text-[10px] sm:text-sm font-light text-black mb-2 sm:mb-4">Daftar formulir HHMD Pos HBSCP yang belum
+                    selesai diperiksa</h4>
 
                 @if(isset($startDate) && isset($endDate))
-                <div class="mb-4 p-4 bg-blue-100 text-blue-700 rounded-lg">
-                    <p>Menampilkan hasil dari <strong>{{ \Carbon\Carbon::parse($startDate)->format('d-m-Y') }}</strong>
-                        hingga <strong>{{ \Carbon\Carbon::parse($endDate)->format('d-m-Y') }}</strong>.</p>
-                    <a href="{{ route('hhmdform') }}" class="text-blue-600 underline hover:text-blue-800">Reset
-                        Filter</a>
-
-                    <!-- Tombol untuk Unduh PDF Gabungan (hanya untuk superadmin) -->
-                    @if(Auth::check() && Auth::user()->role === 'superadmin')
-                    <form action="{{ route('generate.merged.pdf') }}" method="POST" class="mt-4">
-                        @csrf
-                        <input type="hidden" name="start_date" value="{{ $startDate }}">
-                        <input type="hidden" name="end_date" value="{{ $endDate }}">
-                        <button type="submit"
-                            class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors duration-150">
-                            Unduh PDF Gabungan
-                        </button>
-                    </form>
-                    @endif
+                <div class="mb-4 p-2 sm:p-4 bg-blue-100 text-blue-700 rounded-lg">
+                    <p class="text-xs sm:text-sm">Menampilkan hasil dari
+                        <strong>{{ \Carbon\Carbon::parse($startDate)->format('d-m-Y') }}</strong>
+                        hingga <strong>{{ \Carbon\Carbon::parse($endDate)->format('d-m-Y') }}</strong>.
+                    </p>
+                    <a href="{{ route('hhmdform') }}"
+                        class="text-blue-600 text-xs sm:text-sm underline hover:text-blue-800">Reset Filter</a>
                 </div>
                 @endif
 
                 @if($errors->any())
-                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-2 sm:p-4 mb-4" role="alert">
                     @foreach($errors->all() as $error)
-                    <p>{{ $error }}</p>
+                    <p class="text-xs sm:text-sm">{{ $error }}</p>
                     @endforeach
                 </div>
                 @endif
 
                 @if($allHhmdForms->where('status', 'pending_supervisor')->count() > 0)
-                <div class="overflow-x-auto">
-                    <table class="w-full border-collapse bg-white rounded-lg overflow-hidden">
+                <div class="overflow-x-auto -mx-2 sm:mx-0">
+                    <table class="w-full border-collapse bg-white text-left">
                         <thead class="bg-gray-100">
                             <tr>
-                                <th
-                                    class="px-6 py-3 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Tanggal Pengujian
+                                <th class="p-1 border-b text-[10px] font-semibold text-gray-600 uppercase whitespace-nowrap">
+                                    Tanggal
                                 </th>
-                                <th
-                                    class="px-6 py-3 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <th class="p-1 border-b text-[10px] font-semibold text-gray-600 uppercase">
                                     Lokasi
                                 </th>
-                                <th
-                                    class="px-6 py-3 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Hasil Pemeriksaan
+                                <th class="p-1 border-b text-[10px] font-semibold text-gray-600 uppercase">
+                                    Hasil
                                 </th>
-                                <th
-                                    class="px-6 py-3 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Status Koreksi
+                                <th class="p-1 border-b text-[10px] font-semibold text-gray-600 uppercase">
+                                    Status
                                 </th>
-                                <th
-                                    class="px-6 py-3 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <th class="p-1 border-b text-[10px] font-semibold text-gray-600 uppercase">
                                     Aksi
                                 </th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-200">
+                        <tbody>
                             @foreach($allHhmdForms->where('status', 'pending_supervisor') as $form)
-                            <tr class="hover:bg-gray-50 transition-colors duration-150">
-                                <td class="px-6 py-4 whitespace-nowrap">
+                            <tr class="hover:bg-gray-50">
+                                <td class="p-1 text-[10px]">
                                     {{ \Carbon\Carbon::parse($form->testDateTime)->format('d-m-Y H:i') }}
                                 </td>
-                                <td class="px-6 py-4">{{ $form->location }}</td>
-                                <td class="px-6 py-4">
-                                    @if($form->result == 'pass')
-                                    <span
-                                        class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                        PASS
+                                <td class="p-1 text-[10px]">{{ $form->location }}</td>
+                                <td class="p-1">
+                                    <span class="px-1.5 py-0.5 text-[10px] font-semibold rounded-full
+                                        @if($form->result == 'pass') bg-green-100 text-green-800
+                                        @else bg-red-100 text-red-800 @endif">
+                                        {{ strtoupper($form->result) }}
                                     </span>
-                                    @elseif($form->result == 'fail')
-                                    <span
-                                        class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                        FAIL
-                                    </span>
-                                    @else
-                                    {{ $form->result }}
-                                    @endif
                                 </td>
-                                <td class="px-6 py-4">
-                                    <span
-                                        class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                <td class="p-1">
+                                    <span class="px-1.5 py-0.5 text-[10px] font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                         {{ $form->status }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="p-1">
                                     <a href="{{ route('review.hhmd.reviewhhmd', $form->id) }}"
-                                        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
+                                        class="inline-flex items-center px-2 py-1 text-[10px] font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
                                         Tinjau
                                     </a>
                                 </td>
@@ -179,33 +177,44 @@
                     </table>
                 </div>
                 @else
-                <div class="text-center py-8">
-                    <p class="text-gray-500">Tidak ada formulir HHMD Pos Barat yang belum diperiksa saat ini.</p>
+                <div class="text-center py-4 sm:py-8">
+                    <p class="text-xs sm:text-sm text-gray-500">Tidak ada formulir HHMD Pos HBSCP yang belum diperiksa
+                        saat ini.</p>
                 </div>
                 @endif
             </div>
 
             <!-- All Forms Tab -->
-            <div id="all-content" class="tab-content hidden">
-                <h2 class="text-xl font-bold text-black">Semua Formulir HHMD Pos Barat</h2>
-                <h4 class="text-sm font-light text-black mb-4">Daftar lengkap semua formulir HHMD Pos Barat</h4>
+            <div id="all-content" class="tab-content hidden px-2 sm:px-6 lg:px-8">
+                <h2 class="text-base sm:text-xl font-bold text-black">Semua Formulir HHMD Pos HBSCP</h2>
+                <h4 class="text-[10px] sm:text-sm font-light text-black mb-2 sm:mb-4">Daftar lengkap semua formulir HHMD Pos HBSCP</h4>
 
                 @if(isset($startDate) && isset($endDate))
-                <div class="mb-4 p-4 bg-blue-100 text-blue-700 rounded-lg">
-                    <p>Menampilkan hasil dari <strong>{{ \Carbon\Carbon::parse($startDate)->format('d-m-Y') }}</strong>
-                        hingga <strong>{{ \Carbon\Carbon::parse($endDate)->format('d-m-Y') }}</strong>.</p>
-                    <a href="{{ route('hhmdform') }}" class="text-blue-600 underline hover:text-blue-800">Reset
-                        Filter</a>
+                <div class="mb-2 sm:mb-4 p-2 bg-blue-100 text-blue-700 rounded-lg">
+                    <p class="text-[10px] sm:text-sm">
+                        Menampilkan hasil dari
+                        <strong>{{ \Carbon\Carbon::parse($startDate)->format('d-m-Y') }}</strong>
+                        hingga
+                        <strong>{{ \Carbon\Carbon::parse($endDate)->format('d-m-Y') }}</strong>
+                    </p>
+                    <a href="{{ route('hhmdform') }}"
+                       class="text-blue-600 text-[10px] sm:text-sm underline hover:text-blue-800">
+                        Reset Filter
+                    </a>
 
-                    <!-- Tombol untuk Unduh PDF Gabungan (hanya untuk superadmin) -->
                     @if(Auth::check() && Auth::user()->role === 'superadmin')
-                    <form action="{{ route('generate.merged.pdf') }}" method="POST" class="mt-4">
+                    <form action="{{ route('generate.merged.pdf') }}" method="POST" class="mt-2">
                         @csrf
                         <input type="hidden" name="start_date" value="{{ $startDate }}">
                         <input type="hidden" name="end_date" value="{{ $endDate }}">
+                        <input type="hidden" name="location" value="HBSCP">
                         <button type="submit"
-                            class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors duration-150">
-                            Unduh PDF Gabungan
+                            class="w-full sm:w-auto bg-green-600 text-white px-2 py-1 text-[10px] sm:text-sm rounded-md hover:bg-green-700 transition-colors duration-150 flex items-center justify-center space-x-1">
+                            <svg class="h-3 w-3 sm:h-4 sm:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            <span>Unduh PDF</span>
                         </button>
                     </form>
                     @endif
@@ -213,87 +222,67 @@
                 @endif
 
                 @if($errors->any())
-                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-2 mb-2 sm:mb-4" role="alert">
                     @foreach($errors->all() as $error)
-                    <p>{{ $error }}</p>
+                    <p class="text-[10px] sm:text-sm">{{ $error }}</p>
                     @endforeach
                 </div>
                 @endif
 
                 @if($allHhmdForms->count() > 0)
-                <div class="overflow-x-auto">
-                    <table class="w-full border-collapse bg-white rounded-lg overflow-hidden">
+                <div class="overflow-x-auto -mx-2 sm:mx-0">
+                    <table class="w-full border-collapse bg-white text-left">
                         <thead class="bg-gray-100">
                             <tr>
-                                <th
-                                    class="px-6 py-3 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Tanggal Pengujian
+                                <th class="p-1 border-b text-[10px] font-semibold text-gray-600 uppercase whitespace-nowrap">
+                                    Tanggal
                                 </th>
-                                <th
-                                    class="px-6 py-3 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <th class="p-1 border-b text-[10px] font-semibold text-gray-600 uppercase">
                                     Lokasi
                                 </th>
-                                <th
-                                    class="px-6 py-3 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Hasil Pemeriksaan
+                                <th class="p-1 border-b text-[10px] font-semibold text-gray-600 uppercase">
+                                    Hasil
                                 </th>
-                                <th
-                                    class="px-6 py-3 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Status Koreksi
+                                <th class="p-1 border-b text-[10px] font-semibold text-gray-600 uppercase">
+                                    Status
                                 </th>
-                                <th
-                                    class="px-6 py-3 border-b border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                <th class="p-1 border-b text-[10px] font-semibold text-gray-600 uppercase">
                                     Aksi
                                 </th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
                             @foreach($allHhmdForms as $form)
-                            <tr class="hover:bg-gray-50 transition-colors duration-150">
-                                <td class="px-6 py-4 whitespace-nowrap">
+                            <tr class="hover:bg-gray-50">
+                                <td class="p-1 text-[10px] whitespace-nowrap">
                                     {{ \Carbon\Carbon::parse($form->testDateTime)->format('d-m-Y H:i') }}
                                 </td>
-                                <td class="px-6 py-4">{{ $form->location }}</td>
-                                <td class="px-6 py-4">
-                                    @if($form->result == 'pass')
-                                    <span
-                                        class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                        PASS
+                                <td class="p-1 text-[10px]">{{ $form->location }}</td>
+                                <td class="p-1">
+                                    <span class="px-1.5 py-0.5 text-[10px] font-semibold rounded-full
+                                        @if($form->result == 'pass') bg-green-100 text-green-800
+                                        @else bg-red-100 text-red-800 @endif">
+                                        {{ strtoupper($form->result) }}
                                     </span>
-                                    @elseif($form->result == 'fail')
-                                    <span
-                                        class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                        FAIL
-                                    </span>
-                                    @else
-                                    {{ $form->result }}
-                                    @endif
                                 </td>
-                                <td class="px-6 py-4">
-                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
+                                <td class="p-1">
+                                    <span class="px-1.5 py-0.5 text-[10px] font-semibold rounded-full
                                         @if($form->status == 'approved') bg-green-100 text-green-800
                                         @elseif($form->status == 'rejected') bg-red-100 text-red-800
-                                        @else bg-yellow-100 text-yellow-800
-                                        @endif">
+                                        @else bg-yellow-100 text-yellow-800 @endif">
                                         {{ $form->status }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex space-x-2">
+                                <td class="p-1">
+                                    <div class="flex gap-1">
                                         <a href="{{ route('review.hhmd.reviewhhmd', $form->id) }}"
-                                            class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                                            class="inline-flex items-center px-2 py-1 text-[10px] font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
                                             Tinjau
                                         </a>
-                                        @if($form->status == 'approved' && Auth::check() && Auth::user()->role ===
-                                        'superadmin')
+                                        @if($form->status == 'approved' && Auth::check() && Auth::user()->role === 'superadmin')
                                         <a href="{{ route('pdf.hhmd', $form->id) }}" target="_blank"
-                                            class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700">
-                                            <svg class="mr-1.5 h-4 w-4" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                            </svg>
-                                            Unduh PDF
+                                            class="inline-flex items-center px-2 py-1 text-[10px] font-medium text-white bg-green-600 rounded hover:bg-green-700">
+                                            PDF
                                         </a>
                                         @endif
                                     </div>
@@ -304,8 +293,10 @@
                     </table>
                 </div>
                 @else
-                <div class="text-center py-8">
-                    <p class="text-gray-500">Tidak ada formulir HHMD Pos Barat saat ini.</p>
+                <div class="text-center py-2 sm:py-4">
+                    <p class="text-[10px] sm:text-sm text-gray-500">
+                        Tidak ada formulir HHMD Pos HBSCP saat ini.
+                    </p>
                 </div>
                 @endif
             </div>

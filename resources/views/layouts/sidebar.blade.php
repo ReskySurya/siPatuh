@@ -87,31 +87,29 @@ class="relative h-screen">
                         <ul x-show="open" class="pl-4 mt-2 space-y-2">
                             <li x-data="{ openXray: false }">
                                 <button @click="openXray = !openXray" class="flex items-center justify-between w-full py-2 px-4 rounded hover:bg-[#3A87BD]">
-                                    <span>X-ray</span>
+                                    <span>X-RAY</span>
                                     <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': openXray }" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                                     </svg>
                                 </button>
-                                <ul x-show="openXray" class="pl-4 space-y-2 mt-2">
-                                    <li><a href="{{ route('daily-test.x-ray.pscp-cabin-utara') }}" class="block py-2 px-4 rounded hover:bg-[#3A87BD]">PSCP Cabin Utara</a></li>
-                                    <li><a href="{{ route('daily-test.x-ray.pscp-cabin-selatan') }}" class="block py-2 px-4 rounded hover:bg-[#3A87BD]">PSCP Cabin Selatan</a></li>
-                                    <li><a href="{{ route('daily-test.x-ray.hbscp-bagasi-barat') }}" class="block py-2 px-4 rounded hover:bg-[#3A87BD]">HBSCP Bagasi Barat</a></li>
-                                    <li><a href="{{ route('daily-test.x-ray.hbscp-bagasi-timur') }}" class="block py-2 px-4 rounded hover:bg-[#3A87BD]">HBSCP Bagasi Timur</a></li>
+                                <ul x-show="openXray" class="pl-4 mt-2 space-y-2">
+                                    <li>
+                                        <a href="{{ route('daily-test.xraycabin') }}" class="flex items-center py-2 px-4 rounded hover:bg-[#3A87BD]">
+                                            <span>XRAY CABIN</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('daily-test.xraybagasi') }}" class="flex items-center py-2 px-4 rounded hover:bg-[#3A87BD]">
+                                            <span>XRAY BAGASI</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
 
-                            <li x-data="{ openWTMD: false }">
-                                <button @click="openWTMD = !openWTMD" class="flex items-center justify-between w-full py-2 px-4 rounded hover:bg-[#3A87BD]">
+                            <li>
+                                <a href="{{ route('daily-test.wtmd') }}" class="flex items-center py-2 px-4 rounded hover:bg-[#3A87BD]">
                                     <span>WTMD</span>
-                                    <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': openWTMD }" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                                <ul x-show="openWTMD" class="pl-4 space-y-2 mt-2">
-                                    <li><a href="{{ route('daily-test.wtmd.pos-timur') }}" class="block py-2 px-4 rounded hover:bg-[#3A87BD]">Pos Timur</a></li>
-                                    <li><a href="{{ route('daily-test.wtmd.pscp-utara') }}" class="block py-2 px-4 rounded hover:bg-[#3A87BD]">PSCP Utara</a></li>
-                                    <li><a href="{{ route('daily-test.wtmd.pscp-selatan') }}" class="block py-2 px-4 rounded hover:bg-[#3A87BD]">PSCP Selatan</a></li>
-                                </ul>
+                                </a>
                             </li>
 
                             <li>

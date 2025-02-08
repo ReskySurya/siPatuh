@@ -7,7 +7,7 @@
         <div class="border-b border-gray-200 p-2 sm:p-4 md:p-6">
             <div class="flex flex-col sm:flex-row justify-between items-center mb-3 sm:mb-4 md:mb-6 space-y-2 sm:space-y-0">
                 <h1 class="text-base sm:text-xl md:text-2xl font-bold text-gray-800 w-full sm:w-auto text-center sm:text-left">
-                    {{ __('Formulir HHMD POS HBSCP') }}
+                    {{ __('Formulir WTMD PSCP UTARA') }}
                 </h1>
 
                 <!-- Button group dengan penyesuaian ukuran -->
@@ -102,8 +102,9 @@
             <!-- Pending Forms Tab -->
             <div id="pending-content" class="tab-content hidden px-2 sm:px-6 lg:px-8">
                 <h2 class="text-base sm:text-xl font-bold text-black">Formulir Belum Diperiksa</h2>
-                <h4 class="text-[10px] sm:text-sm font-light text-black mb-2 sm:mb-4">Daftar formulir HHMD Pos HBSCP yang belum
-                    selesai diperiksa</h4>
+                <h4 class="text-[10px] sm:text-sm font-light text-black mb-2 sm:mb-4">
+                    Daftar formulir WTMD PSCP Utara yang belum selesai diperiksa
+                </h4>
 
                 @if(isset($startDate) && isset($endDate))
                 <div class="mb-4 p-2 sm:p-4 bg-blue-100 text-blue-700 rounded-lg">
@@ -111,7 +112,7 @@
                         <strong>{{ \Carbon\Carbon::parse($startDate)->format('d-m-Y') }}</strong>
                         hingga <strong>{{ \Carbon\Carbon::parse($endDate)->format('d-m-Y') }}</strong>.
                     </p>
-                    <a href="{{ route('hhmdform') }}"
+                    <a href="{{ route('wtmd.pscputara') }}"
                         class="text-blue-600 text-xs sm:text-sm underline hover:text-blue-800">Reset Filter</a>
                 </div>
                 @endif
@@ -124,7 +125,7 @@
                 </div>
                 @endif
 
-                @if($allHhmdForms->where('status', 'pending_supervisor')->count() > 0)
+                @if($allWtmdForms->where('status', 'pending_supervisor')->count() > 0)
                 <div class="overflow-x-auto -mx-2 sm:mx-0">
                     <table class="w-full border-collapse bg-white text-left">
                         <thead class="bg-gray-100">
@@ -147,7 +148,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($allHhmdForms->where('status', 'pending_supervisor') as $form)
+                            @foreach($allWtmdForms->where('status', 'pending_supervisor') as $form)
                             <tr class="hover:bg-gray-50">
                                 <td class="p-1 text-[10px]">
                                     {{ \Carbon\Carbon::parse($form->testDateTime)->format('d-m-Y H:i') }}
@@ -166,7 +167,7 @@
                                     </span>
                                 </td>
                                 <td class="p-1">
-                                    <a href="{{ route('review.hhmd.reviewhhmd', $form->id) }}"
+                                    <a href="{{ route('review.wtmd.reviewwtmd', $form->id) }}"
                                         class="inline-flex items-center px-2 py-1 text-[10px] font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
                                         Tinjau
                                     </a>
@@ -178,7 +179,7 @@
                 </div>
                 @else
                 <div class="text-center py-4 sm:py-8">
-                    <p class="text-xs sm:text-sm text-gray-500">Tidak ada formulir HHMD Pos HBSCP yang belum diperiksa
+                    <p class="text-xs sm:text-sm text-gray-500">Tidak ada formulir WTMD Pos Timur yang belum diperiksa
                         saat ini.</p>
                 </div>
                 @endif
@@ -186,8 +187,10 @@
 
             <!-- All Forms Tab -->
             <div id="all-content" class="tab-content hidden px-2 sm:px-6 lg:px-8">
-                <h2 class="text-base sm:text-xl font-bold text-black">Semua Formulir HHMD Pos HBSCP</h2>
-                <h4 class="text-[10px] sm:text-sm font-light text-black mb-2 sm:mb-4">Daftar lengkap semua formulir HHMD Pos HBSCP</h4>
+                <h2 class="text-base sm:text-xl font-bold text-black">Semua Formulir WTMD Pos Timur</h2>
+                <h4 class="text-[10px] sm:text-sm font-light text-black mb-2 sm:mb-4">
+                    Daftar lengkap semua formulir WTMD Pos Timur
+                </h4>
 
                 @if(isset($startDate) && isset($endDate))
                 <div class="mb-2 sm:mb-4 p-2 bg-blue-100 text-blue-700 rounded-lg">
@@ -197,7 +200,7 @@
                         hingga
                         <strong>{{ \Carbon\Carbon::parse($endDate)->format('d-m-Y') }}</strong>
                     </p>
-                    <a href="{{ route('hhmdform') }}"
+                    <a href="{{ route('wtmd.pscputara') }}"
                        class="text-blue-600 text-[10px] sm:text-sm underline hover:text-blue-800">
                         Reset Filter
                     </a>
@@ -207,7 +210,7 @@
                         @csrf
                         <input type="hidden" name="start_date" value="{{ $startDate }}">
                         <input type="hidden" name="end_date" value="{{ $endDate }}">
-                        <input type="hidden" name="location" value="HBSCP">
+                        <input type="hidden" name="location" value="PSCP Utara">
                         <button type="submit"
                             class="w-full sm:w-auto bg-green-600 text-white px-2 py-1 text-[10px] sm:text-sm rounded-md hover:bg-green-700 transition-colors duration-150 flex items-center justify-center space-x-1">
                             <svg class="h-3 w-3 sm:h-4 sm:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -229,7 +232,7 @@
                 </div>
                 @endif
 
-                @if($allHhmdForms->count() > 0)
+                @if($allWtmdForms->count() > 0)
                 <div class="overflow-x-auto -mx-2 sm:mx-0">
                     <table class="w-full border-collapse bg-white text-left">
                         <thead class="bg-gray-100">
@@ -252,7 +255,7 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
-                            @foreach($allHhmdForms as $form)
+                            @foreach($allWtmdForms as $form)
                             <tr class="hover:bg-gray-50">
                                 <td class="p-1 text-[10px] whitespace-nowrap">
                                     {{ \Carbon\Carbon::parse($form->testDateTime)->format('d-m-Y H:i') }}
@@ -275,12 +278,12 @@
                                 </td>
                                 <td class="p-1">
                                     <div class="flex gap-1">
-                                        <a href="{{ route('review.hhmd.reviewhhmd', $form->id) }}"
+                                        <a href="#"
                                             class="inline-flex items-center px-2 py-1 text-[10px] font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
                                             Tinjau
                                         </a>
                                         @if($form->status == 'approved' && Auth::check() && Auth::user()->role === 'superadmin')
-                                        <a href="{{ route('pdf.hhmd', $form->id) }}" target="_blank"
+                                        <a href="{{ route('pdf.wtmd', $form->id) }}" target="_blank"
                                             class="inline-flex items-center px-2 py-1 text-[10px] font-medium text-white bg-green-600 rounded hover:bg-green-700">
                                             PDF
                                         </a>
@@ -295,7 +298,7 @@
                 @else
                 <div class="text-center py-2 sm:py-4">
                     <p class="text-[10px] sm:text-sm text-gray-500">
-                        Tidak ada formulir HHMD Pos HBSCP saat ini.
+                        Tidak ada formulir WTMD Pos Timur saat ini.
                     </p>
                 </div>
                 @endif
@@ -312,6 +315,12 @@
                     Kembali ke Dashboard
                 </a>
             </div>
+
+            {{-- <!-- Form filter -->
+            <form action="{{ route('wtmd.postimur.filter') }}" method="POST" id="dateFilterForm">
+                @csrf
+                <!-- ... -->
+            </form> --}}
         </div>
     </div>
 </div>
