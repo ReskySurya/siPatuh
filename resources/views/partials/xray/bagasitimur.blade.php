@@ -7,73 +7,8 @@
         <div class="border-b border-gray-200 p-2 sm:p-4 md:p-6">
             <div class="flex flex-col sm:flex-row justify-between items-center mb-3 sm:mb-4 md:mb-6 space-y-2 sm:space-y-0">
                 <h1 class="text-base sm:text-xl md:text-2xl font-bold text-gray-800 w-full sm:w-auto text-center sm:text-left">
-                    {{ __('Formulir XRAY HBSCP BAGASI BARAT') }}
+                    {{ __('Formulir XRAY HBSCP BAGASI TIMUR') }}
                 </h1>
-
-                <!-- Button group dengan penyesuaian ukuran -->
-                <div class="flex flex-col space-y-2 w-full sm:w-auto sm:flex-row sm:space-y-0 sm:space-x-2">
-                    @if(Auth::check() && Auth::user()->role === 'superadmin')
-                    <div class="relative w-full sm:w-auto" x-data="{ showDatePicker: false }">
-                        <button @click="showDatePicker = !showDatePicker"
-                            class="w-full sm:w-auto bg-green-600 text-white px-2 py-1.5 text-xs rounded-lg hover:bg-green-700 transition-colors duration-150 flex items-center justify-center space-x-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 sm:h-4 sm:w-4" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                            </svg>
-                            <span>PDF</span>
-                        </button>
-
-                        <!-- Date Picker Dropdown dengan ukuran yang lebih kecil -->
-                        <div x-show="showDatePicker" @click.away="showDatePicker = false"
-                            class="absolute right-0 mt-1 w-full sm:w-72 bg-white rounded-lg shadow-xl z-10 p-2">
-                            <form action="{{ route('generate.merged.pdf') }}" method="POST" class="space-y-2">
-                                @csrf
-                                <div>
-                                    <label for="pdf_start_date" class="block text-xs font-medium text-gray-700 mb-1">
-                                        Tanggal Mulai
-                                    </label>
-                                    <input type="date" id="pdf_start_date" name="start_date" required
-                                        class="w-full px-2 py-1 border border-gray-300 rounded-md text-xs">
-                                </div>
-                                <div>
-                                    <label for="pdf_end_date" class="block text-xs font-medium text-gray-700 mb-1">
-                                        Tanggal Akhir
-                                    </label>
-                                    <input type="date" id="pdf_end_date" name="end_date" required
-                                        class="w-full px-2 py-1 border border-gray-300 rounded-md text-xs">
-                                </div>
-                                @if ($errors->any())
-                                <div class="text-red-500 text-xs sm:text-sm">
-                                    {{ $errors->first() }}
-                                </div>
-                                @endif
-                                <div class="flex justify-end space-x-2">
-                                    <button type="button" @click="showDatePicker = false"
-                                        class="px-2 py-1 sm:px-3 sm:py-2 text-xs sm:text-sm text-gray-600 hover:text-gray-800">
-                                        Batal
-                                    </button>
-                                    <button type="submit"
-                                        class="px-2 py-1 sm:px-3 sm:py-2 text-xs sm:text-sm bg-green-600 text-white rounded-md hover:bg-green-700">
-                                        Unduh
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    @endif
-
-                    <!-- Filter Button dengan ukuran yang lebih kecil -->
-                    <button id="filterButton"
-                        class="w-full sm:w-auto bg-blue-600 text-white px-2 py-1.5 text-xs rounded-lg hover:bg-blue-700 transition-colors duration-150 flex items-center justify-center space-x-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 sm:h-4 sm:w-4" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                        </svg>
-                        <span>Filter</span>
-                    </button>
-                </div>
             </div>
 
             <!-- Tabs Navigation dengan ukuran yang lebih kecil -->
@@ -103,19 +38,8 @@
             <div id="pending-content" class="tab-content hidden px-2 sm:px-6 lg:px-8">
                 <h2 class="text-base sm:text-xl font-bold text-black">Formulir Belum Diperiksa</h2>
                 <h4 class="text-[10px] sm:text-sm font-light text-black mb-2 sm:mb-4">
-                    Daftar formulir XRAY HBSCP Bagasi Barat yang belum selesai diperiksa
+                    Daftar formulir XRAY HBSCP Bagasi Timur yang belum selesai diperiksa
                 </h4>
-
-                @if(isset($startDate) && isset($endDate))
-                <div class="mb-4 p-2 sm:p-4 bg-blue-100 text-blue-700 rounded-lg">
-                    <p class="text-xs sm:text-sm">Menampilkan hasil dari
-                        <strong>{{ \Carbon\Carbon::parse($startDate)->format('d-m-Y') }}</strong>
-                        hingga <strong>{{ \Carbon\Carbon::parse($endDate)->format('d-m-Y') }}</strong>.
-                    </p>
-                    <a href="{{ route('xray.bagasibarat') }}"
-                        class="text-blue-600 text-xs sm:text-sm underline hover:text-blue-800">Reset Filter</a>
-                </div>
-                @endif
 
                 @if($errors->any())
                 <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-2 sm:p-4 mb-4" role="alert">
@@ -179,7 +103,7 @@
                 </div>
                 @else
                 <div class="text-center py-4 sm:py-8">
-                    <p class="text-xs sm:text-sm text-gray-500">Tidak ada formulir WTMD Pos Timur yang belum diperiksa
+                    <p class="text-xs sm:text-sm text-gray-500">Tidak ada formulir X-RAY HBSCP Bagasi Timur yang belum diperiksa
                         saat ini.</p>
                 </div>
                 @endif
@@ -187,42 +111,10 @@
 
             <!-- All Forms Tab -->
             <div id="all-content" class="tab-content hidden px-2 sm:px-6 lg:px-8">
-                <h2 class="text-base sm:text-xl font-bold text-black">Semua Formulir WTMD Pos Timur</h2>
+                <h2 class="text-base sm:text-xl font-bold text-black">Semua Formulir X-RAY HBSCP Bagasi Timur</h2>
                 <h4 class="text-[10px] sm:text-sm font-light text-black mb-2 sm:mb-4">
-                    Daftar lengkap semua formulir WTMD Pos Timur
+                    Daftar lengkap semua formulir X-RAY HBSCP Bagasi Timur
                 </h4>
-
-                @if(isset($startDate) && isset($endDate))
-                <div class="mb-2 sm:mb-4 p-2 bg-blue-100 text-blue-700 rounded-lg">
-                    <p class="text-[10px] sm:text-sm">
-                        Menampilkan hasil dari
-                        <strong>{{ \Carbon\Carbon::parse($startDate)->format('d-m-Y') }}</strong>
-                        hingga
-                        <strong>{{ \Carbon\Carbon::parse($endDate)->format('d-m-Y') }}</strong>
-                    </p>
-                    <a href="{{ route('xray.bagasibarat') }}"
-                       class="text-blue-600 text-[10px] sm:text-sm underline hover:text-blue-800">
-                        Reset Filter
-                    </a>
-
-                    @if(Auth::check() && Auth::user()->role === 'superadmin')
-                    <form action="{{ route('generate.merged.pdf') }}" method="POST" class="mt-2">
-                        @csrf
-                        <input type="hidden" name="start_date" value="{{ $startDate }}">
-                        <input type="hidden" name="end_date" value="{{ $endDate }}">
-                        <input type="hidden" name="location" value="PSCP Utara">
-                        <button type="submit"
-                            class="w-full sm:w-auto bg-green-600 text-white px-2 py-1 text-[10px] sm:text-sm rounded-md hover:bg-green-700 transition-colors duration-150 flex items-center justify-center space-x-1">
-                            <svg class="h-3 w-3 sm:h-4 sm:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                            </svg>
-                            <span>Unduh PDF</span>
-                        </button>
-                    </form>
-                    @endif
-                </div>
-                @endif
 
                 @if($errors->any())
                 <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-2 mb-2 sm:mb-4" role="alert">
@@ -282,12 +174,6 @@
                                             class="inline-flex items-center px-2 py-1 text-[10px] font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
                                             Tinjau
                                         </a>
-                                        @if($form->status == 'approved' && Auth::check() && Auth::user()->role === 'superadmin')
-                                        <a href="{{ route('pdf.hhmd', $form->id) }}" target="_blank"
-                                            class="inline-flex items-center px-2 py-1 text-[10px] font-medium text-white bg-green-600 rounded hover:bg-green-700">
-                                            PDF
-                                        </a>
-                                        @endif
                                     </div>
                                 </td>
                             </tr>
@@ -298,7 +184,7 @@
                 @else
                 <div class="text-center py-2 sm:py-4">
                     <p class="text-[10px] sm:text-sm text-gray-500">
-                        Tidak ada formulir WTMD Pos Timur saat ini.
+                        Tidak ada formulir X-RAY HBSCP Bagasi Timur saat ini.
                     </p>
                 </div>
                 @endif
@@ -315,12 +201,6 @@
                     Kembali ke Dashboard
                 </a>
             </div>
-
-            {{-- <!-- Form filter -->
-            <form action="{{ route('wtmd.postimur.filter') }}" method="POST" id="dateFilterForm">
-                @csrf
-                <!-- ... -->
-            </form> --}}
         </div>
     </div>
 </div>
@@ -357,40 +237,6 @@
                 document.getElementById(contentId).classList.remove('hidden');
             });
         });
-
-        // Responsive filter dropdown
-        if (filterButton && filterDropdown) {
-            filterButton.addEventListener('click', (e) => {
-                e.stopPropagation();
-                filterDropdown.classList.toggle('hidden');
-            });
-
-            // Close dropdown when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!filterDropdown.contains(e.target) && !filterButton.contains(e.target)) {
-                    filterDropdown.classList.add('hidden');
-                }
-            });
-        }
-
-        // Date filter form handling
-        const dateFilterForm = document.getElementById('dateFilterForm');
-        if (dateFilterForm) {
-            dateFilterForm.addEventListener('submit', (e) => {
-                const startDate = document.getElementById('start_date').value;
-                const endDate = document.getElementById('end_date').value;
-
-                if (!startDate || !endDate) {
-                    e.preventDefault();
-                    alert('Harap isi tanggal mulai dan akhir.');
-                    return;
-                }
-
-                // Optional: Add loading state or validation
-                filterButton.disabled = true;
-                filterButton.innerHTML = 'Memproses...';
-            });
-        }
 
         // Initial tab setup
         const initialTab = document.getElementById('tab-pending');

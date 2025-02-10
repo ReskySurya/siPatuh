@@ -57,6 +57,7 @@ Route::middleware(['checkrole:superadmin,supervisor'])->group(function () {
     Route::get('/hhmdform', [DashboardController::class, 'hhmdIndex'])->name('hhmdform');
     Route::get('/wtmd', [DashboardController::class, 'wtmdIndex'])->name('wtmdform');
     Route::get('/xray', [DashboardController::class, 'xrayIndex'])->name('xrayform');
+    Route::get('/exportpdf', [PdfController::class, 'index'])->name('exportpdf.index');
 });
 
 // Rute Daily Task yang dapat diakses oleh semua pengguna yang sudah login
@@ -220,3 +221,11 @@ Route::post('xray/bagasitimur/filter', [DashboardController::class, 'filter_xray
 
 Route::get('/xray/bagasibarat', [DashboardController::class, 'xray_bagasibarat_formCard'])->name('xray.bagasibarat');
 Route::post('xray/bagasibarat/filter', [DashboardController::class, 'filter_xray_bagasibarat_FormCardByDate'])->name('xray.bagasibarat.filter');
+
+// PDF Export Routes
+Route::middleware(['web'])->group(function () {
+    Route::get('/exportpdf', [PdfController::class, 'index'])->name('exportpdf.index');
+    Route::get('/preview-pdf-data', [PdfController::class, 'previewData'])->name('preview.pdf.data');
+    Route::post('/export-selected-pdf', [PdfController::class, 'exportSelected'])->name('export.selected.pdf');
+    Route::post('/export-all-pdf', [PdfController::class, 'exportAll'])->name('export.all.pdf');
+});

@@ -16,7 +16,7 @@
                             GAWANG PENDETEKSI LOGAM<br>
                             (WALK THROUGH METAL DETECTOR/WTMD)
                         </h1>
-                        <img src="https://via.placeholder.com/80x80" alt="Additional Logo"
+                        <img src="{{ asset('images/injourney-logo.png') }}" alt="Injourney Logo"
                             class="w-20 h-20 mt-2 sm:mt-0">
                     </div>
                 </div>

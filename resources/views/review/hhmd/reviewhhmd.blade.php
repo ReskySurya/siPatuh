@@ -16,7 +16,7 @@
                             (HAND HELD METAL DETECTOR/HHMD)<br>
                             PADA KONDISI NORMAL (HIJAU)
                         </h1>
-                        <img src="https://via.placeholder.com/80x80" alt="Additional Logo" class="w-20 h-20 mt-2 sm:mt-0">
+                        <img src="{{ asset('images/injourney-logo.png') }}" alt="Injourney Logo" class="w-20 h-20 mt-2 sm:mt-0">
                     </div>
                 </div>
 
