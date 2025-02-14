@@ -180,4 +180,41 @@ class MasterDataController extends Controller
 
         return redirect()->route('masterdata.index')->with('success', 'User berhasil dihapus');
     }
+
+    public function resetPassword($id)
+    {
+        try {
+            // Cek apakah ini user atau officer berdasarkan route
+            $routeName = request()->route()->getName();
+            $defaultPassword = 'p4ssword';
+
+            if (strpos($routeName, 'user') !== false) {
+                // Reset password untuk User
+                $user = User::findOrFail($id);
+                $user->password = bcrypt($defaultPassword);
+                $user->save();
+
+                $message = "Password untuk user {$user->name} berhasil direset";
+            } else {
+                // Reset password untuk Officer
+                $officer = Officer::findOrFail($id);
+                $officer->password = bcrypt($defaultPassword);
+                $officer->save();
+
+                $message = "Password untuk officer {$officer->name} berhasil direset";
+            }
+
+            // Log aktivitas reset password
+            Log::info("Password reset successful for ID: {$id}");
+
+            return redirect()->route('masterdata.index')
+                ->with('success', $message);
+
+        } catch (\Exception $e) {
+            Log::error("Password reset failed: " . $e->getMessage());
+
+            return redirect()->route('masterdata.index')
+                ->with('error', 'Gagal mereset password. Silakan coba lagi.');
+        }
+    }
 }

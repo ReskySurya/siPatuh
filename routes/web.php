@@ -9,6 +9,7 @@ use App\Http\Controllers\SignatureController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\WTMDFormController;
 use App\Http\Controllers\XRAYFormController;
+use App\Http\Controllers\PasswordController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -54,6 +55,10 @@ Route::middleware(['checkrole:superadmin,supervisor'])->group(function () {
     Route::put('/masterdata/user/{id}', [MasterDataController::class, 'updateUser'])->name('masterdata.updateUser');
     Route::delete('/masterdata/user/{id}', [MasterDataController::class, 'deleteUser'])->name('masterdata.deleteUser');
     Route::get('/masterdata/user/{id}', [MasterDataController::class, 'getUser'])->name('masterdata.getUser');
+    Route::post('/masterdata/user/{id}/reset-password', [MasterDataController::class, 'resetPassword'])
+    ->name('masterdata.resetPassword');
+    Route::post('/masterdata/officer/{id}/reset-password', [MasterDataController::class, 'resetPassword'])
+    ->name('masterdata.resetPassword');
     Route::get('/hhmdform', [DashboardController::class, 'hhmdIndex'])->name('hhmdform');
     Route::get('/wtmd', [DashboardController::class, 'wtmdIndex'])->name('wtmdform');
     Route::get('/xray', [DashboardController::class, 'xrayIndex'])->name('xrayform');
@@ -181,46 +186,32 @@ Route::prefix('xrayform')->group(function () {
 
 Route::get('/hhmdform/kedatangan', [DashboardController::class, 'kedatangan_formCard'])
     ->name('kedatangan.index');
-Route::post('/hhmdform/kedatangan/filter', [DashboardController::class, 'filterKedatangan_FormCardByDate'])
-    ->name('filter.kedatangan.forms');
 
 Route::get('/hhmdform/hbscp', [DashboardController::class, 'hbscp_formCard'])->name('hbscp.index');
-Route::post('/hhmdform/hbscp/filter', [DashboardController::class, 'filterhbscp_FormCardByDate'])->name('filter.hbscp.forms');
 
 Route::get('/hhmdform/postimur', [DashboardController::class, 'postimur_formCard'])->name('postimur.index');
-Route::post('/hhmdform/postimur/filter', [DashboardController::class, 'filterpostimur_FormCardByDate'])->name('filter.postimur.forms');
 
 Route::get('/hhmdform/posbarat', [DashboardController::class, 'posbarat_formCard'])->name('posbarat.index');
-Route::post('/hhmdform/posbarat/filter', [DashboardController::class, 'filterposbarat_FormCardByDate'])->name('filter.posbarat.forms');
 
 Route::get('/hhmdform/pscputara', [DashboardController::class, 'pscputara_formCard'])->name('pscputara.index');
-Route::post('/hhmdform/pscputara/filter', [DashboardController::class, 'filterpscputara_FormCardByDate'])->name('filter.pscputara.forms');
 
 Route::get('/hhmdform/pscpselatan', [DashboardController::class, 'pscpselatan_formCard'])->name('pscpselatan.index');
-Route::post('/hhmdform/pscpselatan/filter', [DashboardController::class, 'filterpscpselatan_FormCardByDate'])->name('filter.pscpselatan.forms');
 
 // WTMD Routes
 Route::get('/wtmd/postimur', [DashboardController::class, 'wtmd_postimur_formCard'])->name('wtmd.postimur');
-Route::post('/wtmd/postimur/filter', [DashboardController::class, 'filter_wtmd_postimur_FormCardByDate'])->name('wtmd.postimur.filter');
 
 Route::get('/wtmd/pscpselatan', [DashboardController::class, 'wtmd_pscpselatan_formCard'])->name('wtmd.pscpselatan');
-Route::post('/wtmd/pscpselatan/filter', [DashboardController::class, 'filter_wtmd_pscpselatan_FormCardByDate'])->name('wtmd.pscpselatan.filter');
 
 Route::get('/wtmd/pscputara', [DashboardController::class, 'wtmd_pscputara_formCard'])->name('wtmd.pscputara');
-Route::post('/wtmd/pscputara/filter', [DashboardController::class, 'filter_wtmd_pscputara_FormCardByDate'])->name('wtmd.pscputara.filter');
 
 // XRAY Routes
 Route::get('/xray/cabinutara', [DashboardController::class, 'xray_cabinutara_formCard'])->name('xray.cabinutara');
-Route::post('xray/cabinutara/filter', [DashboardController::class, 'filter_xray_cabinutara_FormCardByDate'])->name('xray.cabinutara.filter');
 
 Route::get('/xray/cabinselatan', [DashboardController::class, 'xray_cabinselatan_formCard'])->name('xray.cabinselatan');
-Route::post('xray/cabinselatan/filter', [DashboardController::class, 'filter_xray_cabinselatan_FormCardByDate'])->name('xray.cabinselatan.filter');
 
 Route::get('/xray/bagasitimur', [DashboardController::class, 'xray_bagasitimur_formCard'])->name('xray.bagasitimur');
-Route::post('xray/bagasitimur/filter', [DashboardController::class, 'filter_xray_bagasitimur_FormCardByDate'])->name('xray.bagasitimur.filter');
 
 Route::get('/xray/bagasibarat', [DashboardController::class, 'xray_bagasibarat_formCard'])->name('xray.bagasibarat');
-Route::post('xray/bagasibarat/filter', [DashboardController::class, 'filter_xray_bagasibarat_FormCardByDate'])->name('xray.bagasibarat.filter');
 
 // PDF Export Routes
 Route::middleware(['web'])->group(function () {
@@ -228,4 +219,37 @@ Route::middleware(['web'])->group(function () {
     Route::get('/preview-pdf-data', [PdfController::class, 'previewData'])->name('preview.pdf.data');
     Route::post('/export-selected-pdf', [PdfController::class, 'exportSelected'])->name('export.selected.pdf');
     Route::post('/export-all-pdf', [PdfController::class, 'exportAll'])->name('export.all.pdf');
+});
+
+// Route untuk change password (tanpa check.default.password)
+Route::middleware(['auth:web,officer'])->group(function () {
+    Route::get('/change-password', [PasswordController::class, 'showChangePasswordForm'])->name('password.change');
+    Route::post('/update-password', [PasswordController::class, 'updatePassword'])->name('password.update');
+});
+
+// Semua route yang memerlukan autentikasi (dengan check.default.password)
+Route::middleware(['auth:web,officer', 'check.default.password'])->group(function () {
+    // Dashboard routes
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/officer/dashboard', function () {
+        return view('officer.dashboard');
+    })->name('officer.dashboard');
+
+    // Masterdata routes
+    Route::get('/masterdata', [MasterDataController::class, 'index'])->name('masterdata.index');
+    Route::post('/masterdata/add-user', [MasterDataController::class, 'addUser'])->name('masterdata.addUser');
+    Route::post('/masterdata/add-officer', [MasterDataController::class, 'addOfficer'])->name('masterdata.addOfficer');
+    Route::put('/masterdata/user/{id}', [MasterDataController::class, 'updateUser'])->name('masterdata.updateUser');
+    Route::put('/masterdata/officer/{id}', [MasterDataController::class, 'updateOfficer'])->name('masterdata.updateOfficer');
+    Route::delete('/masterdata/officer/{id}', [MasterDataController::class, 'deleteOfficer'])->name('masterdata.deleteOfficer');
+    Route::delete('/masterdata/user/{id}', [MasterDataController::class, 'deleteUser'])->name('masterdata.deleteUser');
+    Route::post('/masterdata/user/{id}/reset-password', [MasterDataController::class, 'resetPassword'])->name('masterdata.resetPassword');
+    Route::post('/masterdata/officer/{id}/reset-password', [MasterDataController::class, 'resetPassword'])->name('masterdata.resetPassword');
+
+    // Form routes
+    Route::get('/hhmdform', [DashboardController::class, 'hhmdIndex'])->name('hhmdform');
+    Route::get('/wtmd', [DashboardController::class, 'wtmdIndex'])->name('wtmdform');
+    Route::get('/xray', [DashboardController::class, 'xrayIndex'])->name('xrayform');
+
+    // ... tambahkan route lain yang memerlukan autentikasi ...
 });

@@ -176,38 +176,6 @@ class DashboardController extends Controller
         return view('partials.kedatangan', compact('allHhmdForms'));
     }
 
-    public function filterKedatangan_FormCardByDate(Request $request)
-    {
-        $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
-
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-
-        try {
-            $filteredForms = hhmdsaved::where('location', 'Pos Kedatangan')
-                ->whereBetween('testDateTime', [
-                    Carbon::parse($startDate)->startOfDay(),
-                    Carbon::parse($endDate)->endOfDay(),
-                ])->get();
-
-            if ($filteredForms->isEmpty()) {
-                return back()->with('status', 'Tidak ada data yang ditemukan dalam rentang tanggal tersebut.');
-            }
-
-            return view('partials.kedatangan', [
-                'allHhmdForms' => $filteredForms,
-                'startDate' => $startDate,
-                'endDate' => $endDate,
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Filter Kedatangan Error: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Terjadi kesalahan saat memfilter data: ' . $e->getMessage()]);
-        }
-    }
-
     public function postimur_formCard()
     {
         $user = Auth::user();
@@ -227,37 +195,6 @@ class DashboardController extends Controller
         return view('partials.postimur', compact('allHhmdForms'));
     }
 
-    public function filterpostimur_FormCardByDate(Request $request)
-    {
-        $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
-
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-
-        try {
-            $filteredForms = hhmdsaved::where('location', 'Pos Timur')
-                ->whereBetween('testDateTime', [
-                    Carbon::parse($startDate)->startOfDay(),
-                    Carbon::parse($endDate)->endOfDay(),
-                ])->get();
-
-            if ($filteredForms->isEmpty()) {
-                return back()->with('status', 'Tidak ada data yang ditemukan dalam rentang tanggal tersebut.');
-            }
-
-            return view('partials.postimur', [
-                'allHhmdForms' => $filteredForms,
-                'startDate' => $startDate,
-                'endDate' => $endDate,
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Filter Pos Timur Error: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Terjadi kesalahan saat memfilter data: ' . $e->getMessage()]);
-        }
-    }
 
     public function posbarat_formCard()
     {
@@ -278,37 +215,6 @@ class DashboardController extends Controller
         return view('partials.posbarat', compact('allHhmdForms'));
     }
 
-    public function filterposbarat_FormCardByDate(Request $request)
-    {
-        $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
-
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-
-        try {
-            $filteredForms = hhmdsaved::where('location', 'Pos Barat')
-                ->whereBetween('testDateTime', [
-                    Carbon::parse($startDate)->startOfDay(),
-                    Carbon::parse($endDate)->endOfDay(),
-                ])->get();
-
-            if ($filteredForms->isEmpty()) {
-                return back()->with('status', 'Tidak ada data yang ditemukan dalam rentang tanggal tersebut.');
-            }
-
-            return view('partials.posbarat', [
-                'allHhmdForms' => $filteredForms,
-                'startDate' => $startDate,
-                'endDate' => $endDate,
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Filter Posbarat Error: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Terjadi kesalahan saat memfilter data: ' . $e->getMessage()]);
-        }
-    }
 
     public function pscputara_formCard()
     {
@@ -329,37 +235,6 @@ class DashboardController extends Controller
         return view('partials.pscputara', compact('allHhmdForms'));
     }
 
-    public function filterpscputara_FormCardByDate(Request $request)
-    {
-        $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
-
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-
-        try {
-            $filteredForms = hhmdsaved::where('location', 'PSCP Utara')
-                ->whereBetween('testDateTime', [
-                    Carbon::parse($startDate)->startOfDay(),
-                    Carbon::parse($endDate)->endOfDay(),
-                ])->get();
-
-            if ($filteredForms->isEmpty()) {
-                return back()->with('status', 'Tidak ada data yang ditemukan dalam rentang tanggal tersebut.');
-            }
-
-            return view('partials.pscputara', [
-                'allHhmdForms' => $filteredForms,
-                'startDate' => $startDate,
-                'endDate' => $endDate,
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Filter PSCP Utara Error: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Terjadi kesalahan saat memfilter data: ' . $e->getMessage()]);
-        }
-    }
 
     public function pscpselatan_formCard()
     {
@@ -380,37 +255,6 @@ class DashboardController extends Controller
         return view('partials.pscpselatan', compact('allHhmdForms'));
     }
 
-    public function filterpscpselatan_FormCardByDate(Request $request)
-    {
-        $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
-
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-
-        try {
-            $filteredForms = hhmdsaved::where('location', 'PSCP Selatan')
-                ->whereBetween('testDateTime', [
-                    Carbon::parse($startDate)->startOfDay(),
-                    Carbon::parse($endDate)->endOfDay(),
-                ])->get();
-
-            if ($filteredForms->isEmpty()) {
-                return back()->with('status', 'Tidak ada data yang ditemukan dalam rentang tanggal tersebut.');
-            }
-
-            return view('partials.pscpselatan', [
-                'allHhmdForms' => $filteredForms,
-                'startDate' => $startDate,
-                'endDate' => $endDate,
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Filter HBSCP Error: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Terjadi kesalahan saat memfilter data: ' . $e->getMessage()]);
-        }
-    }
 
     public function hbscp_formCard()
     {
@@ -431,37 +275,6 @@ class DashboardController extends Controller
         return view('partials.hbscp', compact('allHhmdForms'));
     }
 
-    public function filterhbscp_FormCardByDate(Request $request)
-    {
-        $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
-
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-
-        try {
-            $filteredForms = hhmdsaved::where('location', 'HBSCP')
-                ->whereBetween('testDateTime', [
-                    Carbon::parse($startDate)->startOfDay(),
-                    Carbon::parse($endDate)->endOfDay(),
-                ])->get();
-
-            if ($filteredForms->isEmpty()) {
-                return back()->with('status', 'Tidak ada data yang ditemukan dalam rentang tanggal tersebut.');
-            }
-
-            return view('partials.hbscp', [
-                'allHhmdForms' => $filteredForms,
-                'startDate' => $startDate,
-                'endDate' => $endDate,
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Filter HBSCP Error: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Terjadi kesalahan saat memfilter data: ' . $e->getMessage()]);
-        }
-    }
 
     public function wtmd_postimur_formCard()
     {
@@ -480,38 +293,6 @@ class DashboardController extends Controller
         }
 
         return view('partials.wtmd.postimur', compact('allWtmdForms'));
-    }
-
-    public function filter_wtmd_postimur_FormCardByDate(Request $request)
-    {
-        $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
-
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-
-        try {
-            $filteredForms = wtmdsaved::where('location', 'Pos Timur')
-                ->whereBetween('testDateTime', [
-                    Carbon::parse($startDate)->startOfDay(),
-                    Carbon::parse($endDate)->endOfDay(),
-                ])->get();
-
-            if ($filteredForms->isEmpty()) {
-                return back()->with('status', 'Tidak ada data yang ditemukan dalam rentang tanggal tersebut.');
-            }
-
-            return view('partials.wtmd.postimur', [
-                'allWtmdForms' => $filteredForms,
-                'startDate' => $startDate,
-                'endDate' => $endDate,
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Filter WTMD Pos Timur Error: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Terjadi kesalahan saat memfilter data: ' . $e->getMessage()]);
-        }
     }
 
     public function wtmd_pscpselatan_formCard()
@@ -533,37 +314,6 @@ class DashboardController extends Controller
         return view('partials.wtmd.pscpselatan', compact('allWtmdForms'));
     }
 
-    public function filter_wtmd_pscpselatan_FormCardByDate(Request $request)
-    {
-        $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
-
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-
-        try {
-            $filteredForms = wtmdsaved::where('location', 'PSCP Selatan')
-                ->whereBetween('testDateTime', [
-                    Carbon::parse($startDate)->startOfDay(),
-                    Carbon::parse($endDate)->endOfDay(),
-                ])->get();
-
-            if ($filteredForms->isEmpty()) {
-                return back()->with('status', 'Tidak ada data yang ditemukan dalam rentang tanggal tersebut.');
-            }
-
-            return view('partials.wtmd.pscpselatan', [
-                'allWtmdForms' => $filteredForms,
-                'startDate' => $startDate,
-                'endDate' => $endDate,
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Filter WTMD Pos Timur Error: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Terjadi kesalahan saat memfilter data: ' . $e->getMessage()]);
-        }
-    }
 
     public function wtmd_pscputara_formCard()
     {
@@ -582,38 +332,6 @@ class DashboardController extends Controller
         }
 
         return view('partials.wtmd.pscputara', compact('allWtmdForms'));
-    }
-
-    public function filter_wtmd_pscputara_FormCardByDate(Request $request)
-    {
-        $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
-
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-
-        try {
-            $filteredForms = wtmdsaved::where('location', 'PSCP Utara')
-                ->whereBetween('testDateTime', [
-                    Carbon::parse($startDate)->startOfDay(),
-                    Carbon::parse($endDate)->endOfDay(),
-                ])->get();
-
-            if ($filteredForms->isEmpty()) {
-                return back()->with('status', 'Tidak ada data yang ditemukan dalam rentang tanggal tersebut.');
-            }
-
-            return view('partials.wtmd.pscputara', [
-                'allWtmdForms' => $filteredForms,
-                'startDate' => $startDate,
-                'endDate' => $endDate,
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Filter WTMD Pos Timur Error: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Terjadi kesalahan saat memfilter data: ' . $e->getMessage()]);
-        }
     }
 
     public function xray_cabinutara_formCard()
@@ -635,38 +353,6 @@ class DashboardController extends Controller
         return view('partials.xray.cabinutara', compact('allXrayForms'));
     }
 
-    public function filter_xray_cabinutara_FormCardByDate(Request $request)
-    {
-        $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
-
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-
-        try {
-            $filteredForms = wtmdsaved::where('location', 'PSCP Cabin Utara')
-                ->whereBetween('testDateTime', [
-                    Carbon::parse($startDate)->startOfDay(),
-                    Carbon::parse($endDate)->endOfDay(),
-                ])->get();
-
-            if ($filteredForms->isEmpty()) {
-                return back()->with('status', 'Tidak ada data yang ditemukan dalam rentang tanggal tersebut.');
-            }
-
-            return view('partials.xray.cabinutara', [
-                'allXrayForms' => $filteredForms,
-                'startDate' => $startDate,
-                'endDate' => $endDate,
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Filter WTMD Pos Timur Error: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Terjadi kesalahan saat memfilter data: ' . $e->getMessage()]);
-        }
-    }
-
     public function xray_cabinselatan_formCard()
     {
         $user = Auth::user();
@@ -684,38 +370,6 @@ class DashboardController extends Controller
         }
 
         return view('partials.xray.cabinselatan', compact('allXrayForms'));
-    }
-
-    public function filter_xray_cabinselatan_FormCardByDate(Request $request)
-    {
-        $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
-
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-
-        try {
-            $filteredForms = wtmdsaved::where('location', 'PSCP Cabin Selatan')
-                ->whereBetween('testDateTime', [
-                    Carbon::parse($startDate)->startOfDay(),
-                    Carbon::parse($endDate)->endOfDay(),
-                ])->get();
-
-            if ($filteredForms->isEmpty()) {
-                return back()->with('status', 'Tidak ada data yang ditemukan dalam rentang tanggal tersebut.');
-            }
-
-            return view('partials.xray.cabinselatan', [
-                'allXrayForms' => $filteredForms,
-                'startDate' => $startDate,
-                'endDate' => $endDate,
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Filter WTMD Pos Timur Error: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Terjadi kesalahan saat memfilter data: ' . $e->getMessage()]);
-        }
     }
 
     public function xray_bagasibarat_formCard()
@@ -737,38 +391,6 @@ class DashboardController extends Controller
         return view('partials.xray.bagasibarat', compact('allXrayForms'));
     }
 
-    public function filter_xray_bagasibarat_FormCardByDate(Request $request)
-    {
-        $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
-
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-
-        try {
-            $filteredForms = wtmdsaved::where('location', 'HBSCP Bagasi Barat')
-                ->whereBetween('testDateTime', [
-                    Carbon::parse($startDate)->startOfDay(),
-                    Carbon::parse($endDate)->endOfDay(),
-                ])->get();
-
-            if ($filteredForms->isEmpty()) {
-                return back()->with('status', 'Tidak ada data yang ditemukan dalam rentang tanggal tersebut.');
-            }
-
-            return view('partials.xray.bagasibarat', [
-                'allXrayForms' => $filteredForms,
-                'startDate' => $startDate,
-                'endDate' => $endDate,
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Filter WTMD Pos Timur Error: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Terjadi kesalahan saat memfilter data: ' . $e->getMessage()]);
-        }
-    }
-
     public function xray_bagasitimur_formCard()
     {
         $user = Auth::user();
@@ -787,38 +409,4 @@ class DashboardController extends Controller
 
         return view('partials.xray.bagasitimur', compact('allXrayForms'));
     }
-
-    public function filter_xray_bagasitimur_FormCardByDate(Request $request)
-    {
-        $request->validate([
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-        ]);
-
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-
-        try {
-            $filteredForms = wtmdsaved::where('location', 'HBSCP Bagasi Timur')
-                ->whereBetween('testDateTime', [
-                    Carbon::parse($startDate)->startOfDay(),
-                    Carbon::parse($endDate)->endOfDay(),
-                ])->get();
-
-            if ($filteredForms->isEmpty()) {
-                return back()->with('status', 'Tidak ada data yang ditemukan dalam rentang tanggal tersebut.');
-            }
-
-            return view('partials.xray.bagasitimur', [
-                'allXrayForms' => $filteredForms,
-                'startDate' => $startDate,
-                'endDate' => $endDate,
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Filter WTMD Pos Timur Error: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Terjadi kesalahan saat memfilter data: ' . $e->getMessage()]);
-        }
-    }
-
-
 }
