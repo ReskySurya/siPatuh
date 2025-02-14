@@ -38,45 +38,57 @@
 
         // Set the value of the input
         document.getElementById('testDateTime').value = formattedDateTime;
-    });
-    // Get the current date and time
 
-    // Add this function to your form's onsubmit event
-    function onFormSubmit(event) {
-        event.preventDefault();
-        document.getElementById('hhmdForm').submit();
-    }
+        // Validasi form dan tanda tangan
+        const form = document.getElementById('hhmdForm');
+        const submitButton = document.getElementById('submitButton');
+        const buttonText = document.getElementById('buttonText');
+        const buttonLoading = document.getElementById('buttonLoading');
 
-    function updateResult() {
-        var test2 = document.getElementById('test2').checked;
+        form.onsubmit = function(event) {
+            event.preventDefault();
 
-        var resultPass = document.getElementById('resultPass');
-        var resultFail = document.getElementById('resultFail');
-        var resultHidden = document.getElementById('result');
+            const signatureInput = document.getElementById('officerSignatureData');
+            const supervisorSelect = document.getElementById('supervisor_id');
 
-        if (test2) {
-            resultPass.checked = true;
-            resultFail.checked = false;
-            resultHidden.value = 'pass';
-        } else {
-            resultPass.checked = false;
-            resultFail.checked = true;
-            resultHidden.value = 'fail';
-        }
-    }
+            // Validasi tanda tangan
+            if (!signatureInput || !signatureInput.value) {
+                Swal.fire({
+                    title: 'Tanda Tangan Diperlukan!',
+                    text: 'Anda harus menyimpan tanda tangan terlebih dahulu sebelum submit form.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                });
 
-    // Panggil updateResult saat halaman dimuat
-    document.addEventListener('DOMContentLoaded', updateResult);
+                document.querySelector('.signature-section').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                return false;
+            }
 
-    // Tambahkan event listener untuk setiap checkbox test
-    document.getElementById('test2').addEventListener('change', updateResult);
+            // Validasi supervisor
+            if (!supervisorSelect.value) {
+                Swal.fire({
+                    title: 'Supervisor Diperlukan!',
+                    text: 'Silakan pilih supervisor terlebih dahulu.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                });
+                return false;
+            }
 
-    // Tambahkan event listener untuk form submission
-    document.getElementById('hhmdForm').addEventListener('submit', function(event) {
-        updateResult(); // Pastikan result diupdate sebelum form disubmit
-    });
+            // Tampilkan loading state
+            submitButton.disabled = true;
+            buttonText.classList.add('hidden');
+            buttonLoading.classList.remove('hidden');
 
-    document.addEventListener('DOMContentLoaded', function() {
+            // Submit form
+            form.submit();
+        };
+
         const canvas = document.getElementById('signatureCanvas');
         const ctx = canvas.getContext('2d');
         let isDrawing = false;
@@ -183,8 +195,33 @@
 
         document.getElementById('clearSignature').addEventListener('click', clearCanvas);
         document.getElementById('saveOfficerSignature').addEventListener('click', saveOfficerSignature);
-    });
 
+        // Fungsi untuk mengecek status checkbox dan mengupdate radio button
+        function updateRadioResult() {
+            const test2Checkbox = document.getElementById('test2');
+            const resultPass = document.getElementById('resultPass');
+            const resultFail = document.getElementById('resultFail');
+            const resultHidden = document.getElementById('result');
+
+            if (test2Checkbox.checked) {
+                resultPass.checked = true;
+                resultHidden.value = 'pass';
+            } else {
+                resultFail.checked = true;
+                resultHidden.value = 'fail';
+            }
+        }
+
+        // Event listener untuk checkbox
+        document.getElementById('test2').addEventListener('change', updateRadioResult);
+
+        // Nonaktifkan radio button agar tidak bisa diklik manual
+        document.getElementById('resultPass').addEventListener('click', (e) => e.preventDefault());
+        document.getElementById('resultFail').addEventListener('click', (e) => e.preventDefault());
+
+        // Inisialisasi status awal
+        updateRadioResult();
+    });
 </script>
 
 @if(!isset($isPdf))

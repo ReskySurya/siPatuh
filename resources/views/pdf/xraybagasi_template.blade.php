@@ -71,7 +71,7 @@
 <body class="m-0 p-0">
     @foreach($forms as $form)
     <div class="page-break-after">
-        <div class="bg-white p-4" style="width: 210mm;">
+        <div class="bg-white p-4">
             <div id="format" class="mx-auto">
                 <div class="border-t-2 border-x-2 border-black bg-white shadow-md px-4 py-2">
                     <div class="flex items-center justify-between">

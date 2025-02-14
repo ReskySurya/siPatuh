@@ -1,3 +1,11 @@
+@push('styles')
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+@endpush
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@endpush
+
 <div class="bg-white p-4 w-full max-w-full">
     <div id="format" class="mx-auto w-full">
         <div class="border-t-2 border-x-2 border-black bg-white shadow-md p-4">
@@ -13,25 +21,32 @@
             </div>
         </div>
 
-        <form id="hhmdForm" action="{{ route('submit.hhmd') }}" method="POST" enctype="multipart/form-data" onsubmit="onFormSubmit(event)" class="mt-0">
+        <form id="hhmdForm" action="{{ route('submit.hhmd') }}" method="POST" enctype="multipart/form-data"
+            onsubmit="onFormSubmit(event)" class="mt-0">
             @csrf
             <div class="border-2 border-black bg-white shadow">
                 <table class="w-full text-xs sm:text-sm">
                     <tbody>
                         <tr class="border-b border-black">
                             <th class="w-1/3 text-left p-1 sm:p-2">
-                                <label for="operatorName" class="text-gray-700 font-bold">Nama Operator Penerbangan:</label>
+                                <label for="operatorName" class="text-gray-700 font-bold">Nama Operator
+                                    Penerbangan:</label>
                             </th>
                             <td class="w-2/3 p-2">
-                                <input type="text" id="operatorName" name="operatorName" class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base" value="Bandar Udara Adisutjipto Yogyakarta" readonly>
+                                <input type="text" id="operatorName" name="operatorName"
+                                    class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base"
+                                    value="Bandar Udara Adisutjipto Yogyakarta" readonly>
                             </td>
                         </tr>
                         <tr class="border-b border-black">
                             <th class="w-1/3 text-left p-1 sm:p-2">
-                                <label for="testDateTime" class="text-gray-700 font-bold">Tanggal & Waktu Pengujian:</label>
+                                <label for="testDateTime" class="text-gray-700 font-bold">Tanggal & Waktu
+                                    Pengujian:</label>
                             </th>
                             <td class="w-2/3 p-2">
-                                <input type="datetime-local" id="testDateTime" name="testDateTime" class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base" readonly>
+                                <input type="datetime-local" id="testDateTime" name="testDateTime"
+                                    class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base"
+                                    readonly>
                             </td>
                         </tr>
                         <tr class="border-b border-black">
@@ -39,7 +54,8 @@
                                 <label for="location" class="text-gray-700 font-bold">Lokasi Penempatan:</label>
                             </th>
                             <td class="w-2/3 p-2">
-                                <select id="location" name="location" class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base">
+                                <select id="location" name="location"
+                                    class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base">
                                     <option value="">Pilih Lokasi</option>
                                     <option value="HBSCP">HBSCP</option>
                                     <option value="Pos Timur">Pos Timur</option>
@@ -55,15 +71,18 @@
                                 <label for="deviceInfo" class="text-gray-700 font-bold">Merk/Tipe/Nomor Seri:</label>
                             </th>
                             <td class="w-2/3 p-2">
-                                <input type="text" id="deviceInfo" name="deviceInfo" class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base">
+                                <input type="text" id="deviceInfo" name="deviceInfo"
+                                    class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base">
                             </td>
                         </tr>
                         <tr class="border-b border-black">
                             <th class="w-1/3 text-left p-1 sm:p-2">
-                                <label for="certificateInfo" class="text-gray-700 font-bold">Nomor dan Tanggal Sertifikat:</label>
+                                <label for="certificateInfo" class="text-gray-700 font-bold">Nomor dan Tanggal
+                                    Sertifikat:</label>
                             </th>
                             <td class="w-2/3 p-2">
-                                <input type="text" id="certificateInfo" name="certificateInfo" class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base">
+                                <input type="text" id="certificateInfo" name="certificateInfo"
+                                    class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base">
                             </td>
                         </tr>
                     </tbody>
@@ -73,13 +92,15 @@
                     <div class="p-2">
                         <div class="mb-0">
                             <label class="inline-flex items-center">
-                                <input type="checkbox" id="terpenuhi" name="terpenuhi" class="form-checkbox" value="1" checked>
+                                <input type="checkbox" id="terpenuhi" name="terpenuhi" class="form-checkbox" value="1"
+                                    checked>
                                 <span class="ml-2 text-sm">Terpenuhi</span>
                             </label>
                         </div>
                         <div>
                             <label class="inline-flex items-center">
-                                <input type="checkbox" id="tidakterpenuhi" name="tidakterpenuhi" class="form-checkbox" value="1">
+                                <input type="checkbox" id="tidakterpenuhi" name="tidakterpenuhi" class="form-checkbox"
+                                    value="1">
                                 <span class="ml-2 text-sm">Tidak Terpenuhi</span>
                             </label>
                         </div>
@@ -88,17 +109,21 @@
                         <div>
                             <h2 class="font-bold mb-2">TEST 1</h2>
                             <div class="w-20 h-20 mx-auto border-2 border-black flex items-center justify-center">
-                                <input type="checkbox" id="test2" name="test2" class="form-checkbox h-5 w-5" onchange="updateResult()" value="1">
+                                <input type="checkbox" id="test2" name="test2" class="form-checkbox h-5 w-5"
+                                    onchange="updateResult()" value="1">
                             </div>
                         </div>
                     </div>
                     <div class="border-x-2 border-black pt-10 pb-10">
                         <div class="flex items-center mb-0 pl-4">
-                            <input type="checkbox" id="testCondition1" name="testCondition1" class="form-checkbox" value="1" checked>
-                            <label for="testCondition1" class="ml-2 text-sm">Letak alat uji OTP dan HHMD pada saat pengujian harus > 1m dari benda logam lain disekelilingnya.</label>
+                            <input type="checkbox" id="testCondition1" name="testCondition1" class="form-checkbox"
+                                value="1" checked>
+                            <label for="testCondition1" class="ml-2 text-sm">Letak alat uji OTP dan HHMD pada saat
+                                pengujian harus > 1m dari benda logam lain disekelilingnya.</label>
                         </div>
                         <div class="flex items-center mb-0 pl-4">
-                            <input type="checkbox" id="testCondition2" name="testCondition2" class="form-checkbox" value="1" checked>
+                            <input type="checkbox" id="testCondition2" name="testCondition2" class="form-checkbox"
+                                value="1" checked>
                             <label for="testCondition2" class="ml-2 text-sm">Jarak antara HHMD dan OTP > 3-5 cm.</label>
                         </div>
                     </div>
@@ -109,18 +134,22 @@
                         <label class="text-gray-700 font-bold mr-4">Hasil:</label>
                         <div class="flex flex-col">
                             <div class="flex items-center mb-0">
-                                <input type="radio" id="resultPass" name="result" value="pass" class="form-radio" onclick="document.getElementById('result').value='pass'">
+                                <input type="radio" id="resultPass" name="result" value="pass" class="form-radio"
+                                    onclick="document.getElementById('result').value='pass'">
                                 <label for="resultPass" class="text-sm ml-2">PASS</label>
                             </div>
                             <div class="flex items-center">
-                                <input type="radio" id="resultFail" name="result" value="fail" class="form-radio" onclick="document.getElementById('result').value='fail'">
+                                <input type="radio" id="resultFail" name="result" value="fail" class="form-radio"
+                                    onclick="document.getElementById('result').value='fail'">
                                 <label for="resultFail" class="text-sm ml-2">FAIL</label>
                             </div>
                         </div>
                     </div>
                     <div>
                         <label for="notes" class="block text-gray-700 font-bold mb-2">CATATAN:</label>
-                        <textarea id="notes" name="notes" class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base" rows="2"></textarea>
+                        <textarea id="notes" name="notes"
+                            class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base"
+                            rows="2"></textarea>
                     </div>
                 </div>
 
@@ -134,27 +163,40 @@
                             <div class="text-center self-end">
                                 <h4 class="font-bold">
                                     @if(Auth::guard('officer')->check())
-                                        {{ Auth::guard('officer')->user()->name }}
+                                    {{ Auth::guard('officer')->user()->name }}
                                     @else
-                                        {{ Auth::user()->name }}
+                                    {{ Auth::user()->name }}
                                     @endif
                                 </h4>
-                                <input type="hidden" name="officerName" value="{{ Auth::guard('officer')->check() ? Auth::guard('officer')->user()->name : Auth::user()->name }}">
-                                <label for="securityOfficerSignature" class="text-gray-700 font-normal">1. Airport Security Officer</label>
+                                <input type="hidden" name="officerName"
+                                    value="{{ Auth::guard('officer')->check() ? Auth::guard('officer')->user()->name : Auth::user()->name }}">
+                                <label for="securityOfficerSignature" class="text-gray-700 font-normal">1. Airport
+                                    Security Officer</label>
                             </div>
                             <div class="text-center self-end">
-                                <label for="securitySupervisorSignature" class="text-gray-700 font-normal">2. Airport Security Supervisor</label>
+                                <label for="securitySupervisorSignature" class="text-gray-700 font-normal">2. Airport
+                                    Security Supervisor</label>
                             </div>
                         </div>
                         <div>
                             <!-- Kolom Kanan (Canvas dan Tombol Clear) -->
-                            <div>
-                                <canvas class="border border-black rounded-md w-full" id="signatureCanvas" width="300" height="150"></canvas>
-                                <div class="mt-2 flex justify-start space-x-2">
-                                    <button type="button" id="clearSignature" class="bg-slate-200 border border-black text-black px-2 py-1 sm:px-4 sm:py-2 rounded text-xs sm:text-base">Clear</button>
-                                    <button type="button" id="saveOfficerSignature" class="bg-slate-200 border border-black text-black px-2 py-1 sm:px-4 sm:py-2 rounded text-xs sm:text-base">Save</button>
+                            <div class="signature-section mt-4">
+                                <h3 class="text-lg font-semibold mb-2">Tanda Tangan Officer</h3>
+                                <div class="border p-4 rounded">
+                                    <canvas id="signatureCanvas" class="border border-gray-300 rounded" width="400"
+                                        height="200"></canvas>
+                                    <div class="mt-2 flex space-x-2">
+                                        <button type="button" id="clearSignature"
+                                            class="px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+                                            Clear
+                                        </button>
+                                        <button type="button" id="saveOfficerSignature"
+                                            class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+                                            Save Signature
+                                        </button>
+                                    </div>
+                                    <input type="hidden" name="officer_signature_data" id="officerSignatureData">
                                 </div>
-                                <input type="hidden" name="officer_signature_data" id="officerSignatureData">
                             </div>
                         </div>
                     </div>
@@ -165,18 +207,33 @@
 
             <div class="mt-2 sm:mt-4 px-2 sm:px-0">
                 <div class="mb-2 sm:mb-4">
-                    <label for="supervisor_id" class="block text-gray-700 font-bold text-xs sm:text-base mb-1 sm:mb-2">Pilih Supervisor:</label>
-                    <select name="supervisor_id" id="supervisor_id" class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base" required>
+                    <label for="supervisor_id"
+                        class="block text-gray-700 font-bold text-xs sm:text-base mb-1 sm:mb-2">Pilih
+                        Supervisor:</label>
+                    <select name="supervisor_id" id="supervisor_id"
+                        class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base" required>
                         <option value="">Pilih Supervisor</option>
                         @foreach(\App\Models\User::where('role', 'supervisor')->get() as $supervisor)
-                            <option value="{{ $supervisor->id }}">{{ $supervisor->name }}</option>
+                        <option value="{{ $supervisor->id }}">{{ $supervisor->name }}</option>
                         @endforeach
                     </select>
                 </div>
 
-                <div class="flex items-center justify-between">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-2 py-1 sm:px-4 sm:py-2 rounded text-xs sm:text-base" type="submit">
-                        Submit to Approver
+                <div class="mt-4">
+                    <button type="submit" id="submitButton"
+                        class="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-200">
+                        <span id="buttonText">Submit Form</span>
+                        <span id="buttonLoading" class="hidden">
+                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            Submitting...
+                        </span>
                     </button>
                 </div>
             </div>
