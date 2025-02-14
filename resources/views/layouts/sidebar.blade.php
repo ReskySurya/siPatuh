@@ -21,9 +21,9 @@
     }">
         <!-- Toggle button -->
         <button @click="sidebarOpen = !sidebarOpen"
-            class="absolute top-4 -right-3 bg-[#4A97CD] text-white p-1 rounded-full shadow-md hover:bg-[#3A87BD] focus:outline-none">
+            class="absolute top-4 -right-7 bg-[#4A97CD] text-white p-1 rounded-md shadow-md hover:bg-[#3A87BD] focus:outline-none">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                class="w-6 h-6 transition-transform duration-300 ease-in-out">
+                class="w-8 h- 8transition-transform duration-300 ease-in-out">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
         </button>

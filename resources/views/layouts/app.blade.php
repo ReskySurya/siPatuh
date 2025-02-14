@@ -31,10 +31,10 @@
 
         <div class="flex-1 flex flex-col">
             <!-- Navbar dengan mobile responsiveness -->
-            <nav class="bg-[#66B82E] text-white p-4">
+            <nav class="bg-[#66B82E] text-white p-4 fixed w-full z-10">
                 <div class="container mx-auto">
                     <div class="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
-                        <div class="flex w-full sm:w-auto">
+                        <div class="flex w-full sm:w-auto px-4">
                             <input type="text" placeholder="Search..."
                                 class="flex-1 px-4 py-2 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-white text-gray-800">
                             <button type="submit"
@@ -69,7 +69,7 @@
                     mx-auto
                     sm:px-4
                     md:px-6
-                    lg:px-8">
+                    lg:px-8 mt-16">
 
                     @yield('content')
                 </div>

@@ -14,13 +14,14 @@
             @csrf
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="login">
-                    {{ __('Email or NIP') }}
+                    {{ __('Email / NIP') }}
                 </label>
                 <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight
                 focus:outline-none focus:shadow-outline @error('login') border-red-500 @enderror"
                        id="login"
                        type="text"
                        name="login"
+                       placeholder="Masukkan Email atau NIP"
                        value="{{ old('login') }}"
                        required
                        autofocus>

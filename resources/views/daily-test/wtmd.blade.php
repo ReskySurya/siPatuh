@@ -110,9 +110,40 @@
         }
 
         function saveOfficerSignature() {
-            const officerSignatureData = canvas.toDataURL('image/png');
-            document.getElementById('officerSignatureData').value = officerSignatureData;
-            alert('Tanda tangan Officer disimpan!');
+            try {
+                const canvas = document.getElementById('signatureCanvas');
+                const signatureData = canvas.toDataURL('image/png');
+                const signatureInput = document.getElementById('officerSignatureData');
+
+                if (!signatureInput) {
+                    console.error('Element officerSignatureData tidak ditemukan');
+                    return;
+                }
+
+                signatureInput.value = signatureData;
+
+                // Buat preview container
+                const previewContainer = document.createElement('div');
+                previewContainer.id = 'signaturePreview';
+                previewContainer.innerHTML = `
+                    <img src="${signatureData}" alt="Tanda tangan Officer" class="max-w-full h-auto">
+                `;
+
+                // Ganti canvas dengan preview
+                const canvasContainer = canvas.parentElement;
+                canvas.remove();
+                canvasContainer.appendChild(previewContainer);
+
+                // Sembunyikan tombol clear dan save
+                document.getElementById('clearSignature').style.display = 'none';
+                document.getElementById('saveOfficerSignature').style.display = 'none';
+
+                alert('Tanda tangan berhasil disimpan');
+                console.log('Signature data saved:', signatureData.substring(0, 100) + '...');
+            } catch (error) {
+                console.error('Error saving signature:', error);
+                alert('Terjadi kesalahan saat menyimpan tanda tangan');
+            }
         }
 
         // Event listeners untuk mouse

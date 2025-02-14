@@ -48,10 +48,10 @@ Route::middleware(['checkrole:superadmin,supervisor'])->group(function () {
     Route::get('/masterdata', [MasterDataController::class, 'index'])->name('masterdata.index');
     Route::post('/masterdata/add-user', [MasterDataController::class, 'addUser'])->name('masterdata.addUser');
     Route::post('/masterdata/add-officer', [MasterDataController::class, 'addOfficer'])->name('masterdata.addOfficer');
-    Route::put('/masterdata/officer/{id}', [MasterDataController::class, 'editOfficer'])->name('masterdata.updateOfficer');
+    Route::put('/masterdata/officer/{id}', [MasterDataController::class, 'updateOfficer'])->name('masterdata.updateOfficer');
     Route::delete('/masterdata/officer/{id}', [MasterDataController::class, 'deleteOfficer'])->name('masterdata.deleteOfficer');
     Route::get('/masterdata/officer/{id}', [MasterDataController::class, 'getOfficer'])->name('masterdata.getOfficer');
-    Route::put('/masterdata/user/{id}', [MasterDataController::class, 'editUser'])->name('masterdata.updateUser');
+    Route::put('/masterdata/user/{id}', [MasterDataController::class, 'updateUser'])->name('masterdata.updateUser');
     Route::delete('/masterdata/user/{id}', [MasterDataController::class, 'deleteUser'])->name('masterdata.deleteUser');
     Route::get('/masterdata/user/{id}', [MasterDataController::class, 'getUser'])->name('masterdata.getUser');
     Route::get('/hhmdform', [DashboardController::class, 'hhmdIndex'])->name('hhmdform');

@@ -21,6 +21,7 @@ class MasterDataController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'nip' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:8',
             'role' => 'required|string',
             'image_signature' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -29,6 +30,7 @@ class MasterDataController extends Controller
         $user = new User();
         $user->name = $validatedData['name'];
         $user->email = $validatedData['email'];
+        $user->nip = $validatedData['nip'];
         $user->password = bcrypt($validatedData['password']);
         $user->role = $validatedData['role'];
         if ($request->hasFile('image_signature')) {
@@ -39,6 +41,13 @@ class MasterDataController extends Controller
         }
         $user->save();
         return redirect()->route('masterdata.index')->with('success', 'User baru berhasil ditambahkan');
+    }
+
+    public function editUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+        return response()->json(['success' => true]);
     }
 
     public function addOfficer(Request $request)
@@ -122,84 +131,50 @@ class MasterDataController extends Controller
     {
         try {
             $officer = Officer::findOrFail($id);
-            $officerArray = $officer->toArray();
-
-            // Bersihkan data dari karakter yang tidak valid
-            array_walk_recursive($officerArray, function (&$item) {
-                if (!mb_detect_encoding($item, 'UTF-8', true)) {
-                    $item = utf8_encode($item);
-                }
-            });
-
-            return response()->json($officerArray);
+            return response()->json([
+                'id' => $officer->id,
+                'name' => $officer->name,
+                'email' => $officer->email,
+                'nip' => $officer->nip
+            ]);
         } catch (\Exception $e) {
-            Log::error('Error fetching officer: ' . $e->getMessage());
-            return response()->json(['error' => 'Terjadi kesalahan saat mengambil data officer: ' . $e->getMessage()], 500);
+            return response()->json(['error' => 'Officer tidak ditemukan'], 404);
         }
+    }
+
+    public function updateOfficer(Request $request, $id)
+    {
+        $officer = Officer::findOrFail($id);
+        $officer->update($request->all());
+        return response()->json(['success' => true]);
     }
 
     public function getUser($id)
     {
         try {
             $user = User::findOrFail($id);
-            $userArray = $user->toArray();
-
-            // Bersihkan data dari karakter yang tidak valid
-            array_walk_recursive($userArray, function (&$item) {
-                if (!mb_detect_encoding($item, 'UTF-8', true)) {
-                    $item = utf8_encode($item);
-                }
-            });
-
-            return response()->json($userArray);
+            return response()->json([
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'nip' => $user->nip,
+                'role' => $user->role
+            ]);
         } catch (\Exception $e) {
-            Log::error('Error fetching user: ' . $e->getMessage());
-            return response()->json(['error' => 'Terjadi kesalahan saat mengambil data user: ' . $e->getMessage()], 500);
+            return response()->json(['error' => 'User tidak ditemukan'], 404);
         }
     }
 
-    public function editUser(Request $request, $id)
+    public function updateUser(Request $request, $id)
     {
         $user = User::findOrFail($id);
-
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
-            'role' => 'required|string|in:superadmin,supervisor',
-            'image_signature' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
-
-        $user->update($validatedData);
-
-        foreach ($validatedData as $key => $value) {
-            if ($key === 'image_signature' && $request->hasFile('image_signature')) {
-                // Hapus tanda tangan lama jika ada
-                if ($user->image_signature) {
-                    unlink(public_path($user->image_signature));
-                }
-
-                $image = $request->file('image_signature');
-                $imageName = time() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('signatures'), $imageName);
-                $user->image_signature = 'signatures/' . $imageName;
-            } else {
-                $user->$key = $value;
-            }
-        }
-
-        $user->save();
-
+        $user->update($request->all());
         return response()->json(['success' => true]);
     }
 
     public function deleteUser($id)
     {
         $user = User::findOrFail($id);
-
-        // Hapus tanda tangan jika ada
-        if ($user->image_signature) {
-            unlink(public_path($user->image_signature));
-        }
 
         $user->delete();
 
