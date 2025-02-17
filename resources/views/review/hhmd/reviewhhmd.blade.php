@@ -9,14 +9,16 @@
             <div id="format" class="mx-auto w-full">
                 <div class="border-t-2 border-x-2 border-black bg-white shadow-md p-4">
                     <div class="flex flex-col sm:flex-row items-center justify-between">
-                        <img src="{{ asset('images/airport-security-logo.png') }}" alt="Logo" class="w-20 h-20 mb-2 sm:mb-0">
+                        <img src="{{ asset('images/airport-security-logo.png') }}" alt="Logo"
+                            class="w-20 h-20 mb-2 sm:mb-0">
                         <h1 class="text-sm sm:text-xl font-bold text-center flex-grow px-2">
                             CHECK LIST PENGUJIAN HARIAN<br>
                             PENDETEKSI LOGAM GENGGAM<br>
                             (HAND HELD METAL DETECTOR/HHMD)<br>
                             PADA KONDISI NORMAL (HIJAU)
                         </h1>
-                        <img src="{{ asset('images/injourney-logo.png') }}" alt="Injourney Logo" class="w-20 h-20 mt-2 sm:mt-0">
+                        <img src="{{ asset('images/injourney-logo.png') }}" alt="Injourney Logo"
+                            class="w-20 h-20 mt-2 sm:mt-0">
                     </div>
                 </div>
 
@@ -73,7 +75,8 @@
                         <div class="border-x-2 border-black pt-10 pb-10">
                             <div class="flex items-center mb-0 pl-4">
                                 <input type="checkbox" {{ $form->testCondition1 ? 'checked' : '' }} disabled>
-                                <label class="ml-2 text-sm">Letak alat uji OTP dan HHMD pada saat pengujian harus > 1m dari benda logam lain disekelilingnya.</label>
+                                <label class="ml-2 text-sm">Letak alat uji OTP dan HHMD pada saat pengujian harus > 1m
+                                    dari benda logam lain disekelilingnya.</label>
                             </div>
                             <div class="flex items-center mb-0 pl-4">
                                 <input type="checkbox" {{ $form->testCondition2 ? 'checked' : '' }} disabled>
@@ -108,41 +111,48 @@
                             <div class="grid grid-rows-2 gap-1 sm:gap-2 items-center text-center">
                                 <div class="text-center self-end">
                                     <h4 class="font-bold">{{ $form->officerName }}</h4>
-                                    <label class="text-gray-700 font-normal text-xs sm:text-sm">1. Airport Security Officer</label>
+                                    <label class="text-gray-700 font-normal text-xs sm:text-sm">1. Airport Security
+                                        Officer</label>
                                 </div>
                                 <div class="text-center self-end">
                                     <h4 class="font-bold">
                                         @if($supervisor)
-                                            {{ $supervisor->name }}
+                                        {{ $supervisor->name }}
                                         @else
-                                            Nama Supervisor tidak tersedia
+                                        Nama Supervisor tidak tersedia
                                         @endif
                                     </h4>
-                                    <label class="text-gray-700 font-normal text-xs sm:text-sm">2. Airport Security Supervisor</label>
+                                    <label class="text-gray-700 font-normal text-xs sm:text-sm">2. Airport Security
+                                        Supervisor</label>
                                 </div>
                             </div>
                             <div>
                                 <div class="flex flex-col items-center">
                                     @if($form->officer_signature)
-                                        <img src="{{ $form->officer_signature }}" alt="Tanda tangan Officer" class="max-w-full h-auto">
+                                    <img src="{{ $form->officer_signature }}" alt="Tanda tangan Officer"
+                                        class="max-w-full h-auto">
                                     @else
-                                        <p class="text-xs sm:text-sm">Tanda tangan Officer tidak tersedia</p>
+                                    <p class="text-xs sm:text-sm">Tanda tangan Officer tidak tersedia</p>
                                     @endif
                                 </div>
                                 <div class="flex flex-col items-center mt-2 sm:mt-4">
                                     @if($form->supervisor_signature)
-                                        <img src="{{ $form->supervisor_signature }}" alt="Tanda tangan Supervisor" id="supervisorSignatureImage" class="max-w-full h-auto">
+                                    <img src="{{ $form->supervisor_signature }}" alt="Tanda tangan Supervisor"
+                                        id="supervisorSignatureImage" class="max-w-full h-auto">
                                     @else
-                                        <p class="text-xs sm:text-sm">Tanda tangan Supervisor tidak tersedia</p>
+                                    <p class="text-xs sm:text-sm">Tanda tangan Supervisor tidak tersedia</p>
                                     @endif
                                 </div>
                                 @if(!$form->supervisor_signature)
                                 <div class="flex flex-col items-center mt-2 sm:mt-4" id="signatureContainer">
                                     <h3 class="text-xs sm:text-sm font-bold mb-2">Tanda Tangan Supervisor</h3>
-                                    <canvas id="signatureCanvas" class="border border-black rounded-md w-full" width="300" height="150"></canvas>
+                                    <canvas id="signatureCanvas" class="border border-black rounded-md w-full"
+                                        width="300" height="150"></canvas>
                                     <div class="mt-2 flex justify-start space-x-2">
-                                        <button type="button" id="clearSignature" class="bg-slate-200 border border-black text-black px-2 py-1 sm:px-4 sm:py-2 rounded text-xs sm:text-base">Clear</button>
-                                        <button type="button" id="saveSupervisorSignature" class="bg-slate-200 border border-black text-black px-2 py-1 sm:px-4 sm:py-2 rounded text-xs sm:text-base">Save</button>
+                                        <button type="button" id="clearSignature"
+                                            class="bg-slate-200 border border-black text-black px-2 py-1 sm:px-4 sm:py-2 rounded text-xs sm:text-base">Clear</button>
+                                        <button type="button" id="saveSupervisorSignature"
+                                            class="bg-slate-200 border border-black text-black px-2 py-1 sm:px-4 sm:py-2 rounded text-xs sm:text-base">Save</button>
                                     </div>
                                 </div>
                                 @endif
@@ -153,14 +163,15 @@
             </div>
         </div>
 
-        <form action="{{ route('hhmd.updateStatus', $form->id) }}" method="POST" class="mt-2 sm:mt-4">
+        <form action="{{ route('hhmd.updateStatus', $form->id) }}" method="POST" class="mt-2 sm:mt-4" id="hhmdForm">
             @csrf
             @method('PATCH')
             <div class="mb-2 sm:mb-4">
                 <label class="block text-gray-700 text-xs sm:text-sm font-bold mb-1 sm:mb-2" for="status">
                     Status
                 </label>
-                <select name="status" id="status" class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base">
+                <select name="status" id="status"
+                    class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base">
                     <option value="approved">Setujui</option>
                     <option value="rejected">Tolak</option>
                 </select>
@@ -170,20 +181,19 @@
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="rejection_note">
                     Catatan Penolakan
                 </label>
-                <textarea
-                    name="rejection_note"
-                    id="rejection_note"
-                    rows="4"
+                <textarea name="rejection_note" id="rejection_note" rows="4"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    placeholder="Masukkan alasan penolakan..."
-                ></textarea>
+                    placeholder="Masukkan alasan penolakan..."></textarea>
             </div>
 
             <div class="flex items-center justify-between">
-                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-2 py-1 sm:px-4 sm:py-2 rounded text-xs sm:text-base" type="submit">
+                <button id="updateStatusButton"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-2 py-1 sm:px-4 sm:py-2 rounded text-xs sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
+                    type="submit" title="Harap simpan tanda tangan terlebih dahulu">
                     Perbarui Status
                 </button>
-                <a href="{{ route('dashboard') }}" class="text-xs sm:text-sm font-bold text-blue-500 hover:text-blue-800">
+                <a href="{{ route('dashboard') }}"
+                    class="text-xs sm:text-sm font-bold text-blue-500 hover:text-blue-800">
                     Kembali ke Dashboard
                 </a>
             </div>
@@ -193,40 +203,54 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('hhmdForm');
+        const submitButton = document.getElementById('updateStatusButton');
         const statusSelect = document.getElementById('status');
         const rejectionNoteContainer = document.getElementById('rejectionNoteContainer');
-        const rejectionNoteTextarea = document.getElementById('rejection_note');
-
-        statusSelect.addEventListener('change', function() {
-            if (this.value === 'rejected') {
-                rejectionNoteContainer.classList.remove('hidden');
-                // Tambahkan validasi bahwa catatan harus diisi
-                rejectionNoteTextarea.setAttribute('required', 'required');
-            } else {
-                rejectionNoteContainer.classList.add('hidden');
-                rejectionNoteTextarea.removeAttribute('required');
-            }
-        });
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
+        const signatureContainer = document.getElementById('signatureContainer');
         const canvas = document.getElementById('signatureCanvas');
         const ctx = canvas.getContext('2d');
+        const rejectionNoteTextarea = document.getElementById('rejection_note');
+
         let isDrawing = false;
         let lastX = 0;
         let lastY = 0;
 
-        // Touch events untuk mobile
+        // Event handler untuk status select
+        statusSelect.addEventListener('change', function() {
+            if (this.value === 'rejected') {
+                rejectionNoteContainer.classList.remove('hidden');
+            } else {
+                rejectionNoteContainer.classList.add('hidden');
+            }
+        });
+
+        function updateSubmitButtonState() {
+            const supervisorSignatureImage = document.getElementById('supervisorSignatureImage');
+            const hasSignature = supervisorSignatureImage !== null;
+
+            if (submitButton) {
+                submitButton.disabled = !hasSignature;
+                submitButton.classList.toggle('opacity-50', !hasSignature);
+                submitButton.classList.toggle('cursor-not-allowed', !hasSignature);
+                submitButton.title = hasSignature ? '' : 'Harap simpan tanda tangan terlebih dahulu';
+            }
+        }
+
+        updateSubmitButtonState();
+
+        // Touch events for mobile
         canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
         canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
         canvas.addEventListener('touchend', stopDrawing);
 
-        // Mouse events untuk desktop
+        // Mouse events for desktop
         canvas.addEventListener('mousedown', startDrawing);
         canvas.addEventListener('mousemove', draw);
         canvas.addEventListener('mouseup', stopDrawing);
         canvas.addEventListener('mouseout', stopDrawing);
 
+        // Clear and Save buttons
         document.getElementById('clearSignature').addEventListener('click', clearCanvas);
         document.getElementById('saveSupervisorSignature').addEventListener('click', saveSupervisorSignature);
 
@@ -297,8 +321,65 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
 
+        // Helper function to check if canvas is empty
+        function isCanvasEmpty(canvas) {
+            const context = canvas.getContext('2d');
+            const pixelBuffer = new Uint32Array(
+                context.getImageData(0, 0, canvas.width, canvas.height).data.buffer
+            );
+            return !pixelBuffer.some(color => color !== 0);
+        }
+
+        // Form submission handler
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Validasi tanda tangan untuk semua status
+            const supervisorSignatureImage = document.getElementById('supervisorSignatureImage');
+            if (!supervisorSignatureImage) {
+                Swal.fire({
+                    title: 'Tanda Tangan Diperlukan!',
+                    text: 'Anda harus menyimpan tanda tangan terlebih dahulu sebelum memperbarui status.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                });
+                return false;
+            }
+
+            if (statusSelect.value === 'rejected') {
+                // Validasi rejection note
+                if (!rejectionNoteTextarea.value.trim()) {
+                    Swal.fire({
+                        title: 'Catatan Diperlukan!',
+                        text: 'Silakan isi catatan penolakan.',
+                        icon: 'warning',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#3085d6'
+                    });
+                    rejectionNoteTextarea.focus();
+                    return false;
+                }
+            }
+
+            // Submit form jika semua validasi berhasil
+            this.submit();
+        });
+
+        // Fungsi save tanda tangan hanya fokus pada penyimpanan tanda tangan
         function saveSupervisorSignature() {
             const supervisorSignatureData = canvas.toDataURL('image/png');
+
+            if (isCanvasEmpty(canvas)) {
+                Swal.fire({
+                    title: 'Tanda Tangan Kosong!',
+                    text: 'Silakan buat tanda tangan terlebih dahulu.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                });
+                return;
+            }
 
             // Menampilkan tanda tangan yang disimpan
             const signatureContainer = document.getElementById('signatureContainer');
@@ -319,31 +400,44 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert('Tanda tangan berhasil disimpan');
-                    // Refresh halaman atau update UI sesuai kebutuhan
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: 'Tanda tangan berhasil disimpan',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#3085d6'
+                    });
+                    // Enable tombol perbarui status
+                    updateSubmitButtonState();
                 } else {
-                    alert('Gagal menyimpan tanda tangan');
+                    throw new Error('Gagal menyimpan tanda tangan');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Terjadi kesalahan saat menyimpan tanda tangan');
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Terjadi kesalahan saat menyimpan tanda tangan',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                });
             });
         }
 
-        // Menyesuaikan ukuran canvas saat resize window
+        // Handle window resize
         function resizeCanvas() {
             const container = canvas.parentElement;
             canvas.width = container.offsetWidth;
-            canvas.height = 150; // atau sesuaikan dengan kebutuhan
+            canvas.height = 150;
 
-            // Setel ulang properti context setelah resize
+            // Reset context properties after resize
             ctx.lineWidth = 2;
             ctx.lineCap = 'round';
             ctx.strokeStyle = '#000';
         }
 
-        // Panggil resizeCanvas saat halaman dimuat dan saat window di-resize
+        // Call resizeCanvas on page load and window resize
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
     });
