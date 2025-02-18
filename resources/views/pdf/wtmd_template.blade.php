@@ -156,7 +156,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="mb-28">
+                                    <div class="mb-20">
                                         <div class="flex items-center gap-1">
                                             <div class="flex flex-col gap-2">
                                                 <div class="flex items-center gap-1 pl-2.5">
