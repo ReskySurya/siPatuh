@@ -34,7 +34,7 @@ class MasterDataController extends Controller
         $user->nip = $validatedData['nip'];
         $user->password = bcrypt($validatedData['password']);
         $user->role = $validatedData['role'];
-        $user->role = $validatedData['lisensi'];
+        $user->lisensi = $validatedData['lisensi'];
         if ($request->hasFile('image_signature')) {
             $image = $request->file('image_signature');
             $imageName = time() . '.' . $image->getClientOriginalExtension();

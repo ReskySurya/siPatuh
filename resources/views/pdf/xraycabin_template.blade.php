@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>X-RAY BAGASI Forms</title>
+    <title>X-RAY CABIN Forms</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .custom-checkbox-alt {
@@ -77,7 +77,7 @@
                     <img src="data:image/png;base64,{{ $logoAirportBase64 }}" alt="Logo" class="w-16 h-16 object-contain">
                     <h2 class="text-xl font-bold text-center flex-grow mx-4">
                         CHECK LIST PENGUJIAN HARIAN<br>
-                        MESIN X-RAY BAGASI MULTI VIEW
+                        MESIN X-RAY CABIN MULTI VIEW
                     </h2>
                     <img src="data:image/png;base64,{{ $logoInjourneyBase64 }}" alt="Injourney Logo" class="w-16 h-16 object-contain">
                 </div>
@@ -221,7 +221,7 @@
                                                 <div class="table-cell bg-blue-600 border-black border-r relative"
                                                     style="width: 10%;">
                                                     <input type="checkbox"
-                                                        class="custom-checkbox-alt w-3 h-3 absolute top-[13px] left-[12px]"
+                                                        class="custom-checkbox-alt w-3 h-3 absolute top-1.5"
                                                         {{ $form->test3ab_24 ? 'checked' : '' }} disabled>
                                                     <div
                                                         class="absolute w-full h-1 border border-black bg-black top-1/2 left-0">

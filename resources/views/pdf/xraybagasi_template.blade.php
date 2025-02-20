@@ -521,7 +521,7 @@
 
                     <!-- Generator Samping Section (Gunakan pendekatan yang sama) -->
                     <div>
-                        <h3 class="text-center font-bold mt-1 text-xs">GENERATOR SAMPING</h3>
+                        <h3 class="text-center font-bold mt-1 text-xs">GENERATOR BAWAH</h3>
                         <div class="border-2 border-black mx-2 p-1">
                             <!-- Konten Generator Atas/Bawah -->
                             <!-- Gunakan pendekatan yang sama untuk mengecilkan elemen -->
