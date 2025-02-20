@@ -130,7 +130,7 @@ class WTMDFormController extends Controller
                 ? 'Form ditolak dan catatan telah disimpan.'
                 : 'Form berhasil disetujui!';
 
-            return redirect()->route('dashboard')->with('success', $message);
+            return redirect()->route('wtmdform')->with('success', $message);
         } catch (\Exception $e) {
             Log::error('Error updating WTMD status: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui status.');

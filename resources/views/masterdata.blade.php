@@ -45,6 +45,7 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NIP</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Peran</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lisensi</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                         </tr>
                     </thead>
@@ -55,6 +56,7 @@
                             <td class="px-6 py-4 whitespace-nowrap">{{ $user->email }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $user->nip }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $user->role }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ $user->lisensi }}</td>
                             <td class="px-6 py-4 whitespace-nowrap flex gap-2">
                                 <button onclick="editUser({{ $user->id }})"
                                     class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded flex items-center gap-1">
@@ -113,6 +115,10 @@
                         <div class="mb-2">
                             <label class="font-bold text-gray-700">Peran:</label>
                             <p>{{ $user->role }}</p>
+                        </div>
+                        <div class="mb-2">
+                            <label class="font-bold text-gray-700">Lisensi:</label>
+                            <p>{{ $user->lisensi }}</p>
                         </div>
                         <div class="flex gap-2 mt-3">
                             <button onclick="editUser({{ $user->id }})"
@@ -174,6 +180,7 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NIP</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lisensi</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                         </tr>
                     </thead>
@@ -183,6 +190,7 @@
                             <td class="px-6 py-4 whitespace-nowrap">{{ $officer->name }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $officer->nip }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $officer->email }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ $officer->lisensi }}</td>
                             <td class="px-6 py-4 whitespace-nowrap flex gap-2">
                                 <button onclick="editOfficer({{ $officer->id }})"
                                     class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded flex items-center gap-1">
@@ -237,6 +245,10 @@
                         <div class="mb-2">
                             <label class="font-bold text-gray-700">Email:</label>
                             <p>{{ $officer->email }}</p>
+                        </div>
+                        <div class="mb-2">
+                            <label class="font-bold text-gray-700">Lisensi:</label>
+                            <p>{{ $officer->lisensi }}</p>
                         </div>
                         <div class="flex gap-2 mt-3">
                             <button onclick="editOfficer({{ $officer->id }})"
@@ -317,6 +329,15 @@
                     <option value="supervisor">SuperVisor</option>
                 </select>
             </div>
+            <div class="mb-4">
+                <label for="lisensi" class="block text-gray-700 text-sm font-bold mb-2">Lisensi:</label>
+                <select id="lisensi" name="lisensi" required
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="senior">Senior</option>
+                    <option value="junior">Junior</option>
+                    <option value="basic">Basic</option>
+                </select>
+            </div>
             <button type="submit"
                 class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Simpan</button>
         </form>
@@ -359,6 +380,15 @@
                     <option value="officer">Officer</option>
                 </select>
             </div>
+            <div class="mb-4">
+                <label for="lisensi" class="block text-gray-700 text-sm font-bold mb-2">Lisensi:</label>
+                <select id="lisensi" name="lisensi" required
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="senior">Senior</option>
+                    <option value="junior">Junior</option>
+                    <option value="basic">Basic</option>
+                </select>
+            </div>
             <button type="submit"
                 class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Simpan</button>
         </form>
@@ -387,6 +417,15 @@
                 <label for="edit_email" class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
                 <input type="email" id="edit_email" name="email" required
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <div class="mb-4">
+                <label for="edit_lisensi" class="block text-gray-700 text-sm font-bold mb-2">Lisensi:</label>
+                <select id="edit_lisensi" name="lisensi" required
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="senior">Senior</option>
+                    <option value="junior">Junior</option>
+                    <option value="basic">Basic</option>
+                </select>
             </div>
             <button type="button" id="submitEditOfficer"
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
@@ -425,6 +464,15 @@
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     <option value="superadmin">SuperAdmin</option>
                     <option value="supervisor">Supervisor</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="edit_lisensi" class="block text-gray-700 text-sm font-bold mb-2">Lisensi:</label>
+                <select id="edit_lisensi" name="lisensi" required
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="senior">Senior</option>
+                    <option value="junior">Junior</option>
+                    <option value="basic">Basic</option>
                 </select>
             </div>
             <button type="button" id="submitEditUser"
@@ -497,6 +545,7 @@
                 document.getElementById('edit_name').value = data.name;
                 document.getElementById('edit_nip').value = data.nip;
                 document.getElementById('edit_email').value = data.email;
+                document.getElementById('edit_lisensi').value = data.lisensi;
 
                 // Tampilkan modal
                 const modal = document.getElementById('editOfficerModal');
@@ -566,6 +615,7 @@
                 document.getElementById('edit_user_email').value = data.email;
                 document.getElementById('edit_user_nip').value = data.nip;
                 document.getElementById('edit_user_role').value = data.role;
+                document.getElementById('edit_lisensi').value = data.lisensi;
 
                 // Tampilkan modal
                 const modal = document.getElementById('editUserModal');

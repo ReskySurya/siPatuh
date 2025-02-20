@@ -24,6 +24,7 @@ class MasterDataController extends Controller
             'nip' => 'required|string|max:255|unique:users',
             'password' => 'required|string|min:8',
             'role' => 'required|string',
+            'lisensi'=>'required|string',
             'image_signature' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
@@ -33,6 +34,7 @@ class MasterDataController extends Controller
         $user->nip = $validatedData['nip'];
         $user->password = bcrypt($validatedData['password']);
         $user->role = $validatedData['role'];
+        $user->role = $validatedData['lisensi'];
         if ($request->hasFile('image_signature')) {
             $image = $request->file('image_signature');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
@@ -58,6 +60,7 @@ class MasterDataController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
             'role' => 'required|string',
+            'lisensi'=>'required|string',
             'image_signature' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
@@ -67,6 +70,7 @@ class MasterDataController extends Controller
         $officer->nip = $validatedData['nip'];
         $officer->password = bcrypt($validatedData['password']);
         $officer->role = $validatedData['role'];
+        $officer->lisensi = $validatedData['role'];
 
         if ($request->hasFile('image_signature')) {
             $image = $request->file('image_signature');
@@ -89,6 +93,7 @@ class MasterDataController extends Controller
             'nip' => 'sometimes|required|string|max:255',
             'email' => 'sometimes|required|string|email|max:255|unique:officers,email,'.$id,
             'role' => 'sometimes|required|string',
+            'lisensi' => 'sometimes|required|string',
             'image_signature' => 'sometimes|nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
@@ -135,7 +140,8 @@ class MasterDataController extends Controller
                 'id' => $officer->id,
                 'name' => $officer->name,
                 'email' => $officer->email,
-                'nip' => $officer->nip
+                'nip' => $officer->nip,
+                'lisensi'=> $officer->lisensi
             ]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Officer tidak ditemukan'], 404);
@@ -158,7 +164,8 @@ class MasterDataController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'nip' => $user->nip,
-                'role' => $user->role
+                'role' => $user->role,
+                'lisensi'=> $user->lisensi
             ]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'User tidak ditemukan'], 404);

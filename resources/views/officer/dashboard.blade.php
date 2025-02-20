@@ -20,6 +20,9 @@
                 <p class="mt-1 text-gray-600">
                     <span class="font-medium">NIP:</span> {{ Auth::guard('officer')->user()->nip }}
                 </p>
+                <p class="mt-1 text-gray-600">
+                    <span class="font-medium">Lisensi:</span> {{ Auth::guard('officer')->user()->lisensi }}
+                </p>
             </div>
         </div>
 
@@ -55,30 +58,24 @@
             @endphp
 
             @if($rejectedForms->count() > 0)
-            <div class="w-full overflow-x-scroll md:overflow-x-auto">
-                <table
-                    class="w-full whitespace-nowrap table-auto border-collapse bg-white border border-gray-300 text-sm">
+            <div class="w-full overflow-x-auto sm:overflow-x-hidden">
+                <table class="w-full whitespace-nowrap table-auto border-collapse bg-white border border-gray-300 text-sm">
                     <thead>
                         <tr class="bg-gray-50">
-                            <th
-                                class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
-                                Tanggal Test
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+                                <div class="w-20 sm:w-auto truncate">Tanggal Test</div>
                             </th>
-                            <th
-                                class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
-                                Lokasi
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+                                <div class="w-20 sm:w-auto truncate">Lokasi</div>
                             </th>
-                            <th
-                                class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
-                                Jenis
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+                                <div class="w-16 sm:w-auto truncate">Jenis</div>
                             </th>
-                            <th
-                                class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b truncate">
-                                Catatan
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+                                <div class="w-24 sm:w-auto truncate">Catatan</div>
                             </th>
-                            <th
-                                class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
-                                Aksi
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+                                <div class="w-16 sm:w-auto truncate">Aksi</div>
                             </th>
                         </tr>
                     </thead>
@@ -86,10 +83,12 @@
                         @foreach($rejectedForms as $form)
                         <tr class="hover:bg-gray-50">
                             <td class="px-4 py-3 border-b">
-                                {{ $form->testDateTime->format('d/m/Y H:i') }}
+                                <div class="w-20 sm:w-auto truncate">
+                                    {{ $form->testDateTime->format('d/m/Y H:i') }}
+                                </div>
                             </td>
                             <td class="px-4 py-3 border-b">
-                                <div class="max-w-[150px] truncate">
+                                <div class="w-20 sm:w-auto truncate">
                                     {{ $form->location }}
                                 </div>
                             </td>
@@ -108,7 +107,7 @@
                                 </span>
                             </td>
                             <td class="px-4 py-3 border-b text-red-600">
-                                <div class="max-w-[150px] truncate" title="{{ $form->rejection_note }}">
+                                <div class="w-24 sm:w-auto truncate" title="{{ $form->rejection_note }}">
                                     {{ $form->rejection_note }}
                                 </div>
                             </td>

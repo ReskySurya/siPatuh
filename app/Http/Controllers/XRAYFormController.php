@@ -284,7 +284,7 @@ class XRAYFormController extends Controller
                 ? 'Form ditolak dan catatan telah disimpan.'
                 : 'Form berhasil disetujui!';
 
-            return redirect()->route('dashboard')->with('success', $message);
+            return redirect()->route('xrayform')->with('success', $message);
         } catch (\Exception $e) {
             Log::error('Error updating X-RAY status: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui status.');
