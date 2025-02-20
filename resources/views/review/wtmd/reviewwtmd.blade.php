@@ -268,7 +268,7 @@
                             type="submit" title="Harap simpan tanda tangan terlebih dahulu">
                             Perbarui Status
                         </button>
-                        <a href="{{ route('dashboard') }}"
+                        <a href="{{ route('wtmdform') }}"
                             class="text-xs sm:text-sm font-bold text-blue-500 hover:text-blue-800">
                             Kembali ke Dashboard
                         </a>

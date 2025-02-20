@@ -26,6 +26,9 @@ class PdfServices
                 throw new \Exception('No data available to generate PDF');
             }
 
+            // Ambil location dari data pertama
+            $location = $data->first()->location;
+
             // Convert images to base64
             $tampakDepan = base64_encode(file_get_contents(public_path('images/tampakdepan.png')));
             $tampakBelakang = base64_encode(file_get_contents(public_path('images/tampakbelakang.png')));
@@ -41,8 +44,16 @@ class PdfServices
                 'logoInjourneyBase64' => $logoInjourney
             ])->render();
 
-            // Generate temporary file path
-            $outputPath = $this->tempDir . '/' . uniqid() . '.pdf';
+            // Generate filename terlebih dahulu
+            $filename = sprintf(
+                '%s-%s-%s.pdf',
+                str_replace(' ', '_', $this->getFormName($formType)),
+                str_replace(' ', '_', $location),
+                now()->format('d-m-Y')
+            );
+
+            // Gunakan filename untuk outputPath
+            $outputPath = $this->tempDir . '/' . $filename;
 
             // Set paper size based on form type
             $paperSize = $this->getPaperSize($formType);
@@ -76,14 +87,7 @@ class PdfServices
             // Clean up temporary file
             unlink($outputPath);
 
-            // Generate filename
-            $filename = sprintf(
-                '%s_%s.pdf',
-                $formType,
-                now()->format('Y-m-d_His')
-            );
-
-            // Return response
+            // Return response dengan filename yang sudah dibuat
             return response($content)
                 ->header('Content-Type', 'application/pdf')
                 ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
@@ -97,6 +101,22 @@ class PdfServices
     private function getPaperSize($formType): string
     {
         return in_array($formType, ['xray_bagasi', 'xray_cabin']) ? 'F4' : 'A4';
+    }
+
+    private function getFormName($formType): string
+    {
+        switch ($formType) {
+            case 'hhmd':
+                return 'Form HHMD';
+            case 'wtmd':
+                return 'Form WTMD';
+            case 'xray_bagasi':
+                return 'Form X-Ray Bagasi';
+            case 'xray_cabin':
+                return 'Form X-Ray Cabin';
+            default:
+                return 'Form';
+        }
     }
 
     // private function generateTemporaryPdfs($data, $view): array

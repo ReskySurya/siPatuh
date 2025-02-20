@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Function to handle PDF export
+    // Fungsi untuk handle PDF export
     function exportPDF(url, data) {
         const formData = new FormData();
         for (const [key, value] of Object.entries(data)) {
@@ -220,13 +220,24 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!response.ok) {
                 return response.json().then(err => Promise.reject(err));
             }
-            return response.blob();
+            return response.blob().then(blob => {
+                // Get filename from Content-Disposition header
+                const contentDisposition = response.headers.get('Content-Disposition');
+                let filename = 'document.pdf';
+                if (contentDisposition) {
+                    const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition);
+                    if (matches != null && matches[1]) {
+                        filename = matches[1].replace(/['"]/g, '');
+                    }
+                }
+                return { blob, filename };
+            });
         })
-        .then(blob => {
+        .then(({ blob, filename }) => {
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `export_${new Date().toISOString().slice(0,10)}.pdf`;
+            a.download = filename; // Gunakan filename dari response header
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);
