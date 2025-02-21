@@ -95,4 +95,15 @@ class wtmdsaved extends Model
     {
         return $this->status === 'approved';
     }
+
+    public static function hasSubmittedToday($location)
+    {
+        $officerId = auth('officer')->id();
+
+        return self::where('location', $location)
+            ->where('created_at', '>=', now()->subMinutes(90))
+            ->where('status', '!=', 'rejected')
+            ->where('submitted_by', $officerId)
+            ->exists();
+    }
 }

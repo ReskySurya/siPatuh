@@ -11,6 +11,10 @@ use App\Http\Controllers\WTMDFormController;
 use App\Http\Controllers\XRAYFormController;
 use App\Http\Controllers\PasswordController;
 use Illuminate\Support\Facades\Route;
+use App\Models\hhmdsaved;
+use App\Models\wtmdsaved;
+use App\Models\xraysaved;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -253,3 +257,58 @@ Route::middleware(['auth:web,officer', 'check.default.password'])->group(functio
 
     // ... tambahkan route lain yang memerlukan autentikasi ...
 });
+
+// Route untuk cek ketersediaan lokasi
+Route::get('/check-hhmd-location', function (Request $request) {
+    $location = $request->query('location');
+    $available = !hhmdsaved::hasSubmittedToday($location);
+
+    $message = $available ? 'Lokasi tersedia' : 'Form untuk lokasi ini sudah dibuat. Silakan tunggu ' .
+        ceil((90 - now()->diffInMinutes(hhmdsaved::where('location', $location)
+            ->where('status', '!=', 'rejected')
+            ->where('submitted_by', auth('officer')->id())
+            ->latest()
+            ->first()
+            ->created_at))) . ' menit lagi';
+
+    return response()->json([
+        'available' => $available,
+        'message' => $message
+    ]);
+})->name('check.hhmd.location');
+
+Route::get('/check-wtmd-location', function (Request $request) {
+    $location = $request->query('location');
+    $available = !wtmdsaved::hasSubmittedToday($location);
+
+    $message = $available ? 'Lokasi tersedia' : 'Form untuk lokasi ini sudah dibuat. Silakan tunggu ' .
+        ceil((90 - now()->diffInMinutes(wtmdsaved::where('location', $location)
+            ->where('status', '!=', 'rejected')
+            ->where('submitted_by', auth('officer')->id())
+            ->latest()
+            ->first()
+            ->created_at))) . ' menit lagi';
+
+    return response()->json([
+        'available' => $available,
+        'message' => $message
+    ]);
+})->name('check.wtmd.location');
+
+Route::get('/check-xray-location', function (Request $request) {
+    $location = $request->query('location');
+    $available = !xraysaved::hasSubmittedToday($location);
+
+    $message = $available ? 'Lokasi tersedia' : 'Form untuk lokasi ini sudah dibuat. Silakan tunggu ' .
+        ceil((90 - now()->diffInMinutes(xraysaved::where('location', $location)
+            ->where('status', '!=', 'rejected')
+            ->where('submitted_by', auth('officer')->id())
+            ->latest()
+            ->first()
+            ->created_at))) . ' menit lagi';
+
+    return response()->json([
+        'available' => $available,
+        'message' => $message
+    ]);
+})->name('check.wtmd.location');

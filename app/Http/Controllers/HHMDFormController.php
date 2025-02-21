@@ -14,64 +14,63 @@ class HHMDFormController extends Controller
 
     public function store(Request $request)
     {
-        Log::info('Received HHMD data:', $request->all());
-
-        $validatedData = $request->validate([
-            'operatorName' => 'required|string',
-            'testDateTime' => 'required|date',
-            'location' => 'required|string',
-            'deviceInfo' => 'required|string',
-            'certificateInfo' => 'required|string',
-            'terpenuhi' => 'boolean',
-            'tidakterpenuhi' => 'boolean',
-            'test2' => 'nullable|boolean',
-            'testCondition1' => 'boolean',
-            'testCondition2' => 'boolean',
-            'result' => 'required|in:pass,fail',
-            'notes' => 'nullable|string',
-            'status' => 'required|in:pending_supervisor,approved,rejected',
-            'officer_signature' => 'nullable|string',
-            'supervisor_signature' => 'nullable|string',
-            'supervisor_id' => 'required|exists:users,id,role,supervisor',
-        ]);
-
-        // Ubah nilai checkbox menjadi boolean
-        $validatedData['terpenuhi'] = $request->has('terpenuhi');
-        $validatedData['tidakterpenuhi'] = $request->has('tidakterpenuhi');
-        $validatedData['test1'] = $request->has('test1');
-        $validatedData['test2'] = $request->has('test2');
-        $validatedData['test3'] = $request->has('test3');
-        $validatedData['testCondition1'] = $request->has('testCondition1');
-        $validatedData['testCondition2'] = $request->has('testCondition2');
-
-        // Menyimpan data tanda tangan jika ada
-        if ($request->has('officer_signature_data')) {
-            $validatedData['officer_signature'] = $request->input('officer_signature_data'); // Simpan tanda tangan officer
-        }
-
-        if ($request->has('supervisor_signature_data')) {
-            $validatedData['supervisor_signature'] = $request->input('supervisor_signature_data'); // Simpan tanda tangan supervisor
-        }
-
-        $hhmdsave = new hhmdsaved($validatedData);
-        if (Auth::guard('web')->check()) {
-            $hhmdsave->submitted_by = Auth::guard('web')->id();
-            $hhmdsave->officerName = Auth::user()->name;
-        } elseif (Auth::guard('officer')->check()) {
-            $hhmdsave->submitted_by = Auth::guard('officer')->id();
-            $hhmdsave->officerName = Auth::guard('officer')->user()->name;
-        } else {
-            return redirect()->back()->with('error', 'Anda harus login untuk mengirimkan formulir ini.');
-        }
-
-        $hhmdsave->supervisor_id = $validatedData['supervisor_id'];
-
         try {
-            $hhmdsave->save();
-            return redirect()->route('officer.dashboard')->with('success', 'HHMD data berhasil disimpan dan menunggu persetujuan supervisor.');
+            // Log untuk debugging
+            Log::info('Checking location: ' . $request->location);
+            Log::info('Last submission: ' . hhmdsaved::where('location', $request->location)
+                ->where('created_at', '>=', now()->subMinutes(90))
+                ->first()?->created_at);
+
+            // Validasi form yang sudah ada
+            if (hhmdsaved::hasSubmittedToday($request->location)) {
+                $lastSubmission = hhmdsaved::where('location', $request->location)
+                    ->where('status', '!=', 'rejected')
+                    ->where('submitted_by', Auth::guard('officer')->id())
+                    ->latest()
+                    ->first();
+
+                $minutesLeft = 90 - now()->diffInMinutes($lastSubmission->created_at);
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Form untuk lokasi ini sudah dibuat. Silakan tunggu ' . ceil($minutesLeft) . ' menit lagi sebelum membuat form baru.'
+                ], 422);
+            }
+
+            // Validasi input
+            $request->validate([
+                'operatorName' => 'required|string',
+                'testDateTime' => 'required|date',
+                'location' => 'required|string',
+                'deviceInfo' => 'required|string',
+                'certificateInfo' => 'required|string',
+                'terpenuhi' => 'boolean',
+                'tidakterpenuhi' => 'boolean',
+                'test2' => 'nullable|boolean',
+                'testCondition1' => 'boolean',
+                'testCondition2' => 'boolean',
+                'result' => 'required|in:pass,fail',
+                'notes' => 'nullable|string',
+                'supervisor_id' => 'required|exists:users,id',
+                'officer_signature_data' => 'required|string'
+            ]);
+
+            // Simpan form
+            $form = new hhmdsaved($request->all());
+            $form->status = 'pending_supervisor';
+            $form->submitted_by = Auth::guard('officer')->id();
+            $form->officerName = Auth::guard('officer')->user()->name;
+            $form->officer_signature = $request->officer_signature_data;
+            $form->save();
+
+            return redirect()->route('officer.dashboard')
+                ->with('success', 'Form HHMD berhasil disimpan dan menunggu persetujuan supervisor');
+
         } catch (\Exception $e) {
-            Log::error('Error saving HHMD data: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data. Silakan coba lagi.');
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
         }
     }
 
