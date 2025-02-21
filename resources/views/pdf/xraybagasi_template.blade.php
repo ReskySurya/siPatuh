@@ -276,25 +276,25 @@
                                 <div class="flex flex-col items-center">
                                     <div class="flex items-start">
                                         <span class="transform -rotate-90 mt-14 mr-1 text-xs">AWG</span>
-                                        <div class="grid grid-rows-4 gap-2 mt-6">
+                                        <div class="grid grid-rows-4 gap-1.5 mt-6">
                                             <div class="flex items-center space-x-1">
                                                 <span class="mr-1 text-xs">36</span>
-                                                <input type="checkbox" class="custom-checkbox-alt w-[18px] h-[18px]"
+                                                <input type="checkbox" class="custom-checkbox-alt w-[18px] h-[18px] border-black"
                                                     {{ $form->test1aab_36 ? 'checked' : '' }} disabled>
                                             </div>
                                             <div class="flex items-center space-x-1">
                                                 <span class="mr-1 text-xs">32</span>
-                                                <input type="checkbox" class="custom-checkbox-alt w-[18px] h-[18px]"
+                                                <input type="checkbox" class="custom-checkbox-alt w-[18px] h-[18px] border-black"
                                                     {{ $form->test1aab_32 ? 'checked' : '' }} disabled>
                                             </div>
                                             <div class="flex items-center space-x-1">
                                                 <span class="mr-1 text-xs">30</span>
-                                                <input type="checkbox" class="custom-checkbox-alt w-[18px] h-[18px]"
+                                                <input type="checkbox" class="custom-checkbox-alt w-[18px] h-[18px] border-black"
                                                     {{ $form->test1aab_30 ? 'checked' : '' }} disabled>
                                             </div>
                                             <div class="flex items-center space-x-1">
                                                 <span class="mr-1 text-xs">24</span>
-                                                <input type="checkbox" class="custom-checkbox-alt w-[18px] h-[18px]"
+                                                <input type="checkbox" class="custom-checkbox-alt w-[18px] h-[18px] border-black"
                                                     {{ $form->test1aab_24 ? 'checked' : '' }} disabled>
                                             </div>
                                         </div>
@@ -663,25 +663,25 @@
                                 <div class="flex flex-col items-center">
                                     <div class="flex items-start">
                                         <span class="transform -rotate-90 mt-14 mr-1 text-xs">AWG</span>
-                                        <div class="grid grid-rows-4 gap-2 mt-6">
+                                        <div class="grid grid-rows-4 gap-1.5 mt-6">
                                             <div class="flex items-center space-x-1">
                                                 <span class="mr-1 text-xs">36</span>
-                                                <input type="checkbox" class="custom-checkbox-alt w-[18px] h-[18px]"
+                                                <input type="checkbox" class="custom-checkbox-alt w-[18px] h-[18px] border-black"
                                                     {{ $form->test1ab_36 ? 'checked' : '' }} disabled>
                                             </div>
                                             <div class="flex items-center space-x-1">
                                                 <span class="mr-1 text-xs">32</span>
-                                                <input type="checkbox" class="custom-checkbox-alt w-[18px] h-[18px]"
+                                                <input type="checkbox" class="custom-checkbox-alt w-[18px] h-[18px] border-black"
                                                     {{ $form->test1ab_32 ? 'checked' : '' }} disabled>
                                             </div>
                                             <div class="flex items-center space-x-1">
                                                 <span class="mr-1 text-xs">30</span>
-                                                <input type="checkbox" class="custom-checkbox-alt w-[18px] h-[18px]"
+                                                <input type="checkbox" class="custom-checkbox-alt w-[18px] h-[18px] border-black"
                                                     {{ $form->test1ab_30 ? 'checked' : '' }} disabled>
                                             </div>
                                             <div class="flex items-center space-x-1">
                                                 <span class="mr-1 text-xs">24</span>
-                                                <input type="checkbox" class="custom-checkbox-alt w-[18px] h-[18px]"
+                                                <input type="checkbox" class="custom-checkbox-alt w-[18px] h-[18px] border-black"
                                                     {{ $form->test1ab_24 ? 'checked' : '' }} disabled>
                                             </div>
                                         </div>
