@@ -70,7 +70,7 @@ class MasterDataController extends Controller
         $officer->nip = $validatedData['nip'];
         $officer->password = bcrypt($validatedData['password']);
         $officer->role = $validatedData['role'];
-        $officer->lisensi = $validatedData['role'];
+        $officer->lisensi = $validatedData['lisensi'];
 
         if ($request->hasFile('image_signature')) {
             $image = $request->file('image_signature');
