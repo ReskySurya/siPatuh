@@ -386,192 +386,50 @@ class XRAYFormController extends Controller
             'location' => 'required|string',
             'deviceInfo' => 'required|string',
             'certificateInfo' => 'required|string',
-            'terpenuhi' => 'boolean',
-            'tidakterpenuhi' => 'boolean',
-
-            // Generator Atas/Bawah
-            'test2aab' => 'nullable|boolean',
-            'test2bab' => 'nullable|boolean',
-            'test3ab_14' => 'nullable|boolean',
-            'test3ab_16' => 'nullable|boolean',
-            'test3ab_18' => 'nullable|boolean',
-            'test3ab_20' => 'nullable|boolean',
-            'test3ab_22' => 'nullable|boolean',
-            'test3ab_24' => 'nullable|boolean',
-            'test3ab_26' => 'nullable|boolean',
-            'test3ab_28' => 'nullable|boolean',
-            'test3ab_30' => 'nullable|boolean',
-
-            // Test 1a dan 1b Atas/Bawah
-            'test1aab_36' => 'nullable|boolean',
-            'test1aab_32' => 'nullable|boolean',
-            'test1aab_30' => 'nullable|boolean',
-            'test1aab_24' => 'nullable|boolean',
-            'test1bab_36_1' => 'nullable|boolean',
-            'test1bab_32_1' => 'nullable|boolean',
-            'test1bab_30_1' => 'nullable|boolean',
-            'test1bab_24_1' => 'nullable|boolean',
-            'test1bab_36_2' => 'nullable|boolean',
-            'test1bab_32_2' => 'nullable|boolean',
-            'test1bab_30_2' => 'nullable|boolean',
-            'test1bab_24_2' => 'nullable|boolean',
-            'test1bab_36_3' => 'nullable|boolean',
-            'test1bab_32_3' => 'nullable|boolean',
-            'test1bab_30_3' => 'nullable|boolean',
-            'test1bab_24_3' => 'nullable|boolean',
-
-            // Test 4 Atas/Bawah
-            'test4ab_h10mm' => 'nullable|boolean',
-            'test4ab_v10mm' => 'nullable|boolean',
-
-            // Test 5 Atas/Bawah
-            'test5ab_05mm' => 'nullable|boolean',
-            'test5ab_10mm' => 'nullable|boolean',
-            'test5ab_15mm' => 'nullable|boolean',
-
-            // Generator Bawah
-            'test2ab' => 'nullable|boolean',
-            'test2bb' => 'nullable|boolean',
-            'test3b_14' => 'nullable|boolean',
-            'test3b_16' => 'nullable|boolean',
-            'test3b_18' => 'nullable|boolean',
-            'test3b_20' => 'nullable|boolean',
-            'test3b_22' => 'nullable|boolean',
-            'test3b_24' => 'nullable|boolean',
-            'test3b_26' => 'nullable|boolean',
-            'test3b_28' => 'nullable|boolean',
-            'test3b_30' => 'nullable|boolean',
-
-            // Test 1a dan 1b Bawah
-            'test1ab_36' => 'nullable|boolean',
-            'test1ab_32' => 'nullable|boolean',
-            'test1ab_30' => 'nullable|boolean',
-            'test1ab_24' => 'nullable|boolean',
-            'test1bb_36_1' => 'nullable|boolean',
-            'test1bb_32_1' => 'nullable|boolean',
-            'test1bb_30_1' => 'nullable|boolean',
-            'test1bb_24_1' => 'nullable|boolean',
-            'test1bb_36_2' => 'nullable|boolean',
-            'test1bb_32_2' => 'nullable|boolean',
-            'test1bb_30_2' => 'nullable|boolean',
-            'test1bb_24_2' => 'nullable|boolean',
-            'test1bb_36_3' => 'nullable|boolean',
-            'test1bb_32_3' => 'nullable|boolean',
-            'test1bb_30_3' => 'nullable|boolean',
-            'test1bb_24_3' => 'nullable|boolean',
-
-            // Test 4 Bawah
-            'test4b_h10mm' => 'nullable|boolean',
-            'test4b_v10mm' => 'nullable|boolean',
-
-            // Test 5 Bawah
-            'test5b_05mm' => 'nullable|boolean',
-            'test5b_10mm' => 'nullable|boolean',
-            'test5b_15mm' => 'nullable|boolean',
-
-            // Form fields
             'result' => 'required|in:pass,fail',
             'notes' => 'nullable|string',
         ]);
 
         try {
-            // Ubah nilai checkbox menjadi boolean
-            $validatedData['terpenuhi'] = $request->has('terpenuhi');
-            $validatedData['tidakterpenuhi'] = $request->has('tidakterpenuhi');
+            // Perbaikan: Menggunakan input() alih-alih has()
+            $checkboxFields = [
+                'terpenuhi', 'tidakterpenuhi',
+                // Generator Atas/Bawah
+                'test2aab', 'test2bab', 'test3ab_14', 'test3ab_16', 'test3ab_18', 'test3ab_20', 'test3ab_22',
+                'test3ab_24', 'test3ab_26', 'test3ab_28', 'test3ab_30',
+                // Test 1a dan 1b Atas/Bawah
+                'test1aab_36', 'test1aab_32', 'test1aab_30', 'test1aab_24',
+                'test1bab_36_1', 'test1bab_32_1', 'test1bab_30_1', 'test1bab_24_1',
+                'test1bab_36_2', 'test1bab_32_2', 'test1bab_30_2', 'test1bab_24_2',
+                'test1bab_36_3', 'test1bab_32_3', 'test1bab_30_3', 'test1bab_24_3',
+                // Test 4 Atas/Bawah
+                'test4ab_h10mm', 'test4ab_v10mm', 'test4ab_h15mm', 'test4ab_v15mm',
+                'test4ab_h20mm', 'test4ab_v20mm',
+                // Test 5 Atas/Bawah
+                'test5ab_05mm', 'test5ab_10mm', 'test5ab_15mm',
+                // Generator Bawah
+                'test2ab', 'test2bb', 'test3b_14', 'test3b_16', 'test3b_18', 'test3b_20', 'test3b_22',
+                'test3b_24', 'test3b_26', 'test3b_28', 'test3b_30',
+                // Test 1a dan 1b Bawah
+                'test1ab_36', 'test1ab_32', 'test1ab_30', 'test1ab_24',
+                'test1bb_36_1', 'test1bb_32_1', 'test1bb_30_1', 'test1bb_24_1',
+                'test1bb_36_2', 'test1bb_32_2', 'test1bb_30_2', 'test1bb_24_2',
+                'test1bb_36_3', 'test1bb_32_3', 'test1bb_30_3', 'test1bb_24_3',
+                // Test 4 Bawah
+                'test4b_h10mm', 'test4b_v10mm', 'test4b_h15mm', 'test4b_v15mm',
+                'test4b_h20mm', 'test4b_v20mm',
+                // Test 5 Bawah
+                'test5b_05mm', 'test5b_10mm', 'test5b_15mm',
+            ];
 
-            // Generator Atas/Bawah
-            $validatedData['test2aab'] = $request->has('test2aab');
-            $validatedData['test2bab'] = $request->has('test2bab');
-            $validatedData['test3ab_14'] = $request->has('test3ab_14');
-            $validatedData['test3ab_16'] = $request->has('test3ab_16');
-            $validatedData['test3ab_18'] = $request->has('test3ab_18');
-            $validatedData['test3ab_20'] = $request->has('test3ab_20');
-            $validatedData['test3ab_22'] = $request->has('test3ab_22');
-            $validatedData['test3ab_24'] = $request->has('test3ab_24');
-            $validatedData['test3ab_26'] = $request->has('test3ab_26');
-            $validatedData['test3ab_28'] = $request->has('test3ab_28');
-            $validatedData['test3ab_30'] = $request->has('test3ab_30');
-
-            // Test 1a dan 1b Atas/Bawah
-            $validatedData['test1aab_36'] = $request->has('test1aab_36');
-            $validatedData['test1aab_32'] = $request->has('test1aab_32');
-            $validatedData['test1aab_30'] = $request->has('test1aab_30');
-            $validatedData['test1aab_24'] = $request->has('test1aab_24');
-            $validatedData['test1bab_36_1'] = $request->has('test1bab_36_1');
-            $validatedData['test1bab_32_1'] = $request->has('test1bab_32_1');
-            $validatedData['test1bab_30_1'] = $request->has('test1bab_30_1');
-            $validatedData['test1bab_24_1'] = $request->has('test1bab_24_1');
-            $validatedData['test1bab_36_2'] = $request->has('test1bab_36_2');
-            $validatedData['test1bab_32_2'] = $request->has('test1bab_32_2');
-            $validatedData['test1bab_30_2'] = $request->has('test1bab_30_2');
-            $validatedData['test1bab_24_2'] = $request->has('test1bab_24_2');
-            $validatedData['test1bab_36_3'] = $request->has('test1bab_36_3');
-            $validatedData['test1bab_32_3'] = $request->has('test1bab_32_3');
-            $validatedData['test1bab_30_3'] = $request->has('test1bab_30_3');
-            $validatedData['test1bab_24_3'] = $request->has('test1bab_24_3');
-
-            // Test 4 Atas/Bawah
-            $validatedData['test4ab_h10mm'] = $request->has('test4ab_h10mm');
-            $validatedData['test4ab_v10mm'] = $request->has('test4ab_v10mm');
-            $validatedData['test4ab_h15mm'] = $request->has('test4ab_h15mm');
-            $validatedData['test4ab_v15mm'] = $request->has('test4ab_v15mm');
-            $validatedData['test4ab_h20mm'] = $request->has('test4ab_h20mm');
-            $validatedData['test4ab_v20mm'] = $request->has('test4ab_v20mm');
-
-            // Test 5 Atas/Bawah
-            $validatedData['test5ab_05mm'] = $request->has('test5ab_05mm');
-            $validatedData['test5ab_10mm'] = $request->has('test5ab_10mm');
-            $validatedData['test5ab_15mm'] = $request->has('test5ab_15mm');
-
-            // Generator Bawah
-            $validatedData['test2ab'] = $request->has('test2ab');
-            $validatedData['test2bb'] = $request->has('test2bb');
-            $validatedData['test3b_14'] = $request->has('test3b_14');
-            $validatedData['test3b_16'] = $request->has('test3b_16');
-            $validatedData['test3b_18'] = $request->has('test3b_18');
-            $validatedData['test3b_20'] = $request->has('test3b_20');
-            $validatedData['test3b_22'] = $request->has('test3b_22');
-            $validatedData['test3b_24'] = $request->has('test3b_24');
-            $validatedData['test3b_26'] = $request->has('test3b_26');
-            $validatedData['test3b_28'] = $request->has('test3b_28');
-            $validatedData['test3b_30'] = $request->has('test3b_30');
-
-            // Test 1a dan 1b Bawah
-            $validatedData['test1ab_36'] = $request->has('test1ab_36');
-            $validatedData['test1ab_32'] = $request->has('test1ab_32');
-            $validatedData['test1ab_30'] = $request->has('test1ab_30');
-            $validatedData['test1ab_24'] = $request->has('test1ab_24');
-            $validatedData['test1bb_36_1'] = $request->has('test1bb_36_1');
-            $validatedData['test1bb_32_1'] = $request->has('test1bb_32_1');
-            $validatedData['test1bb_30_1'] = $request->has('test1bb_30_1');
-            $validatedData['test1bb_24_1'] = $request->has('test1bb_24_1');
-            $validatedData['test1bb_36_2'] = $request->has('test1bb_36_2');
-            $validatedData['test1bb_32_2'] = $request->has('test1bb_32_2');
-            $validatedData['test1bb_30_2'] = $request->has('test1bb_30_2');
-            $validatedData['test1bb_24_2'] = $request->has('test1bb_24_2');
-            $validatedData['test1bb_36_3'] = $request->has('test1bb_36_3');
-            $validatedData['test1bb_32_3'] = $request->has('test1bb_32_3');
-            $validatedData['test1bb_30_3'] = $request->has('test1bb_30_3');
-            $validatedData['test1bb_24_3'] = $request->has('test1bb_24_3');
-
-            // Test 4 Bawah
-            $validatedData['test4b_h10mm'] = $request->has('test4b_h10mm');
-            $validatedData['test4b_v10mm'] = $request->has('test4b_v10mm');
-            $validatedData['test4b_h15mm'] = $request->has('test4b_h15mm');
-            $validatedData['test4b_v15mm'] = $request->has('test4b_v15mm');
-            $validatedData['test4b_h20mm'] = $request->has('test4b_h20mm');
-            $validatedData['test4b_v20mm'] = $request->has('test4b_v20mm');
-
-            // Test 5 Bawah
-            $validatedData['test5b_05mm'] = $request->has('test5b_05mm');
-            $validatedData['test5b_10mm'] = $request->has('test5b_10mm');
-            $validatedData['test5b_15mm'] = $request->has('test5b_15mm');
+            foreach ($checkboxFields as $field) {
+                // Menggunakan input() untuk mendapatkan nilai checkbox
+                $validatedData[$field] = $request->input($field, 0);
+            }
 
             $validatedData['status'] = 'pending_supervisor';
 
             $form->update($validatedData);
-            $form->status = 'pending_supervisor';
-            $form->save();
 
             return redirect()->route('officer.dashboard')
                 ->with('success', 'Form berhasil diperbarui dan menunggu review ulang');
