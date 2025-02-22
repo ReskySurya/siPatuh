@@ -750,15 +750,16 @@
                                 <label class="text-gray-700 font-bold mr-4">Hasil:</label>
                                 <div class="flex flex-col">
                                     <div class="flex items-center mb-0">
-                                        <input type="radio" name="result" value="pass" {{ old('result', $form->result)
-                                        == 'pass' ? 'checked' : '' }}>
+                                        <input type="radio" id="resultPass" name="result" value="pass"
+                                            {{ old('result', $form->result) == 'pass' ? 'checked' : '' }}>
                                         <label class="text-sm ml-2">PASS</label>
                                     </div>
                                     <div class="flex items-center">
-                                        <input type="radio" name="result" value="fail" {{ old('result', $form->result)
-                                        == 'fail' ? 'checked' : '' }}>
+                                        <input type="radio" id="resultFail" name="result" value="fail"
+                                            {{ old('result', $form->result) == 'fail' ? 'checked' : '' }}>
                                         <label class="text-sm ml-2">FAIL</label>
                                     </div>
+                                    <input type="hidden" id="result" name="result" value="{{ old('result', $form->result) }}">
                                 </div>
                             </div>
                             <div>
@@ -782,4 +783,110 @@
         </form>
     </div>
 </div>
-@endsection
+
+@push('scripts')
+<script>
+    // Fungsi untuk mengecek status checkbox dan mengupdate radio button
+    function updateRadioResult() {
+        // Ambil semua checkbox berdasarkan ID yang ada
+        const test2Checkboxes = [
+            document.getElementById('test2aab'),
+            document.getElementById('test2bab'),
+            document.getElementById('test2ab'),
+            document.getElementById('test2bb')
+        ];
+        const test3Checkboxes = [
+            document.getElementById('test3ab_14'),
+            document.getElementById('test3ab_16'),
+            document.getElementById('test3ab_18'),
+            document.getElementById('test3ab_20'),
+            document.getElementById('test3ab_22'),
+            document.getElementById('test3b_14'),
+            document.getElementById('test3b_16'),
+            document.getElementById('test3b_18'),
+            document.getElementById('test3b_20'),
+            document.getElementById('test3b_22')
+        ];
+        const test1Checkboxes = [
+            document.getElementById('test1aab_30'),
+            document.getElementById('test1aab_24'),
+            document.getElementById('test1bab_30_1'),
+            document.getElementById('test1bab_24_1'),
+            document.getElementById('test1bab_24_2'),
+            document.getElementById('test1bab_24_3'),
+            document.getElementById('test1ab_30'),
+            document.getElementById('test1ab_24'),
+            document.getElementById('test1bb_30_1'),
+            document.getElementById('test1bb_24_1'),
+            document.getElementById('test1bb_24_2'),
+            document.getElementById('test1bb_24_3')
+        ];
+        const test4Checkboxes = [
+            document.getElementById('test4ab_h20mm'),
+            document.getElementById('test4ab_v20mm'),
+            document.getElementById('test4b_h20mm'),
+            document.getElementById('test4b_v20mm')
+        ];
+        const test5Checkboxes = [
+            document.getElementById('test5ab_10mm'),
+            document.getElementById('test5b_10mm')
+        ];
+
+        const resultPass = document.getElementById('resultPass');
+        const resultFail = document.getElementById('resultFail');
+        const resultHidden = document.getElementById('result');
+
+        if (resultPass && resultFail && resultHidden) {
+            // Cek apakah semua checkbox tercentang
+            const allChecked = [...test1Checkboxes, ...test2Checkboxes, ...test3Checkboxes, ...test4Checkboxes, ...test5Checkboxes]
+                .every(checkbox => checkbox && checkbox.checked);
+
+            if (allChecked) {
+                resultPass.checked = true;
+                resultHidden.value = 'pass';
+            } else {
+                resultFail.checked = true;
+                resultHidden.value = 'fail';
+            }
+        }
+    }
+
+    // Event listener setelah DOM sepenuhnya dimuat
+    document.addEventListener('DOMContentLoaded', function() {
+        // Tambahkan event listener untuk semua checkbox
+        const allCheckboxIds = [
+            'test2aab', 'test2bab', 'test2ab', 'test2bb',
+            'test3ab_14', 'test3ab_16', 'test3ab_18', 'test3ab_20', 'test3ab_22',
+            'test3b_14', 'test3b_16', 'test3b_18', 'test3b_20', 'test3b_22',
+            'test1aab_30', 'test1aab_24',
+            'test1bab_30_1', 'test1bab_24_1', 'test1bab_24_2', 'test1bab_24_3',
+            'test1ab_30', 'test1ab_24',
+            'test1bb_30_1', 'test1bb_24_1', 'test1bb_24_2', 'test1bb_24_3',
+            'test4ab_h20mm', 'test4ab_v20mm',
+            'test4b_h20mm', 'test4b_v20mm',
+            'test5ab_10mm', 'test5b_10mm'
+        ];
+
+        allCheckboxIds.forEach(id => {
+            const checkbox = document.getElementById(id);
+            if (checkbox) {
+                checkbox.addEventListener('change', updateRadioResult);
+            }
+        });
+
+        // Nonaktifkan radio button agar tidak bisa diklik manual
+        const resultPass = document.getElementById('resultPass');
+        const resultFail = document.getElementById('resultFail');
+
+        if (resultPass) {
+            resultPass.addEventListener('click', (e) => e.preventDefault());
+        }
+        if (resultFail) {
+            resultFail.addEventListener('click', (e) => e.preventDefault());
+        }
+
+        // Inisialisasi status awal
+        updateRadioResult();
+    });
+</script>
+@endpush

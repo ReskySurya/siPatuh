@@ -30,7 +30,7 @@
                             </tr>
                             <tr class="border-b border-black">
                                 <th class="w-1/3 text-left p-2">Tanggal & Waktu Pengujian:</th>
-                                <td class="w-2/3 p-2">{{ date('d-m-Y H:i', strtotime($form->testDateTime)) }}</td>
+                                <td class="w-2/3 p-2">{{ date('d-m-Y H:i', strtotime($form->testDateTime)) }} WIB</td>
                             </tr>
                             <tr class="border-b border-black">
                                 <th class="w-1/3 text-left p-2">Lokasi Penempatan:</th>

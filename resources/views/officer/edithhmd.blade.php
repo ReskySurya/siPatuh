@@ -105,7 +105,12 @@
                                     <h2 class="font-bold mb-2">TEST 1</h2>
                                     <div class="w-20 h-20 mx-auto border-2 border-black flex items-center justify-center">
                                         <input type="hidden" name="test2" value="0">
-                                        <input type="checkbox" name="test2" value="1" {{ old('test2', $form->test2) ? 'checked' : '' }}>
+                                        <input type="checkbox"
+                                               id="test2"
+                                               name="test2"
+                                               value="1"
+                                               {{ old('test2', $form->test2) ? 'checked' : '' }}
+                                               onchange="updateRadioResult()">
                                     </div>
                                 </div>
                             </div>
@@ -129,13 +134,14 @@
                                 <label class="text-gray-700 font-bold mr-4">Hasil:</label>
                                 <div class="flex flex-col">
                                     <div class="flex items-center mb-0">
-                                        <input type="radio" name="result" value="pass" {{ old('result', $form->result) == 'pass' ? 'checked' : '' }}>
+                                        <input type="radio" id="resultPass" name="result" value="pass" {{ old('result', $form->result) == 'pass' ? 'checked' : '' }}>
                                         <label class="text-sm ml-2">PASS</label>
                                     </div>
                                     <div class="flex items-center">
-                                        <input type="radio" name="result" value="fail" {{ old('result', $form->result) == 'fail' ? 'checked' : '' }}>
+                                        <input type="radio" id="resultFail" name="result" value="fail" {{ old('result', $form->result) == 'fail' ? 'checked' : '' }}>
                                         <label class="text-sm ml-2">FAIL</label>
                                     </div>
+                                    <input type="hidden" id="result" name="result" value="{{ old('result', $form->result) }}">
                                 </div>
                             </div>
                             <div>
@@ -158,4 +164,48 @@
         </form>
     </div>
 </div>
+
+@push('scripts')
+<script>
+    // Fungsi untuk mengecek status checkbox dan mengupdate radio button
+    function updateRadioResult() {
+        const test2Checkbox = document.getElementById('test2');
+        const resultPass = document.getElementById('resultPass');
+        const resultFail = document.getElementById('resultFail');
+        const resultHidden = document.getElementById('result');
+
+        if (test2Checkbox && resultPass && resultFail && resultHidden) {
+            if (test2Checkbox.checked) {
+                resultPass.checked = true;
+                resultHidden.value = 'pass';
+            } else {
+                resultFail.checked = true;
+                resultHidden.value = 'fail';
+            }
+        }
+    }
+
+    // Event listener untuk checkbox setelah DOM sepenuhnya dimuat
+    document.addEventListener('DOMContentLoaded', function() {
+        const test2Checkbox = document.getElementById('test2');
+        if (test2Checkbox) {
+            test2Checkbox.addEventListener('change', updateRadioResult);
+        }
+
+        // Nonaktifkan radio button agar tidak bisa diklik manual
+        const resultPass = document.getElementById('resultPass');
+        const resultFail = document.getElementById('resultFail');
+
+        if (resultPass) {
+            resultPass.addEventListener('click', (e) => e.preventDefault());
+        }
+        if (resultFail) {
+            resultFail.addEventListener('click', (e) => e.preventDefault());
+        }
+
+        // Inisialisasi status awal
+        updateRadioResult();
+    });
+</script>
+@endpush
 @endsection

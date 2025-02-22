@@ -239,13 +239,16 @@
                                 <label class="text-gray-700 font-bold mr-4">Hasil:</label>
                                 <div class="flex flex-col">
                                     <div class="flex items-center mb-0">
-                                        <input type="radio" name="result" value="pass" {{ old('result', $form->result) == 'pass' ? 'checked' : '' }}>
+                                        <input type="radio" id="resultPass" name="result" value="pass"
+                                            {{ old('result', $form->result) == 'pass' ? 'checked' : '' }}>
                                         <label class="text-sm ml-2">PASS</label>
                                     </div>
                                     <div class="flex items-center">
-                                        <input type="radio" name="result" value="fail" {{ old('result', $form->result) == 'fail' ? 'checked' : '' }}>
+                                        <input type="radio" id="resultFail" name="result" value="fail"
+                                            {{ old('result', $form->result) == 'fail' ? 'checked' : '' }}>
                                         <label class="text-sm ml-2">FAIL</label>
                                     </div>
+                                    <input type="hidden" id="result" name="result" value="{{ old('result', $form->result) }}">
                                 </div>
                             </div>
                             <div>
@@ -268,4 +271,78 @@
         </form>
     </div>
 </div>
-@endsection
+
+@push('scripts')
+<script>
+    // Fungsi untuk mengecek status checkbox dan mengupdate radio button
+    function updateRadioResult() {
+        // Ambil semua checkbox berdasarkan ID yang ada
+        const test1Checkboxes = [
+            document.getElementById('test1_in_depan'),
+            document.getElementById('test1_out_depan')
+        ];
+        const test2Checkboxes = [
+            document.getElementById('test2_in_depan'),
+            document.getElementById('test2_out_depan')
+        ];
+        const test3Checkboxes = [
+            document.getElementById('test3_in_belakang'),
+            document.getElementById('test3_out_belakang')
+        ];
+        const test4Checkboxes = [
+            document.getElementById('test4_in_depan'),
+            document.getElementById('test4_out_depan')
+        ];
+
+        const resultPass = document.getElementById('resultPass');
+        const resultFail = document.getElementById('resultFail');
+        const resultHidden = document.getElementById('result');
+
+        if (resultPass && resultFail && resultHidden) {
+            // Cek apakah semua checkbox tercentang
+            const allChecked = [...test1Checkboxes, ...test2Checkboxes, ...test3Checkboxes, ...test4Checkboxes]
+                .every(checkbox => checkbox && checkbox.checked);
+
+            if (allChecked) {
+                resultPass.checked = true;
+                resultHidden.value = 'pass';
+            } else {
+                resultFail.checked = true;
+                resultHidden.value = 'fail';
+            }
+        }
+    }
+
+    // Event listener setelah DOM sepenuhnya dimuat
+    document.addEventListener('DOMContentLoaded', function() {
+        // Tambahkan event listener untuk semua checkbox
+        const allCheckboxIds = [
+            'test1_in_depan', 'test1_out_depan',
+            'test2_in_depan', 'test2_out_depan',
+            'test3_in_belakang', 'test3_out_belakang',
+            'test4_in_depan', 'test4_out_depan'
+        ];
+
+        allCheckboxIds.forEach(id => {
+            const checkbox = document.getElementById(id);
+            if (checkbox) {
+                checkbox.addEventListener('change', updateRadioResult);
+            }
+        });
+
+        // Nonaktifkan radio button agar tidak bisa diklik manual
+        const resultPass = document.getElementById('resultPass');
+        const resultFail = document.getElementById('resultFail');
+
+        if (resultPass) {
+            resultPass.addEventListener('click', (e) => e.preventDefault());
+        }
+        if (resultFail) {
+            resultFail.addEventListener('click', (e) => e.preventDefault());
+        }
+
+        // Inisialisasi status awal
+        updateRadioResult();
+    });
+</script>
+@endpush

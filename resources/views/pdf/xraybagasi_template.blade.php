@@ -94,7 +94,7 @@
                             <th class="w-1/3 text-left p-1">
                                 <label class="text-gray-700 font-bold text-xs">Tanggal & Waktu Pengujian:</label>
                             </th>
-                            <td class="w-2/3 p-1">{{ date('d-m-Y H:i', strtotime($form->testDateTime)) }}</td>
+                            <td class="w-2/3 p-1">{{ date('d-m-Y H:i', strtotime($form->testDateTime)) }} WIB</td>
                         </tr>
                         <tr class="border-b border-black">
                             <th class="w-1/3 text-left p-1">

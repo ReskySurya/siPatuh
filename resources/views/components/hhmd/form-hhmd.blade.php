@@ -44,9 +44,12 @@
                                     Pengujian:</label>
                             </th>
                             <td class="w-2/3 p-2">
-                                <input type="datetime-local" id="testDateTime" name="testDateTime"
-                                    class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base"
-                                    readonly>
+                                <div class="flex items-center">
+                                    <input type="datetime-local" id="testDateTime" name="testDateTime"
+                                        class="w-full border rounded px-1 py-1 sm:px-2 sm:py-1 text-xs sm:text-base"
+                                        readonly>
+                                    <span class="ml-2 text-xs sm:text-base">WIB</span>
+                                </div>
                             </td>
                         </tr>
                         <tr class="border-b border-black">

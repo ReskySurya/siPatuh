@@ -2,23 +2,33 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-2">
-    <div class="bg-gradient-to-r from-white to-gray-50 shadow-lg rounded-xl px-8 pt-8 pb-10 mb-6">
+    <!-- Back Button -->
+    <div class="my-2">
+        <a href="{{ route('dashboard') }}"
+           class="inline-flex items-center px-4 py-2 bg-white hover:bg-white-700 text-black text-sm font-medium rounded-md transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Kembali ke Dashboard
+        </a>
+    </div>
+
+    <div class="bg-gradient-to-r from-white to-gray-50 shadow-lg rounded-xl px-4 sm:px-8 pt-6 pb-8 mb-6">
         <!-- Header Section -->
-        <div class="text-left mb-8">
-            <h1
-                class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-sky-600 mb-4">
+        <div class="text-center sm:text-left mb-6 sm:mb-8">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-sky-600 mb-3">
                 Formulir WTMD
             </h1>
-            <p class="text-xl text-gray-600 font-medium">
+            <p class="text-lg sm:text-xl text-gray-600 font-medium">
                 Silakan pilih jenis formulir WTMD
             </p>
         </div>
 
-        <!-- Grid Layout for X-ray Forms -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Grid Layout for WTMD Forms -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <!-- Pos Timur Form Card -->
             <div onclick="window.location.href='{{ route('wtmd.postimur', ['location' => 'Pos Timur']) }}'"
-                class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer border border-gray-100 relative group">
+                class="bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer border border-gray-100 relative group">
 
                 @if ($pendingCounts['Pos Timur'] > 0)
                     <div
@@ -71,7 +81,7 @@
 
             <!-- PSCP Selatan Form Card -->
             <div onclick="window.location.href='{{ route('wtmd.pscpselatan', ['location' => 'PSCP Selatan']) }}'"
-                class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer border border-gray-100 relative group">
+                class="bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer border border-gray-100 relative group">
 
                 @if ($pendingCounts['PSCP Selatan'] > 0)
                     <div
@@ -124,7 +134,7 @@
 
             <!-- PSCP Utara Form Card -->
             <div onclick="window.location.href='{{ route('wtmd.pscputara', ['location' => 'PSCP Utara']) }}'"
-                class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer border border-gray-100 relative group">
+                class="bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer border border-gray-100 relative group">
 
                 @if ($pendingCounts['PSCP Utara'] > 0)
                     <div
@@ -177,4 +187,27 @@
         </div>
     </div>
 </div>
+
+@push('styles')
+<style>
+    @media (max-width: 640px) {
+        .container {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .grid {
+            gap: 1rem;
+        }
+
+        .text-3xl {
+            font-size: 1.5rem;
+        }
+
+        .p-4 {
+            padding: 0.75rem;
+        }
+    }
+</style>
+@endpush
 @endsection
